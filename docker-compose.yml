@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: sharesdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${PWD}/data:/var/lib/postgresql/data
+
+  test_db:
+    image: postgres
+    container_name: test_postgres_db
+    environment:
+      POSTGRES_DB: sharesdb-test
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5433:5432"

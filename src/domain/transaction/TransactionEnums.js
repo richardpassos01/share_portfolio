@@ -1,0 +1,10 @@
+export const TRANSACTION_TYPE = {
+  INBOUND: 'INBOUND',
+  OUTBOUND: 'OUTBOUND',
+};
+
+export const TRANSACTION_CATEGORY = {
+  TRADE: 'TRADE',
+  DIVIDENDS: 'DIVIDENDS',
+  OTHER: 'OTHER',
+};
