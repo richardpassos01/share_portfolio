@@ -1,6 +1,6 @@
 export const TRANSACTION_TYPE = {
-  INBOUND: 'INBOUND',
-  OUTBOUND: 'OUTBOUND',
+  BUY: 'BUY',
+  SELL: 'SELL',
 };
 
 export const TRANSACTION_CATEGORY = {

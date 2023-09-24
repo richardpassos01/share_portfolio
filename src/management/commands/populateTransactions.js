@@ -21,8 +21,8 @@ const filesPath = resolve(__dirname, '..', 'files');
 const fileList = readdirSync(filesPath);
 
 const institutionEventTypeMapper = {
-  Credito: TRANSACTION_TYPE.OUTBOUND,
-  Debito: TRANSACTION_TYPE.INBOUND,
+  Credito: TRANSACTION_TYPE.BUY,
+  Debito: TRANSACTION_TYPE.SELL,
   'Transferência - Liquidação': TRANSACTION_CATEGORY.TRADE,
   Rendimento: TRANSACTION_CATEGORY.DIVIDENDS,
   'Juros Sobre Capital Próprio': TRANSACTION_CATEGORY.DIVIDENDS,
@@ -48,7 +48,7 @@ const createTransaction = (transaction) =>
     ticketSymbol: transaction[3].split(' - ')[0],
     quantity: transaction[5],
     unityPrice: transaction[6] !== '-' ? transaction[6] : null,
-    totalPrice: transaction[7] !== '-' ? transaction[7] : null,
+    totalCost: transaction[7] !== '-' ? transaction[7] : null,
   });
 
 const formatTransactionsForDatabase = (transactions) =>

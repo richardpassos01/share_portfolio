@@ -13,7 +13,7 @@ export default class createTransaction {
     ticketSymbol,
     quantity,
     unityPrice,
-    totalPrice,
+    totalCost,
   }) {
     const transaction = new Transaction({
       institutionId,
@@ -23,7 +23,7 @@ export default class createTransaction {
       ticketSymbol,
       quantity,
       unityPrice,
-      totalPrice,
+      totalCost,
     });
 
     return this.transactionRepository.create(transaction);

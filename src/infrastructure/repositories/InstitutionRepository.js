@@ -9,7 +9,7 @@ export default class InstitutionRepository {
   async get(instituionId) {
     return this.database
       .connection()
-      .select('id', 'name', 'user_id', 'total_loss', 'total_wins')
+      .select()
       .where('id', instituionId)
       .into(Tables.INSTITUTION)
       .first()

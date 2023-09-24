@@ -8,8 +8,6 @@ export const up = async (knex) => {
           table.uuid('id').primary();
           table.uuid('user_id').notNullable();
           table.string('name', 250).notNullable();
-          table.decimal('total_loss', 10, 2).notNullable();
-          table.decimal('total_wins', 10, 2).notNullable();
           table.timestamps(true, true);
 
           table

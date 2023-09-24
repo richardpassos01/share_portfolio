@@ -1,4 +1,5 @@
 import Tables from '../Tables.js';
+import { BALANCE_TYPE } from '../../../domain/transaction/balance/BalanceEnums.js';
 
 export const up = async (knex) => {
   return knex.schema.hasTable(Tables.BALANCE).then((exists) => {
@@ -8,9 +9,10 @@ export const up = async (knex) => {
           table.uuid('id').primary();
           table.uuid('institution_id').notNullable();
           table.string('year_month', 7).notNullable();
-          table.decimal('total_win', 10, 2);
-          table.decimal('total_loss', 10, 2);
-          table.decimal('total_taxes', 10, 2);
+          table.decimal('wins', 10, 2);
+          table.decimal('loss', 10, 2);
+          table.decimal('taxes', 10, 2);
+          table.enu('type', Object.values(BALANCE_TYPE)).notNullable();
           table.timestamps(true, true);
 
           table

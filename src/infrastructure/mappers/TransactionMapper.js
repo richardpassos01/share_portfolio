@@ -11,7 +11,7 @@ export default class TransactionMapper {
       ticket_symbol: entity.ticketSymbol,
       quantity: entity.quantity,
       unity_price: entity.unityPrice,
-      total_price: entity.totalPrice,
+      total_cost: entity.totalCost,
     };
   }
 
@@ -25,7 +25,7 @@ export default class TransactionMapper {
       ticketSymbol: object.ticket_symbol,
       quantity: object.quantity,
       unityPrice: Number(object.unity_price),
-      totalPrice: Number(object.total_price),
+      totalCost: Number(object.total_cost),
     });
   }
 }

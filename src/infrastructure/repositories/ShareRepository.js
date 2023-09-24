@@ -24,17 +24,18 @@ export default class ShareRepository {
   async get(ticketSymbol, instituionId) {
     return this.database
       .connection()
-      .select(
-        'id',
-        'institution_id',
-        'ticket_symbol',
-        'quantity',
-        'total_cost',
-        'medium_price',
-      )
+      .select()
       .where({ ticket_symbol: ticketSymbol, institution_id: instituionId })
       .first()
       .into(Tables.SHARE)
       .then((data) => (data ? ShareMapper.mapToEntity(data) : null));
+  }
+
+  async delete(share) {
+    return this.database
+      .connection()
+      .where('id', share.id)
+      .del()
+      .into(Tables.SHARE);
   }
 }

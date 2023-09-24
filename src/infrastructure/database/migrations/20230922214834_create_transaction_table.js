@@ -19,7 +19,7 @@ export const up = async (knex) => {
           table.string('ticket_symbol', 10).notNullable();
           table.integer('quantity').notNullable();
           table.decimal('unity_price', 10, 2);
-          table.decimal('total_price', 10, 2);
+          table.decimal('total_cost', 10, 2);
           table.timestamps(true, true);
 
           table

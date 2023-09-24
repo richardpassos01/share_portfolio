@@ -1,5 +1,7 @@
 export default class Institution {
-  constructor({ id, name, userId, totalLoss, totalWins }) {
-    Object.assign(this, { id, name, userId, totalLoss, totalWins });
+  constructor({ id, name, userId }) {
+    this.id = id;
+    this.name = name;
+    this.userId = userId;
   }
 }
