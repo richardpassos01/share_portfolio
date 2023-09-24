@@ -3,7 +3,8 @@ export default class UpdateShare {
     this.shareRepository = shareRepository;
   }
 
-  async execute(share) {
+  async execute(share, transaction) {
+    share.updatePosition(transaction);
     return this.shareRepository.update(share);
   }
 }

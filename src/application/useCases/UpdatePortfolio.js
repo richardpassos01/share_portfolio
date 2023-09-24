@@ -3,63 +3,84 @@ import {
   TRANSACTION_CATEGORY,
 } from '../../domain/transaction/TransactionEnums.js';
 
-const calculateOperationResult = (share, transaction) => {
-  const sellCost = transaction.totalCost;
-  const minIdealSellCost = transaction.quantity * share.mediumPrice;
-  const winsOrLoss = sellCost - minIdealSellCost;
-  return winsOrLoss;
-};
-
 export default class UpdatePortfolio {
   constructor(
     shareRepository,
+    getShare,
     createShare,
     updateShare,
+    getMonthlyBalance,
     createMonthlyBalance,
     updateMonthlyBalance,
+    getTotalBalance,
+    updateTotalBalance,
   ) {
     this.shareRepository = shareRepository;
+    this.getShare = getShare;
     this.createShare = createShare;
     this.updateShare = updateShare;
+    this.getMonthlyBalance = getMonthlyBalance;
     this.createMonthlyBalance = createMonthlyBalance;
     this.updateMonthlyBalance = updateMonthlyBalance;
+    this.getTotalBalance = getTotalBalance;
+    this.updateTotalBalance = updateTotalBalance;
   }
 
   async execute(transaction) {
     try {
-      // when buy share, just need to create balance and share if not exists;
       const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
+      const totalBalance = await this.getTotalBalance(
+        transaction.institutionId,
+      );
 
       if (transaction.category === TRANSACTION_CATEGORY.DIVIDENDS) {
-        return this.handleDividends(transaction, monthlyBalance);
+        return this.handleDividends(transaction, monthlyBalance, totalBalance);
       }
 
-      const share = await this.getOrCreateShare(transaction);
-
-      if (transaction.category === TRANSACTION_CATEGORY.OTHER) {
-        return this.handleStocksSplits(transaction, share);
+      if (transaction.type === TRANSACTION_TYPE.BUY) {
+        return this.handleBuyOperation(transaction);
       }
 
       if (transaction.type === TRANSACTION_TYPE.SELL) {
-        return this.handleSellOperation(transaction, monthlyBalance, share);
+        return this.handleSellOperation(
+          transaction,
+          monthlyBalance,
+          totalBalance,
+        );
       }
     } catch (error) {
       console.error(error);
     }
   }
 
-  async handleStocksSplits(transaction, share) {
-    share.updatePosition(transaction);
-    return this.updateShare.execute(share);
-  }
-
-  async handleDividends(transaction, monthlyBalance) {
+  async handleDividends(transaction, monthlyBalance, totalBalance) {
     monthlyBalance.setWins(transaction.totalCost);
-    return this.updateMonthlyBalance.execute(monthlyBalance);
+    totalBalance.setWins(transaction.totalCost);
+
+    return Promise.all([
+      this.updateMonthlyBalance.execute(monthlyBalance),
+      this.updateTotalBalance.execute(totalBalance),
+    ]);
   }
 
-  async handleSellOperation(transaction, monthlyBalance, share) {
-    const operationResult = calculateOperationResult(share, transaction);
+  async handleBuyOperation(transaction) {
+    const share = await this.getShare.execute(transaction);
+
+    if (!share) {
+      return this.createShare.execute(transaction);
+    }
+
+    share.updatePosition(transaction);
+    return this.updateShare.execute(share, transaction);
+  }
+
+  async handleSellOperation(transaction, monthlyBalance, totalBalance) {
+    const share = this.getShare.execute(transaction);
+    const operationResult = UpdatePortfolio.calculateWinsOrLossOnSale(
+      share,
+      transaction,
+    );
+    share.updatePosition(transaction);
 
     const transactions =
       await this.transactionRepository.getSellTransactionFromPeriod(
@@ -69,28 +90,26 @@ export default class UpdatePortfolio {
     monthlyBalance.setType(transactions);
 
     if (operationResult < 0) {
+      totalBalance.setLoss(operationResult);
       monthlyBalance.setLoss(operationResult);
     }
 
     if (operationResult > 0) {
       monthlyBalance.setWins(operationResult);
-      monthlyBalance.calculateTaxes(transactions); // totalBalanceLoss
-
-      // create new table totalbalance, ou account_balance, com total_loss, total_win,
-      // pegar total_loss da conta, descontar valor da taxes,
+      monthlyBalance.setTaxes(transactions, totalBalance.getLoss());
+      totalBalance.setWins(operationResult - monthlyBalance.getTaxes());
     }
 
-    await this.updateMonthlyBalance.execute(monthlyBalance);
+    await Promise.all([
+      this.updateShare.execute(share, transaction),
+      this.updateMonthlyBalance.execute(monthlyBalance),
+      this.updateTotalBalance.execute(totalBalance),
+    ]);
 
-    return this.handleLiquidation();
+    return this.handleLiquidation(share);
   }
 
-  async handleLiquidation(transaction) {
-    const share = await this.shareRepository.get(
-      transaction.ticketSymbol,
-      transaction.institutionId,
-    );
-
+  async handleLiquidation(share) {
     if (share.quantity === 0) {
       return this.shareRepository.delete(share);
     }
@@ -107,16 +126,10 @@ export default class UpdatePortfolio {
     return monthlyBalance;
   }
 
-  async getOrCreateShare(transaction) {
-    const share = await this.shareRepository.get(
-      transaction.ticketSymbol,
-      transaction.institutionId,
-    );
-
-    if (!share) {
-      return this.createShare.execute(transaction);
-    }
-
-    return share;
+  static calculateWinsOrLossOnSale(share, transaction) {
+    const sellCost = transaction.totalCost;
+    const minIdealSellCost = transaction.quantity * share.getMediumPrice();
+    const winsOrLoss = sellCost - minIdealSellCost;
+    return winsOrLoss;
   }
 }

@@ -6,6 +6,16 @@ export default class ShareRepository {
     this.database = database;
   }
 
+  async get(ticketSymbol, instituionId) {
+    return this.database
+      .connection()
+      .select()
+      .where({ ticket_symbol: ticketSymbol, institution_id: instituionId })
+      .first()
+      .into(Tables.SHARE)
+      .then((data) => (data ? ShareMapper.mapToEntity(data) : null));
+  }
+
   async create(share) {
     return this.database
       .connection()
@@ -19,16 +29,6 @@ export default class ShareRepository {
       .update(ShareMapper.mapToDatabaseObject(share))
       .where('id', share.id)
       .into(Tables.SHARE);
-  }
-
-  async get(ticketSymbol, instituionId) {
-    return this.database
-      .connection()
-      .select()
-      .where({ ticket_symbol: ticketSymbol, institution_id: instituionId })
-      .first()
-      .into(Tables.SHARE)
-      .then((data) => (data ? ShareMapper.mapToEntity(data) : null));
   }
 
   async delete(share) {

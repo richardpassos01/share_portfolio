@@ -8,7 +8,6 @@ export default class ShareMapper {
       ticket_symbol: entity.ticketSymbol,
       quantity: entity.quantity,
       total_cost: entity.totalCost,
-      medium_price: entity.mediumPrice,
     };
   }
 
@@ -19,7 +18,6 @@ export default class ShareMapper {
       ticketSymbol: object.ticket_symbol,
       quantity: object.quantity,
       totalCost: Number(object.total_cost),
-      mediumPrice: Number(object.medium_price),
     });
   }
 }

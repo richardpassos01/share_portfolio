@@ -8,33 +8,36 @@ export default class Share {
     ticketSymbol,
     quantity,
     totalCost,
-    mediumPrice,
   }) {
     this.id = id;
     this.institutionId = institutionId;
     this.ticketSymbol = ticketSymbol;
     this.quantity = quantity;
     this.totalCost = totalCost;
-    this.mediumPrice = mediumPrice;
+    this.mediumPrice = this.setMediumPrice();
   }
 
   updatePosition({ quantity, totalCost, type }) {
     const operationMultiplier = type === SHARE_OPERATION_TYPE.BUY ? 1 : -1;
 
-    this.updateQuantity(quantity * operationMultiplier);
-    this.updateTotalCost(totalCost * operationMultiplier);
-    this.updateMediumPrice();
+    this.setQuantity(quantity * operationMultiplier);
+    this.setTotalCost(totalCost * operationMultiplier);
+    this.setMediumPrice();
   }
 
-  updateTotalCost(cost) {
+  setTotalCost(cost) {
     this.totalCost += cost;
   }
 
-  updateQuantity(quantity) {
+  setQuantity(quantity) {
     this.quantity += quantity;
   }
 
-  updateMediumPrice() {
+  getMediumPrice() {
+    return this.mediumPrice;
+  }
+
+  setMediumPrice() {
     this.mediumPrice = this.totalCost / this.quantity;
   }
 }

@@ -11,9 +11,7 @@ export default class createShare {
       ticketSymbol,
       quantity,
       totalCost,
-      mediumPrice: 0,
     });
-    share.updateMediumPrice();
 
     return this.shareRepository.create(share);
   }

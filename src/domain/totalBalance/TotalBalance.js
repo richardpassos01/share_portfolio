@@ -8,11 +8,19 @@ export default class TotalBalance {
     this.loss = loss;
   }
 
-  setLoss(loss) {
-    this.loss += loss;
+  getWins() {
+    return this.wins;
   }
 
   setWins(wins) {
     this.wins += wins;
+  }
+
+  getLoss() {
+    return this.loss;
+  }
+
+  setLoss(loss) {
+    this.loss += loss;
   }
 }

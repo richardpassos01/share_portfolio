@@ -54,7 +54,11 @@ export default class MonthlyBalance {
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
   }
 
-  calculateTaxes(periodTransactions, totalBalanceLoss = 0) {
+  getTaxes() {
+    return this.taxes;
+  }
+
+  setTaxes(periodTransactions, totalBalanceLoss = 0) {
     const periodSalesValue = periodTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
       10,
