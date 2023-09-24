@@ -4,6 +4,7 @@ const Tables = {
   SHARE: 'share',
   USER: 'user',
   MONTHLY_BALANCE: 'monthly_balance',
+  TOTAL_BALANCE: 'total_balance',
 };
 
 export default Tables;
