@@ -1,4 +1,4 @@
-import MonthlyBalanceMapper from '../mappers/MonthlyBalanceMapper.js';
+import TotalBalanceMapper from '../mappers/TotalBalanceMapper.js';
 import Tables from '../database/Tables.js';
 
 export default class TotalBalanceRepository {
@@ -12,20 +12,20 @@ export default class TotalBalanceRepository {
       .select()
       .where('institution_id', instituionId)
       .into(Tables.TOTAL_BALANCE)
-      .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : null));
+      .then((data) => (data ? TotalBalanceMapper.mapToEntity(data) : null));
   }
 
   async create(balance) {
     return this.database
       .connection()
-      .insert(MonthlyBalanceMapper.mapToDatabaseObject(balance))
+      .insert(TotalBalanceMapper.mapToDatabaseObject(balance))
       .into(Tables.TOTAL_BALANCE);
   }
 
   async update(balance) {
     return this.database
       .connection()
-      .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
+      .update(TotalBalanceMapper.mapToDatabaseObject(balance))
       .where('id', balance.getId())
       .into(Tables.TOTAL_BALANCE);
   }

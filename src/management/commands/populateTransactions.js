@@ -6,7 +6,10 @@ import { readdirSync, promises as fsPromises } from 'fs';
 import { resolve } from 'path';
 import { parse } from 'node-xlsx';
 import { URL } from 'url';
-import { createTransaction } from '../../DependencyInjectionContainer.js';
+import {
+  createTransaction,
+  updatePortfolio,
+} from '../../DependencyInjectionContainer.js';
 import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
@@ -34,7 +37,7 @@ const institutionEventTypeMapper = {
 };
 
 const parseDataString = (dateString) =>
-  new Date(dateString.split('/').reverse().join('-'));
+  new Date(dateString.split('/').reverse().join('-').concat('T00:00:00'));
 
 (async () => {
   try {
@@ -46,17 +49,19 @@ const parseDataString = (dateString) =>
       const filePath = resolve(filesPath, fileName);
       const [{ data }] = parse(filePath);
 
-      for (const transaction of data.slice(1).reverse()) {
-        await createTransaction.execute({
+      for (const transactionObject of data.slice(1).reverse()) {
+        const transaction = await createTransaction.execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-          type: institutionEventTypeMapper[transaction[0]],
-          date: parseDataString(transaction[1]),
-          category: institutionEventTypeMapper[transaction[2]],
-          ticketSymbol: transaction[3].split(' - ')[0],
-          quantity: transaction[5],
-          unityPrice: transaction[6] !== '-' ? transaction[6] : 0,
-          totalCost: transaction[7] !== '-' ? transaction[7] : 0,
+          type: institutionEventTypeMapper[transactionObject[0]],
+          date: parseDataString(transactionObject[1]),
+          category: institutionEventTypeMapper[transactionObject[2]],
+          ticketSymbol: transactionObject[3].split(' - ')[0],
+          quantity: transactionObject[5],
+          unityPrice: transactionObject[6] !== '-' ? transactionObject[6] : 0,
+          totalCost: transactionObject[7] !== '-' ? transactionObject[7] : 0,
         });
+
+        // await updatePortfolio.execute(transaction);
       }
 
       // await fsPromises.rename(
@@ -68,6 +73,7 @@ const parseDataString = (dateString) =>
     }
   } catch (error) {
     console.log(error);
+    process.exit(1);
   }
   process.exit(0);
 })();

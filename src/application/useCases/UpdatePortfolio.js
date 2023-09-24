@@ -29,7 +29,7 @@ export default class UpdatePortfolio {
   async execute(transaction) {
     try {
       const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
-      const totalBalance = await this.getTotalBalance(
+      const totalBalance = await this.getTotalBalance.execute(
         transaction.getInstitutionId(),
       );
 
@@ -75,7 +75,7 @@ export default class UpdatePortfolio {
   }
 
   async handleSellOperation(transaction, monthlyBalance, totalBalance) {
-    const share = this.getShare.execute(transaction);
+    const share = await this.getShare.execute(transaction);
     const operationResult = UpdatePortfolio.calculateWinsOrLossOnSale(
       share,
       transaction,
