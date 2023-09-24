@@ -1,8 +1,7 @@
 import { uuid } from 'uuidv4';
 
 import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
-import { TRANSACTION_TYPE } from '../TransactionEnums.js';
-import { dateToMonthYear } from '../../../helpers/Helpers.js';
+import { dateToMonthYear } from '../../helpers/Helpers.js';
 
 const TAX_FREE_SALES_LIMIT = 20000;
 const DAY_TRADE_TAX_PERCENTAGE = 1.2;
@@ -28,20 +27,20 @@ export default class MonthlyBalance {
   }
 
   setLoss(loss) {
-    this.loss = loss;
+    this.loss += loss;
   }
 
   setWins(wins) {
-    this.wins = wins;
+    this.wins += wins;
   }
 
   setType(transactions) {
     const hasDayTrade = transactions.some((sellTransaction) => {
       return (
-        sellTransaction.type === TRANSACTION_TYPE.SELL &&
+        sellTransaction.type === MONTHLY_BALANCE_TYPE.SELL &&
         transactions.some((buyTransaction) => {
           return (
-            buyTransaction.type === TRANSACTION_TYPE.BUY &&
+            buyTransaction.type === MONTHLY_BALANCE_TYPE.BUY &&
             buyTransaction.ticketNumber === sellTransaction.ticketNumber &&
             dateToMonthYear(buyTransaction.date) ===
               dateToMonthYear(sellTransaction.date)

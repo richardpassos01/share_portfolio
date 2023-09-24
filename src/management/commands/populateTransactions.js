@@ -38,7 +38,7 @@ const parseDataString = (dateString) =>
 
 (async () => {
   try {
-    for (const fileName of fileList) {
+    for (const fileName of fileList.filter((f) => f.includes('xlsx'))) {
       // if (fileName.split('-')[0] === 'inserted') {
       //   continue;
       // }
@@ -46,7 +46,7 @@ const parseDataString = (dateString) =>
       const filePath = resolve(filesPath, fileName);
       const [{ data }] = parse(filePath);
 
-      for (const transaction of data.slice(1)) {
+      for (const transaction of data.slice(1).reverse()) {
         await createTransaction.execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transaction[0]],

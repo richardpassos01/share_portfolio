@@ -1,5 +1,5 @@
 import Tables from '../Tables.js';
-import { MONTHLY_BALANCE_TYPE } from '../../../domain/transaction/balance/MonthlyBalanceEnums.js';
+import { MONTHLY_BALANCE_TYPE } from '../../../domain/monthlyBalance/MonthlyBalanceEnums.js';
 
 export const up = async (knex) => {
   return knex.schema.hasTable(Tables.MONTHLY_BALANCE).then((exists) => {

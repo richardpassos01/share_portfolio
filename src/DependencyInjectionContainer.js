@@ -14,6 +14,7 @@ import InstitutionRepository from './infrastructure/repositories/InstitutionRepo
 import ShareRepository from './infrastructure/repositories/ShareRepository.js';
 import TransactionRepository from './infrastructure/repositories/TransactionRepository.js';
 import MonthlyBalanceRepository from './infrastructure/repositories/MonthlyBalanceRepository.js';
+import TotalBalanceRepository from './infrastructure/repositories/TotalBalanceRepository.js';
 
 export const database = Database.getInstance();
 
@@ -21,6 +22,7 @@ export const institutionRepository = new InstitutionRepository(database);
 export const shareRepository = new ShareRepository(database);
 export const transactionRepository = new TransactionRepository(database);
 export const monthlyBalanceRepository = new MonthlyBalanceRepository(database);
+export const totalBalanceRepository = new TotalBalanceRepository(database);
 
 export const getInstitution = new GetInstitution(institutionRepository);
 export const createShare = new CreateShare(shareRepository);

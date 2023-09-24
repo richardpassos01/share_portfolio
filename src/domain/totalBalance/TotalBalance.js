@@ -9,10 +9,10 @@ export default class TotalBalance {
   }
 
   setLoss(loss) {
-    this.loss = loss;
+    this.loss += loss;
   }
 
   setWins(wins) {
-    this.wins = wins;
+    this.wins += wins;
   }
 }

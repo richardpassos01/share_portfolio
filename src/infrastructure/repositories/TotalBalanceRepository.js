@@ -1,21 +1,17 @@
 import MonthlyBalanceMapper from '../mappers/MonthlyBalanceMapper.js';
 import Tables from '../database/Tables.js';
 
-export default class MonthlyBalanceRepository {
+export default class TotalBalanceRepository {
   constructor(database) {
     this.database = database;
   }
 
-  async get(instituionId, yearMonth) {
+  async get(instituionId) {
     return this.database
       .connection()
       .select()
-      .where({
-        year_month: yearMonth,
-        institution_id: instituionId,
-      })
-      .into(Tables.MONTHLY_BALANCE)
-      .orderBy('date', 'asc')
+      .where('institution_id', instituionId)
+      .into(Tables.TOTAL_BALANCE)
       .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : null));
   }
 
@@ -23,7 +19,7 @@ export default class MonthlyBalanceRepository {
     return this.database
       .connection()
       .insert(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .into(Tables.MONTHLY_BALANCE);
+      .into(Tables.TOTAL_BALANCE);
   }
 
   async update(balance) {
@@ -31,6 +27,6 @@ export default class MonthlyBalanceRepository {
       .connection()
       .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
       .where('id', balance.id)
-      .into(Tables.MONTHLY_BALANCE);
+      .into(Tables.TOTAL_BALANCE);
   }
 }

@@ -1,4 +1,4 @@
-import MonthlyBalance from '../../domain/transaction/balance/MonthlyBalance.js';
+import MonthlyBalance from '../../domain/monthlyBalance/MonthlyBalance.js';
 import { dateToMonthYear } from '../../helpers/Helpers.js';
 
 export default class CreateMonthlyBalance {
