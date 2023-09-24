@@ -1,7 +1,7 @@
-import BalanceMapper from '../mappers/BalanceMapper.js';
+import MonthlyBalanceMapper from '../mappers/MonthlyBalanceMapper.js';
 import Tables from '../database/Tables.js';
 
-export default class BalanceRepository {
+export default class MonthlyBalanceRepository {
   constructor(database) {
     this.database = database;
   }
@@ -16,21 +16,21 @@ export default class BalanceRepository {
       })
       .into(Tables.TRANSACTION)
       .orderBy('date', 'asc')
-      .then((data) => (data ? BalanceMapper.mapToEntity(data) : null));
+      .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : null));
   }
 
   async create(balance) {
     return this.database
       .connection()
-      .insert(BalanceMapper.mapToDatabaseObject(balance))
-      .into(Tables.BALANCE);
+      .insert(MonthlyBalanceMapper.mapToDatabaseObject(balance))
+      .into(Tables.MONTHLY_BALANCE);
   }
 
   async update(balance) {
     return this.database
       .connection()
-      .update(BalanceMapper.mapToDatabaseObject(balance))
+      .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
       .where('id', balance.id)
-      .into(Tables.BALANCE);
+      .into(Tables.MONTHLY_BALANCE);
   }
 }

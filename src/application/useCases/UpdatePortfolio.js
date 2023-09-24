@@ -11,20 +11,27 @@ const calculateOperationResult = (share, transaction) => {
 };
 
 export default class UpdatePortfolio {
-  constructor(shareRepository, createShare, updateShare, updateBalance) {
+  constructor(
+    shareRepository,
+    createShare,
+    updateShare,
+    createMonthlyBalance,
+    updateMonthlyBalance,
+  ) {
     this.shareRepository = shareRepository;
     this.createShare = createShare;
     this.updateShare = updateShare;
-    this.updateBalance = updateBalance;
+    this.createMonthlyBalance = createMonthlyBalance;
+    this.updateMonthlyBalance = updateMonthlyBalance;
   }
 
   async execute(transaction) {
     try {
       // when buy share, just need to create balance and share if not exists;
-      const balance = await this.getOrCreateBalance(transaction);
+      const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
 
       if (transaction.category === TRANSACTION_CATEGORY.DIVIDENDS) {
-        return this.handleDividends(transaction, balance);
+        return this.handleDividends(transaction, monthlyBalance);
       }
 
       const share = await this.getOrCreateShare(transaction);
@@ -34,7 +41,7 @@ export default class UpdatePortfolio {
       }
 
       if (transaction.type === TRANSACTION_TYPE.SELL) {
-        return this.handleSellOperation(transaction, balance, share);
+        return this.handleSellOperation(transaction, monthlyBalance, share);
       }
     } catch (error) {
       console.error(error);
@@ -46,12 +53,12 @@ export default class UpdatePortfolio {
     return this.updateShare.execute(share);
   }
 
-  async handleDividends(transaction, balance) {
-    balance.setWins(transaction.totalCost);
-    return this.updateBalance.execute(balance);
+  async handleDividends(transaction, monthlyBalance) {
+    monthlyBalance.setWins(transaction.totalCost);
+    return this.updateMonthlyBalance.execute(monthlyBalance);
   }
 
-  async handleSellOperation(transaction, balance, share) {
+  async handleSellOperation(transaction, monthlyBalance, share) {
     const operationResult = calculateOperationResult(share, transaction);
 
     const transactions =
@@ -59,21 +66,21 @@ export default class UpdatePortfolio {
         transaction.date,
       );
 
-    balance.setType(transactions);
+    monthlyBalance.setType(transactions);
 
     if (operationResult < 0) {
-      balance.setLoss(operationResult);
+      monthlyBalance.setLoss(operationResult);
     }
 
     if (operationResult > 0) {
-      balance.setWins(operationResult);
-      balance.calculateTaxes(transactions, totalBalanceLoss);
+      monthlyBalance.setWins(operationResult);
+      monthlyBalance.calculateTaxes(transactions); // totalBalanceLoss
 
       // create new table totalbalance, ou account_balance, com total_loss, total_win,
       // pegar total_loss da conta, descontar valor da taxes,
     }
 
-    await this.updateBalance.execute(balance);
+    await this.updateMonthlyBalance.execute(monthlyBalance);
 
     return this.handleLiquidation();
   }
@@ -89,12 +96,15 @@ export default class UpdatePortfolio {
     }
   }
 
-  async getOrCreateBalance({ institutionId, date }) {
-    const balance = await this.getBalance.execute(institutionId, date);
-    if (!balance) {
-      return this.createBalance.execute(institutionId, date);
+  async getOrCreateMonthlyBalance({ institutionId, date }) {
+    const monthlyBalance = await this.getMonthlyBalance.execute(
+      institutionId,
+      date,
+    );
+    if (!monthlyBalance) {
+      return this.createMonthlyBalance.execute(institutionId, date);
     }
-    return balance;
+    return monthlyBalance;
   }
 
   async getOrCreateShare(transaction) {

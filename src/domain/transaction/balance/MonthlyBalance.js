@@ -1,6 +1,6 @@
 import { uuid } from 'uuidv4';
 
-import { BALANCE_TYPE } from './BalanceEnums.js';
+import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
 import { TRANSACTION_TYPE } from '../TransactionEnums.js';
 import { dateToMonthYear } from '../../../helpers/Helpers.js';
 
@@ -8,7 +8,7 @@ const TAX_FREE_SALES_LIMIT = 20000;
 const DAY_TRADE_TAX_PERCENTAGE = 1.2;
 const SWING_TRADE_TAX_PERCENTAGE = 1.15;
 
-export default class Balance {
+export default class MonthlyBalance {
   constructor({
     id = uuid(),
     institutionId,
@@ -16,7 +16,7 @@ export default class Balance {
     wins = 0,
     loss = 0,
     taxes = 0,
-    type = BALANCE_TYPE.SWING_TRADE,
+    type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   }) {
     this.id = id;
     this.institutionId = institutionId;
@@ -50,7 +50,9 @@ export default class Balance {
       );
     });
 
-    this.type = hasDayTrade ? BALANCE_TYPE.DAY_TRADE : BALANCE_TYPE.SWING_TRADE;
+    this.type = hasDayTrade
+      ? MONTHLY_BALANCE_TYPE.DAY_TRADE
+      : MONTHLY_BALANCE_TYPE.SWING_TRADE;
   }
 
   calculateTaxes(periodTransactions, totalBalanceLoss = 0) {
@@ -59,7 +61,7 @@ export default class Balance {
       10,
     );
 
-    const isDayTrade = this.type === BALANCE_TYPE.DAY_TRADE;
+    const isDayTrade = this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE;
 
     if (periodSalesValue > TAX_FREE_SALES_LIMIT || isDayTrade) {
       const taxPercentage = isDayTrade

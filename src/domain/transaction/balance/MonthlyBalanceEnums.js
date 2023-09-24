@@ -1,4 +1,4 @@
-export const BALANCE_TYPE = {
+export const MONTHLY_BALANCE_TYPE = {
   DAY_TRADE: 'DAY_TRADE',
   SWING_TRADE: 'SWING_TRADE',
 };

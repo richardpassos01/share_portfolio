@@ -1,6 +1,6 @@
-import Balance from '../../domain/transaction/balance/Balance.js';
+import MonthlyBalance from '../../domain/transaction/balance/MonthlyBalance.js';
 
-export default class BalanceMapper {
+export default class MonthlyBalanceMapper {
   static mapToDatabaseObject(entity) {
     return {
       id: entity.id,
@@ -14,7 +14,7 @@ export default class BalanceMapper {
   }
 
   static mapToEntity(object) {
-    return new Balance({
+    return new MonthlyBalance({
       id: object.id,
       institutionId: object.institution_id,
       yearMonth: object.year_month,

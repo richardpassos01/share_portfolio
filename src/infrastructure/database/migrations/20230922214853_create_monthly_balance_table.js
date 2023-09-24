@@ -1,18 +1,18 @@
 import Tables from '../Tables.js';
-import { BALANCE_TYPE } from '../../../domain/transaction/balance/BalanceEnums.js';
+import { MONTHLY_BALANCE_TYPE } from '../../../domain/transaction/balance/MonthlyBalanceEnums.js';
 
 export const up = async (knex) => {
-  return knex.schema.hasTable(Tables.BALANCE).then((exists) => {
+  return knex.schema.hasTable(Tables.MONTHLY_BALANCE).then((exists) => {
     if (!exists) {
       return knex.schema
-        .createTable(Tables.BALANCE, (table) => {
+        .createTable(Tables.MONTHLY_BALANCE, (table) => {
           table.uuid('id').primary();
           table.uuid('institution_id').notNullable();
           table.string('year_month', 7).notNullable();
           table.decimal('wins', 10, 2);
           table.decimal('loss', 10, 2);
           table.decimal('taxes', 10, 2);
-          table.enu('type', Object.values(BALANCE_TYPE)).notNullable();
+          table.enu('type', Object.values(MONTHLY_BALANCE_TYPE)).notNullable();
           table.timestamps(true, true);
 
           table
@@ -27,5 +27,5 @@ export const up = async (knex) => {
 };
 
 export const down = async (knex) => {
-  return knex.schema.dropTable(Tables.BALANCE);
+  return knex.schema.dropTable(Tables.MONTHLY_BALANCE);
 };

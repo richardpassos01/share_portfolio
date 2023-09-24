@@ -3,7 +3,7 @@ const Tables = {
   TRANSACTION: 'transaction',
   SHARE: 'share',
   USER: 'user',
-  BALANCE: 'balance',
+  MONTHLY_BALANCE: 'monthly_balance',
 };
 
 export default Tables;
