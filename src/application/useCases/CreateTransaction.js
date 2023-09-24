@@ -26,6 +26,7 @@ export default class createTransaction {
       totalCost,
     });
 
-    return this.transactionRepository.create(transaction);
+    await this.transactionRepository.create(transaction);
+    return transaction;
   }
 }

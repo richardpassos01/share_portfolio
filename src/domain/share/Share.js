@@ -18,12 +18,11 @@ export default class Share {
     this.mediumPrice = mediumPrice;
   }
 
-  updatePosition({ quantity, price, operationType }) {
-    const operationMultiplier =
-      operationType === SHARE_OPERATION_TYPE.BUY ? 1 : -1;
+  updatePosition({ quantity, totalCost, type }) {
+    const operationMultiplier = type === SHARE_OPERATION_TYPE.BUY ? 1 : -1;
 
     this.updateQuantity(quantity * operationMultiplier);
-    this.updateTotalCost(price * operationMultiplier);
+    this.updateTotalCost(totalCost * operationMultiplier);
     this.updateMediumPrice();
   }
 

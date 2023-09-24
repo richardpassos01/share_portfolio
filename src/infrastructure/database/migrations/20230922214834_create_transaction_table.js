@@ -18,8 +18,8 @@ export const up = async (knex) => {
             .notNullable();
           table.string('ticket_symbol', 10).notNullable();
           table.integer('quantity').notNullable();
-          table.decimal('unity_price', 10, 2);
-          table.decimal('total_cost', 10, 2);
+          table.decimal('unity_price', 10, 2).notNullable();
+          table.decimal('total_cost', 10, 2).notNullable();
           table.timestamps(true, true);
 
           table

@@ -10,6 +10,13 @@ export default class TransactionRepository {
     this.database = database;
   }
 
+  async create(transaction) {
+    return this.database
+      .connection()
+      .insert(TransactionMapper.mapToDatabaseObject(transaction))
+      .into(Tables.TRANSACTION);
+  }
+
   async getSellTransactionFromPeriod(instituionId, date) {
     return this.database
       .connection()

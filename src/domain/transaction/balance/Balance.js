@@ -53,7 +53,7 @@ export default class Balance {
     this.type = hasDayTrade ? BALANCE_TYPE.DAY_TRADE : BALANCE_TYPE.SWING_TRADE;
   }
 
-  calculateTaxes(periodTransactions) {
+  calculateTaxes(periodTransactions, totalBalanceLoss = 0) {
     const periodSalesValue = periodTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
       10,
@@ -67,7 +67,10 @@ export default class Balance {
         : SWING_TRADE_TAX_PERCENTAGE;
 
       const tax = periodSalesValue * taxPercentage;
-      this.taxes += tax;
+      const taxes =
+        totalBalanceLoss > 0 ? Math.abs(totalBalanceLoss - tax) : tax;
+
+      this.taxes += taxes;
     }
   }
 }

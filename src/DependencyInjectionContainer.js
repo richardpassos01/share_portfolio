@@ -4,7 +4,7 @@ import InstitutionController from './api/institution/InstitutionController.js';
 import GetInstitution from './application/useCases/GetInstitution.js';
 import CreateShare from './application/useCases/CreateShare.js';
 import UpdateShare from './application/useCases/UpdateShare.js';
-import UpdateInstitutionPosition from './application/useCases/UpdateInstitutionPosition.js';
+import UpdatePortfolio from './application/useCases/UpdatePortfolio.js';
 import CreateBalance from './application/useCases/CreateBalance.js';
 import CreateTransaction from './application/useCases/CreateTransaction.js';
 import GetBalance from './application/useCases/GetBalance.js';
@@ -29,9 +29,10 @@ export const createBalance = new CreateBalance(balanceRepository);
 export const getBalance = new GetBalance(balanceRepository);
 export const updateBalance = new UpdateBalance(balanceRepository);
 export const createTransaction = new CreateTransaction(transactionRepository);
-export const updateInstitutionPosition = new UpdateInstitutionPosition(
+export const updatePortfolio = new UpdatePortfolio(
   shareRepository,
   createShare,
+  updateShare,
   updateBalance,
 );
 
