@@ -27,14 +27,14 @@ export default class ShareRepository {
     return this.database
       .connection()
       .update(ShareMapper.mapToDatabaseObject(share))
-      .where('id', share.id)
+      .where('id', share.getId())
       .into(Tables.SHARE);
   }
 
   async delete(share) {
     return this.database
       .connection()
-      .where('id', share.id)
+      .where('id', share.getId())
       .del()
       .into(Tables.SHARE);
   }

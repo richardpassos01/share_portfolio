@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 export default class Transaction {
   constructor({
@@ -21,5 +21,41 @@ export default class Transaction {
     this.quantity = quantity;
     this.unityPrice = unityPrice;
     this.totalCost = totalCost;
+  }
+
+  getId() {
+    return this.id;
+  }
+
+  getInstitutionId() {
+    return this.institutionId;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  getDate() {
+    return this.date;
+  }
+
+  getCategory() {
+    return this.category;
+  }
+
+  getTicketSymbol() {
+    return this.ticketSymbol;
+  }
+
+  getQuantity() {
+    return this.quantity;
+  }
+
+  getUnityPrice() {
+    return this.unityPrice;
+  }
+
+  getTotalCost() {
+    return this.totalCost;
   }
 }

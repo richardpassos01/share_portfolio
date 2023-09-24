@@ -30,7 +30,7 @@ export default class MonthlyBalanceRepository {
     return this.database
       .connection()
       .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .where('id', balance.id)
+      .where('id', balance.getId())
       .into(Tables.MONTHLY_BALANCE);
   }
 }

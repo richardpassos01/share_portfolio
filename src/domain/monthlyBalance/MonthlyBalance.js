@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
 import { dateToMonthYear } from '../../helpers/Helpers.js';
@@ -26,6 +26,34 @@ export default class MonthlyBalance {
     this.type = type;
   }
 
+  getId() {
+    return this.id;
+  }
+
+  getInstitutionId() {
+    return this.institutionId;
+  }
+
+  getYearMonth() {
+    return this.yearMonth;
+  }
+
+  getWins() {
+    return this.wins;
+  }
+
+  getLoss() {
+    return this.loss;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  getTaxes() {
+    return this.taxes;
+  }
+
   setLoss(loss) {
     this.loss += loss;
   }
@@ -37,13 +65,14 @@ export default class MonthlyBalance {
   setType(transactions) {
     const hasDayTrade = transactions.some((sellTransaction) => {
       return (
-        sellTransaction.type === MONTHLY_BALANCE_TYPE.SELL &&
+        sellTransaction.getType() === MONTHLY_BALANCE_TYPE.SELL &&
         transactions.some((buyTransaction) => {
           return (
-            buyTransaction.type === MONTHLY_BALANCE_TYPE.BUY &&
-            buyTransaction.ticketNumber === sellTransaction.ticketNumber &&
-            dateToMonthYear(buyTransaction.date) ===
-              dateToMonthYear(sellTransaction.date)
+            buyTransaction.getType() === MONTHLY_BALANCE_TYPE.BUY &&
+            buyTransaction.getTicketNumber() ===
+              sellTransaction.getTicketNumber() &&
+            dateToMonthYear(buyTransaction.getDate()) ===
+              dateToMonthYear(sellTransaction.getDate())
           );
         })
       );
@@ -52,10 +81,6 @@ export default class MonthlyBalance {
     this.type = hasDayTrade
       ? MONTHLY_BALANCE_TYPE.DAY_TRADE
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
-  }
-
-  getTaxes() {
-    return this.taxes;
   }
 
   setTaxes(periodTransactions, totalBalanceLoss = 0) {

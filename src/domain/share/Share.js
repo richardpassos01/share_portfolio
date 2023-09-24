@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import { SHARE_OPERATION_TYPE } from './ShareEnums.js';
 
 export default class Share {
@@ -17,12 +17,28 @@ export default class Share {
     this.mediumPrice = this.setMediumPrice();
   }
 
-  updatePosition({ quantity, totalCost, type }) {
-    const operationMultiplier = type === SHARE_OPERATION_TYPE.BUY ? 1 : -1;
+  getId() {
+    return this.id;
+  }
 
-    this.setQuantity(quantity * operationMultiplier);
-    this.setTotalCost(totalCost * operationMultiplier);
-    this.setMediumPrice();
+  getInstitutionId() {
+    return this.institutionId;
+  }
+
+  getTicketSymbol() {
+    return this.ticketSymbol;
+  }
+
+  getQuantity() {
+    return this.quantity;
+  }
+
+  getTotalCost() {
+    return this.totalCost;
+  }
+
+  getMediumPrice() {
+    return this.mediumPrice;
   }
 
   setTotalCost(cost) {
@@ -33,11 +49,15 @@ export default class Share {
     this.quantity += quantity;
   }
 
-  getMediumPrice() {
-    return this.mediumPrice;
-  }
-
   setMediumPrice() {
     this.mediumPrice = this.totalCost / this.quantity;
+  }
+
+  updatePosition({ quantity, totalCost, type }) {
+    const operationMultiplier = type === SHARE_OPERATION_TYPE.BUY ? 1 : -1;
+
+    this.setQuantity(quantity * operationMultiplier);
+    this.setTotalCost(totalCost * operationMultiplier);
+    this.setMediumPrice();
   }
 }

@@ -9,7 +9,7 @@ import { dateToMonthYear } from '../../helpers/Helpers.js';
 
 const groupByMonth = (transactions) =>
   transactions.reduce((acc, transaction) => {
-    const yearMonth = dateToMonthYear(transaction.date);
+    const yearMonth = dateToMonthYear(transaction.getDate());
 
     if (!acc[yearMonth]) {
       acc[yearMonth] = [];

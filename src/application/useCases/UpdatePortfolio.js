@@ -30,18 +30,18 @@ export default class UpdatePortfolio {
     try {
       const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
       const totalBalance = await this.getTotalBalance(
-        transaction.institutionId,
+        transaction.getInstitutionId(),
       );
 
-      if (transaction.category === TRANSACTION_CATEGORY.DIVIDENDS) {
+      if (transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS) {
         return this.handleDividends(transaction, monthlyBalance, totalBalance);
       }
 
-      if (transaction.type === TRANSACTION_TYPE.BUY) {
+      if (transaction.getType() === TRANSACTION_TYPE.BUY) {
         return this.handleBuyOperation(transaction);
       }
 
-      if (transaction.type === TRANSACTION_TYPE.SELL) {
+      if (transaction.getType() === TRANSACTION_TYPE.SELL) {
         return this.handleSellOperation(
           transaction,
           monthlyBalance,
@@ -54,8 +54,8 @@ export default class UpdatePortfolio {
   }
 
   async handleDividends(transaction, monthlyBalance, totalBalance) {
-    monthlyBalance.setWins(transaction.totalCost);
-    totalBalance.setWins(transaction.totalCost);
+    monthlyBalance.setWins(transaction.getTotalCost());
+    totalBalance.setWins(transaction.getTotalCost());
 
     return Promise.all([
       this.updateMonthlyBalance.execute(monthlyBalance),
@@ -84,7 +84,7 @@ export default class UpdatePortfolio {
 
     const transactions =
       await this.transactionRepository.getSellTransactionFromPeriod(
-        transaction.date,
+        transaction.getDate(),
       );
 
     monthlyBalance.setType(transactions);
@@ -110,7 +110,7 @@ export default class UpdatePortfolio {
   }
 
   async handleLiquidation(share) {
-    if (share.quantity === 0) {
+    if (share.getQuantity() === 0) {
       return this.shareRepository.delete(share);
     }
   }
@@ -127,8 +127,8 @@ export default class UpdatePortfolio {
   }
 
   static calculateWinsOrLossOnSale(share, transaction) {
-    const sellCost = transaction.totalCost;
-    const minIdealSellCost = transaction.quantity * share.getMediumPrice();
+    const sellCost = transaction.getTotalCost();
+    const minIdealSellCost = transaction.getQuantity() * share.getMediumPrice();
     const winsOrLoss = sellCost - minIdealSellCost;
     return winsOrLoss;
   }

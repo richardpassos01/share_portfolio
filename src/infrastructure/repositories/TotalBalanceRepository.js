@@ -26,7 +26,7 @@ export default class TotalBalanceRepository {
     return this.database
       .connection()
       .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .where('id', balance.id)
+      .where('id', balance.getId())
       .into(Tables.TOTAL_BALANCE);
   }
 }
