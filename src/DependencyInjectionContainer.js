@@ -52,6 +52,7 @@ export const updateTotalBalance = new UpdateTotalBalance(
 );
 export const updatePortfolio = new UpdatePortfolio(
   shareRepository,
+  transactionRepository,
   getShare,
   createShare,
   updateShare,

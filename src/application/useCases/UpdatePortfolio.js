@@ -6,6 +6,7 @@ import {
 export default class UpdatePortfolio {
   constructor(
     shareRepository,
+    transactionRepository,
     getShare,
     createShare,
     updateShare,
@@ -16,6 +17,7 @@ export default class UpdatePortfolio {
     updateTotalBalance,
   ) {
     this.shareRepository = shareRepository;
+    this.transactionRepository = transactionRepository;
     this.getShare = getShare;
     this.createShare = createShare;
     this.updateShare = updateShare;
@@ -83,7 +85,8 @@ export default class UpdatePortfolio {
     share.updatePosition(transaction);
 
     const transactions =
-      await this.transactionRepository.getSellTransactionFromPeriod(
+      await this.transactionRepository.getSellTransactionsByDate(
+        transaction.getInstitutionId(),
         transaction.getDate(),
       );
 

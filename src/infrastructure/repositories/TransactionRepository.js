@@ -17,7 +17,7 @@ export default class TransactionRepository {
       .into(Tables.TRANSACTION);
   }
 
-  async getSellTransactionFromPeriod(instituionId, date) {
+  async getSellTransactionsByDate(instituionId, date) {
     return this.database
       .connection()
       .select()

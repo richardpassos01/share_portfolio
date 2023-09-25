@@ -61,7 +61,7 @@ const parseDataString = (dateString) =>
           totalCost: transactionObject[7] !== '-' ? transactionObject[7] : 0,
         });
 
-        // await updatePortfolio.execute(transaction);
+        await updatePortfolio.execute(transaction);
       }
 
       // await fsPromises.rename(
