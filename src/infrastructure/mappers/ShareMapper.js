@@ -17,7 +17,7 @@ export default class ShareMapper {
       institutionId: object.institution_id,
       ticketSymbol: object.ticket_symbol,
       quantity: object.quantity,
-      totalCost: Number(object.total_cost),
+      totalCost: object.total_cost,
     });
   }
 }

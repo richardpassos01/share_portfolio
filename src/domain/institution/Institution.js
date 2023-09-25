@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { uuid } from 'uuidv4';
 
 export default class Institution {
   constructor({ id = uuid(), name, userId }) {

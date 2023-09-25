@@ -15,6 +15,7 @@ export default class MonthlyBalanceRepository {
         institution_id: instituionId,
       })
       .into(Tables.MONTHLY_BALANCE)
+      .first()
       .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : null));
   }
 

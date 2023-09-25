@@ -11,8 +11,8 @@ export default class ShareRepository {
       .connection()
       .select()
       .where({ ticket_symbol: ticketSymbol, institution_id: instituionId })
-      .first()
       .into(Tables.SHARE)
+      .first()
       .then((data) => (data ? ShareMapper.mapToEntity(data) : null));
   }
 

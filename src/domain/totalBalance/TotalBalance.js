@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { uuid } from 'uuidv4';
 
 export default class TotalBalance {
   constructor({ id = uuid(), institutionId, wins = 0, loss = 0 }) {

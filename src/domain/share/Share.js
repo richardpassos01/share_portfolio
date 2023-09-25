@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { uuid } from 'uuidv4';
 import { SHARE_OPERATION_TYPE } from './ShareEnums.js';
 
 export default class Share {
@@ -14,7 +14,7 @@ export default class Share {
     this.ticketSymbol = ticketSymbol;
     this.quantity = quantity;
     this.totalCost = totalCost;
-    this.mediumPrice = this.setMediumPrice();
+    this.setMediumPrice();
   }
 
   getId() {
@@ -50,7 +50,7 @@ export default class Share {
   }
 
   setMediumPrice() {
-    this.mediumPrice = this.totalCost / this.quantity;
+    this.mediumPrice = this.quantity ? this.totalCost / this.quantity : 0;
   }
 
   updatePosition({ quantity, totalCost, type }) {

@@ -24,8 +24,8 @@ export default class TransactionMapper {
       category: object.category,
       ticketSymbol: object.ticket_symbol,
       quantity: object.quantity,
-      unityPrice: Number(object.unity_price),
-      totalCost: Number(object.total_cost),
+      unityPrice: object.unity_price,
+      totalCost: object.total_cost,
     });
   }
 }

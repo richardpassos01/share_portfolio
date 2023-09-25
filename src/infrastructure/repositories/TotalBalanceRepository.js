@@ -12,6 +12,7 @@ export default class TotalBalanceRepository {
       .select()
       .where('institution_id', instituionId)
       .into(Tables.TOTAL_BALANCE)
+      .first()
       .then((data) => (data ? TotalBalanceMapper.mapToEntity(data) : null));
   }
 

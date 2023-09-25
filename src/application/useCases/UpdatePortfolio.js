@@ -30,7 +30,10 @@ export default class UpdatePortfolio {
 
   async execute(transaction) {
     try {
-      const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
+      const monthlyBalance = await this.getOrCreateMonthlyBalance(
+        transaction.getInstitutionId(),
+        transaction.getDate(),
+      );
       const totalBalance = await this.getTotalBalance.execute(
         transaction.getInstitutionId(),
       );
@@ -71,9 +74,8 @@ export default class UpdatePortfolio {
     if (!share) {
       return this.createShare.execute(transaction);
     }
-
     share.updatePosition(transaction);
-    return this.updateShare.execute(share, transaction);
+    return this.updateShare.execute(share);
   }
 
   async handleSellOperation(transaction, monthlyBalance, totalBalance) {
@@ -104,21 +106,20 @@ export default class UpdatePortfolio {
     }
 
     await Promise.all([
-      this.updateShare.execute(share, transaction),
+      this.handleLiquidation(share),
       this.updateMonthlyBalance.execute(monthlyBalance),
       this.updateTotalBalance.execute(totalBalance),
     ]);
-
-    return this.handleLiquidation(share);
   }
 
   async handleLiquidation(share) {
     if (share.getQuantity() === 0) {
       return this.shareRepository.delete(share);
     }
+    return this.updateShare.execute(share);
   }
 
-  async getOrCreateMonthlyBalance({ institutionId, date }) {
+  async getOrCreateMonthlyBalance(institutionId, date) {
     const monthlyBalance = await this.getMonthlyBalance.execute(
       institutionId,
       date,

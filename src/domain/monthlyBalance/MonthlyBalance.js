@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { uuid } from 'uuidv4';
 
 import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
 import { dateToMonthYear } from '../../helpers/Helpers.js';

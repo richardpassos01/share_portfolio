@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 
-import { readdirSync, promises as fsPromises } from 'fs';
+import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { parse } from 'node-xlsx';
 import { URL } from 'url';
