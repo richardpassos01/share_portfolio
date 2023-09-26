@@ -1,5 +1,7 @@
 import Database from './infrastructure/database/Database.js';
+
 import InstitutionController from './api/institution/InstitutionController.js';
+import TransactionController from './api/transaction/TransactionController.js';
 
 import GetInstitution from './application/useCases/GetInstitution.js';
 import GetShare from './application/useCases/GetShare.js';
@@ -28,7 +30,6 @@ export const transactionRepository = new TransactionRepository(database);
 export const monthlyBalanceRepository = new MonthlyBalanceRepository(database);
 export const totalBalanceRepository = new TotalBalanceRepository(database);
 
-export const createTransaction = new CreateTransaction(transactionRepository);
 export const getInstitution = new GetInstitution(institutionRepository);
 export const createShare = new CreateShare(shareRepository);
 export const getShare = new GetShare(shareRepository);
@@ -62,5 +63,12 @@ export const updatePortfolio = new UpdatePortfolio(
   getTotalBalance,
   updateTotalBalance,
 );
+export const createTransaction = new CreateTransaction(
+  transactionRepository,
+  updatePortfolio,
+);
 
 export const institutionController = new InstitutionController(getInstitution);
+export const transactionController = new TransactionController(
+  createTransaction,
+);

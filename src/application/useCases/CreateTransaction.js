@@ -1,14 +1,15 @@
 import Transaction from '../../domain/transaction/Transaction.js';
 
-export default class createTransaction {
-  constructor(transactionRepository) {
+export default class CreateTransaction {
+  constructor(transactionRepository, updatePortfolio) {
     this.transactionRepository = transactionRepository;
+    this.updatePortfolio = updatePortfolio;
   }
 
   async execute({
     institutionId,
     type,
-    date = new Date(),
+    date,
     category,
     ticketSymbol,
     quantity,
@@ -27,6 +28,6 @@ export default class createTransaction {
     });
 
     await this.transactionRepository.create(transaction);
-    return transaction;
+    return this.updatePortfolio.execute(transaction);
   }
 }

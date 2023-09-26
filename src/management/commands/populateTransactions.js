@@ -6,14 +6,12 @@ import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { parse } from 'node-xlsx';
 import { URL } from 'url';
-import {
-  createTransaction,
-  updatePortfolio,
-} from '../../DependencyInjectionContainer.js';
+import { createTransaction } from '../../DependencyInjectionContainer.js';
 import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
 } from '../../domain/transaction/TransactionEnums.js';
+import { dateStringToDate } from '../../helpers/Helpers.js';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
@@ -36,9 +34,6 @@ const institutionEventTypeMapper = {
   'Bonificação em Ativos': TRANSACTION_CATEGORY.OTHER,
 };
 
-const parseDataString = (dateString) =>
-  new Date(dateString.split('/').reverse().join('-').concat('T00:00:00'));
-
 (async () => {
   try {
     for (const fileName of fileList.filter((f) => f.includes('xlsx'))) {
@@ -54,10 +49,10 @@ const parseDataString = (dateString) =>
         //   transactionObject[1].slice(3) === '08/2023' ||
         //   transactionObject[1] === '27/07/2023'
         // ) {
-        const transaction = await createTransaction.execute({
+        await createTransaction.execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transactionObject[0]],
-          date: parseDataString(transactionObject[1]),
+          date: dateStringToDate(transactionObject[1]),
           category: institutionEventTypeMapper[transactionObject[2]],
           ticketSymbol: transactionObject[3].split(' - ')[0],
           quantity: transactionObject[5],
@@ -65,7 +60,6 @@ const parseDataString = (dateString) =>
           totalCost: transactionObject[7] !== '-' ? transactionObject[7] : 0,
         });
 
-        await updatePortfolio.execute(transaction);
         // }
       }
 

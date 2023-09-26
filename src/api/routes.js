@@ -2,7 +2,10 @@ import { Router } from 'express';
 
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-import { institutionController } from '../DependencyInjectionContainer.js';
+import {
+  institutionController,
+  transactionController,
+} from '../DependencyInjectionContainer.js';
 
 const router = Router();
 
@@ -12,6 +15,10 @@ router.get('/healthy-check', (_, Response) =>
 
 router.get('/institution/:institutionId', (...args) =>
   institutionController.get(...args),
+);
+
+router.get('/institution/:institutionId/transaction/create', (...args) =>
+  transactionController.create(...args),
 );
 
 /*
