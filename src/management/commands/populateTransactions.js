@@ -50,6 +50,10 @@ const parseDataString = (dateString) =>
       const [{ data }] = parse(filePath);
 
       for (const transactionObject of data.slice(1).reverse()) {
+        // if (
+        //   transactionObject[1].slice(3) === '08/2023' ||
+        //   transactionObject[1] === '27/07/2023'
+        // ) {
         const transaction = await createTransaction.execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transactionObject[0]],
@@ -62,6 +66,7 @@ const parseDataString = (dateString) =>
         });
 
         await updatePortfolio.execute(transaction);
+        // }
       }
 
       // await fsPromises.rename(

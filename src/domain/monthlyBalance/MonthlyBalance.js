@@ -4,8 +4,8 @@ import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
 import { dateToString } from '../../helpers/Helpers.js';
 
 const TAX_FREE_SALES_LIMIT = 20000;
-const DAY_TRADE_TAX_PERCENTAGE = 1.2;
-const SWING_TRADE_TAX_PERCENTAGE = 1.15;
+const DAY_TRADE_TAX_PERCENTAGE = 0.2;
+const SWING_TRADE_TAX_PERCENTAGE = 0.15;
 
 export default class MonthlyBalance {
   constructor({
@@ -55,7 +55,7 @@ export default class MonthlyBalance {
   }
 
   setLoss(loss) {
-    this.loss += loss;
+    this.loss += Math.abs(loss);
   }
 
   setWins(wins) {
@@ -84,24 +84,30 @@ export default class MonthlyBalance {
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
   }
 
-  setTaxes(periodTransactions, totalBalanceLoss = 0) {
-    const periodSalesValue = periodTransactions.reduce(
+  setTaxes(tax) {
+    this.taxes += tax;
+  }
+
+  calculateTax(sellTransactions, wins, totalBalanceLoss = 0) {
+    const totalSold = sellTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
-      10,
+      0,
     );
 
-    const isDayTrade = this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE;
+    let tax = 0;
 
-    if (periodSalesValue > TAX_FREE_SALES_LIMIT || isDayTrade) {
-      const taxPercentage = isDayTrade
-        ? DAY_TRADE_TAX_PERCENTAGE
-        : SWING_TRADE_TAX_PERCENTAGE;
-
-      const tax = periodSalesValue * taxPercentage;
-      const taxes =
-        totalBalanceLoss > 0 ? Math.abs(totalBalanceLoss - tax) : tax;
-
-      this.taxes += taxes;
+    if (totalSold > TAX_FREE_SALES_LIMIT) {
+      tax = wins * SWING_TRADE_TAX_PERCENTAGE;
     }
+
+    if (this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
+      tax = wins * DAY_TRADE_TAX_PERCENTAGE;
+    }
+
+    if (totalBalanceLoss > 0 && tax > 0) {
+      tax = Math.abs(totalBalanceLoss - tax);
+    }
+
+    return tax;
   }
 }

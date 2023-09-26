@@ -105,14 +105,23 @@ export default class UpdatePortfolio {
     monthlyBalance.setType(buyTransactions, sellTransactions);
 
     if (operationResult < 0) {
-      totalBalance.setLoss(operationResult);
+      totalBalance.setLoss(operationResult); // check
       monthlyBalance.setLoss(operationResult);
     }
 
     if (operationResult > 0) {
-      monthlyBalance.setWins(operationResult);
-      monthlyBalance.setTaxes(sellTransactions, totalBalance.getLoss());
-      totalBalance.setWins(operationResult - monthlyBalance.getTaxes());
+      const tax = monthlyBalance.calculateTax(
+        sellTransactions,
+        operationResult,
+        totalBalance.getLoss(),
+      );
+      monthlyBalance.setTaxes(tax);
+      monthlyBalance.setWins(operationResult - tax);
+
+      totalBalance.deductTaxFromLoss(tax);
+      monthlyBalance.setWins(operationResult - tax);
+      // totalBalance.setWins(operationResult);
+      // no get TotalBalance.wins, deduzir loss e taxes
     }
 
     await Promise.all([
