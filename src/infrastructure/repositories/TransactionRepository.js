@@ -17,13 +17,12 @@ export default class TransactionRepository {
       .into(Tables.TRANSACTION);
   }
 
-  async getSellTransactionsByDate(instituionId, date) {
+  async getTransactionsFromMonth(instituionId, date) {
     return this.database
       .connection()
       .select()
       .where({
         category: TRANSACTION_CATEGORY.TRADE,
-        type: TRANSACTION_TYPE.SELL,
         institution_id: instituionId,
       })
       .whereRaw(

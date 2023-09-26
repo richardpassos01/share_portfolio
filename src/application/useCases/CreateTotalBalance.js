@@ -10,8 +10,6 @@ export default class CreateTotalBalance {
       institutionId,
     });
 
-    await this.totalBalanceRepository.create(totalBalance);
-
-    return totalBalance;
+    return this.totalBalanceRepository.create(totalBalance);
   }
 }

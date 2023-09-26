@@ -84,15 +84,25 @@ export default class UpdatePortfolio {
       share,
       transaction,
     );
+
     share.updatePosition(transaction);
 
-    const transactions =
-      await this.transactionRepository.getSellTransactionsByDate(
+    const monthTransactions =
+      await this.transactionRepository.getTransactionsFromMonth(
         transaction.getInstitutionId(),
         transaction.getDate(),
       );
 
-    monthlyBalance.setType(transactions);
+    const buyTransactions = UpdatePortfolio.filterTransactionByType(
+      monthTransactions,
+      TRANSACTION_TYPE.BUY,
+    );
+    const sellTransactions = UpdatePortfolio.filterTransactionByType(
+      monthTransactions,
+      TRANSACTION_TYPE.SELL,
+    );
+
+    monthlyBalance.setType(buyTransactions, sellTransactions);
 
     if (operationResult < 0) {
       totalBalance.setLoss(operationResult);
@@ -101,7 +111,7 @@ export default class UpdatePortfolio {
 
     if (operationResult > 0) {
       monthlyBalance.setWins(operationResult);
-      monthlyBalance.setTaxes(transactions, totalBalance.getLoss());
+      monthlyBalance.setTaxes(sellTransactions, totalBalance.getLoss());
       totalBalance.setWins(operationResult - monthlyBalance.getTaxes());
     }
 
@@ -135,5 +145,9 @@ export default class UpdatePortfolio {
     const minIdealSellCost = transaction.getQuantity() * share.getMediumPrice();
     const winsOrLoss = sellCost - minIdealSellCost;
     return winsOrLoss;
+  }
+
+  static filterTransactionByType(transactions, type) {
+    return transactions.filter((transaction) => transaction.type === type);
   }
 }

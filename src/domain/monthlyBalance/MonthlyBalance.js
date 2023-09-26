@@ -1,7 +1,7 @@
 import { uuid } from 'uuidv4';
 
 import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
-import { dateToMonthYear } from '../../helpers/Helpers.js';
+import { dateToString } from '../../helpers/Helpers.js';
 
 const TAX_FREE_SALES_LIMIT = 20000;
 const DAY_TRADE_TAX_PERCENTAGE = 1.2;
@@ -62,23 +62,24 @@ export default class MonthlyBalance {
     this.wins += wins;
   }
 
-  setType(transactions) {
-    const hasDayTrade = transactions.some((sellTransaction) => {
-      return (
-        sellTransaction.getType() === MONTHLY_BALANCE_TYPE.SELL &&
-        transactions.some((buyTransaction) => {
-          return (
-            buyTransaction.getType() === MONTHLY_BALANCE_TYPE.BUY &&
-            buyTransaction.getTicketNumber() ===
-              sellTransaction.getTicketNumber() &&
-            dateToMonthYear(buyTransaction.getDate()) ===
-              dateToMonthYear(sellTransaction.getDate())
-          );
-        })
-      );
-    });
+  setType(buyTransactions, sellTransactions) {
+    const isMatch = (sellTransaction, buyTransaction) => {
+      const sameTicket =
+        sellTransaction.getTicketSymbol() === buyTransaction.getTicketSymbol();
+      const sameDate =
+        dateToString(sellTransaction.getDate()) ===
+        dateToString(buyTransaction.getDate());
 
-    this.type = hasDayTrade
+      return sameTicket && sameDate;
+    };
+
+    const isDayTrade = buyTransactions.find((buyTransaction) =>
+      sellTransactions.find((sellTransaction) =>
+        isMatch(sellTransaction, buyTransaction),
+      ),
+    );
+
+    this.type = isDayTrade
       ? MONTHLY_BALANCE_TYPE.DAY_TRADE
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
   }
