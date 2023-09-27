@@ -25,13 +25,6 @@ export default class TotalBalance {
   }
 
   setLoss(loss) {
-    this.loss += loss;
-  }
-
-  deductTaxFromLoss(tax) {
-    this.loss -= tax;
-    if (this.loss < 0) {
-      this.loss = 0;
-    }
+    this.loss = loss;
   }
 }

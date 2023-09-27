@@ -3,10 +3,6 @@ import { uuid } from 'uuidv4';
 import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
 import { dateToString } from '../../helpers/Helpers.js';
 
-const TAX_FREE_SALES_LIMIT = 20000;
-const DAY_TRADE_TAX_PERCENTAGE = 0.2;
-const SWING_TRADE_TAX_PERCENTAGE = 0.15;
-
 export default class MonthlyBalance {
   constructor({
     id = uuid(),
@@ -96,28 +92,5 @@ export default class MonthlyBalance {
 
   setTaxes(tax) {
     this.taxes += tax;
-  }
-
-  calculateTax(sellTransactions, wins, totalBalanceLoss = 0) {
-    const totalSold = sellTransactions.reduce(
-      (acc, transaction) => acc + transaction.totalCost,
-      0,
-    );
-
-    let tax = 0;
-
-    if (totalSold > TAX_FREE_SALES_LIMIT) {
-      tax = wins * SWING_TRADE_TAX_PERCENTAGE;
-    }
-
-    if (this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
-      tax = wins * DAY_TRADE_TAX_PERCENTAGE;
-    }
-
-    if (totalBalanceLoss > 0 && tax > 0) {
-      tax = Math.abs(totalBalanceLoss - tax);
-    }
-
-    return tax;
   }
 }

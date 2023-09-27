@@ -45,10 +45,7 @@ const institutionEventTypeMapper = {
       const [{ data }] = parse(filePath);
 
       for (const transactionObject of data.slice(1).reverse()) {
-        if (
-          transactionObject[1].slice(3) === '08/2023' ||
-          transactionObject[1] === '27/07/2023'
-        ) {
+        if (transactionObject[1] === '04/07/2023') {
           console.log('1');
         }
 

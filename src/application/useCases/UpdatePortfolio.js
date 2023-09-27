@@ -2,6 +2,11 @@ import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
 } from '../../domain/transaction/TransactionEnums.js';
+import { MONTHLY_BALANCE_TYPE } from '../../domain/monthlyBalance/MonthlyBalanceEnums.js';
+
+const TAX_FREE_SALES_LIMIT = 20000;
+const DAY_TRADE_TAX_PERCENTAGE = 0.2;
+const SWING_TRADE_TAX_PERCENTAGE = 0.15;
 
 export default class UpdatePortfolio {
   constructor(
@@ -118,32 +123,18 @@ export default class UpdatePortfolio {
         monthlyBalance.getNetWins() - monthlyBalance.getLoss(),
       );
 
-      totalBalance.setLoss(totalLoss);
+      totalBalance.setLoss(totalBalance.getLoss() + totalLoss);
       totalBalance.setWins(totalBalance.getWins() - totalLoss);
     }
 
     if (operationResult > 0) {
-      const tax = monthlyBalance.calculateTax(
+      await this.calculateTax(
         sellTransactions,
         operationResult,
-        totalBalance.getLoss(),
-      );
-      monthlyBalance.setTaxes(tax);
-      monthlyBalance.setGrossWins(
-        monthlyBalance.getGrossWins() + operationResult,
-      );
-      monthlyBalance.setNetWins(
-        monthlyBalance.getNetWins() + (operationResult - tax),
-      );
-
-      totalBalance.deductTaxFromLoss(tax);
-      totalBalance.setWins(
-        totalBalance.getWins() + monthlyBalance.getNetWins(),
+        monthlyBalance,
+        totalBalance,
       );
     }
-
-    // monthlyBalance.updateBalance();
-    // totalBalance.updateBalance();
 
     await Promise.all([
       this.handleLiquidation(share),
@@ -179,5 +170,47 @@ export default class UpdatePortfolio {
 
   static filterTransactionByType(transactions, type) {
     return transactions.filter((transaction) => transaction.type === type);
+  }
+
+  // will become use case
+  async calculateTax(sellTransactions, wins, monthlyBalance, totalBalance) {
+    const totalSold = sellTransactions.reduce(
+      (acc, transaction) => acc + transaction.totalCost,
+      0,
+    );
+
+    let tax = 0;
+
+    if (totalSold > TAX_FREE_SALES_LIMIT) {
+      tax = wins * SWING_TRADE_TAX_PERCENTAGE;
+    }
+
+    if (this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
+      tax = wins * DAY_TRADE_TAX_PERCENTAGE;
+    }
+
+    if (totalBalance.getLoss() > 0 && tax > 0) {
+      const taxDeductedFromLoss = tax - totalBalance.getLoss();
+
+      const isRemainingTotalLoss = taxDeductedFromLoss < 0;
+
+      if (isRemainingTotalLoss) {
+        tax = 0;
+        totalBalance.setLoss(Math.abs(taxDeductedFromLoss));
+      } else {
+        totalBalance.setLoss(0);
+        tax = taxDeductedFromLoss;
+      }
+    }
+
+    monthlyBalance.setTaxes(tax);
+    monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() + wins);
+    monthlyBalance.setNetWins(monthlyBalance.getNetWins() + (wins - tax));
+
+    totalBalance.setWins(
+      totalBalance.getWins() +
+        monthlyBalance.getNetWins() -
+        totalBalance.getLoss(),
+    );
   }
 }

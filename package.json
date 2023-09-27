@@ -7,7 +7,7 @@
   "scripts": {
     "prestart": "npm run migration:up",
     "start": "node -r dotenv/config src/api/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --forceExit --detectOpenHandles",
     "management": "node -r dotenv/config src/management/commands/${npm_config_command}.js",
     "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
     "migration:create": "npm run knex migrate:make",
@@ -37,6 +37,8 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^3.0.3"
+    "jest": "^29.7.0",
+    "prettier": "^3.0.3",
+    "supertest": "^6.3.3"
   }
 }
