@@ -6,9 +6,10 @@ export default class MonthlyBalanceMapper {
       id: entity.id,
       institution_id: entity.institutionId,
       year_month: entity.yearMonth,
-      wins: entity.wins,
+      gross_wins: entity.grossWins,
       loss: entity.loss,
       taxes: entity.taxes,
+      net_wins: entity.netWins,
       type: entity.type,
     };
   }
@@ -18,9 +19,10 @@ export default class MonthlyBalanceMapper {
       id: object.id,
       institutionId: object.institution_id,
       yearMonth: object.year_month,
-      wins: object.wins,
+      grossWins: object.gross_wins,
       loss: object.loss,
       taxes: object.taxes,
+      netWins: object.net_wins,
       type: object.type,
     });
   }

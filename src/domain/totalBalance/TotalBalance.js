@@ -21,11 +21,11 @@ export default class TotalBalance {
   }
 
   setWins(wins) {
-    this.wins += wins;
+    this.wins = wins;
   }
 
   setLoss(loss) {
-    this.loss += Math.abs(loss);
+    this.loss += loss;
   }
 
   deductTaxFromLoss(tax) {

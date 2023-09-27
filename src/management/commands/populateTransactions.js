@@ -45,10 +45,13 @@ const institutionEventTypeMapper = {
       const [{ data }] = parse(filePath);
 
       for (const transactionObject of data.slice(1).reverse()) {
-        // if (
-        //   transactionObject[1].slice(3) === '08/2023' ||
-        //   transactionObject[1] === '27/07/2023'
-        // ) {
+        if (
+          transactionObject[1].slice(3) === '08/2023' ||
+          transactionObject[1] === '27/07/2023'
+        ) {
+          console.log('1');
+        }
+
         await createTransaction.execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transactionObject[0]],
@@ -59,8 +62,6 @@ const institutionEventTypeMapper = {
           unityPrice: transactionObject[6] !== '-' ? transactionObject[6] : 0,
           totalCost: transactionObject[7] !== '-' ? transactionObject[7] : 0,
         });
-
-        // }
       }
 
       // await fsPromises.rename(

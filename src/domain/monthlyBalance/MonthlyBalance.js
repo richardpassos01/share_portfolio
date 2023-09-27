@@ -12,17 +12,19 @@ export default class MonthlyBalance {
     id = uuid(),
     institutionId,
     yearMonth,
-    wins = 0,
+    grossWins = 0,
     loss = 0,
     taxes = 0,
+    netWins = 0,
     type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   }) {
     this.id = id;
     this.institutionId = institutionId;
     this.yearMonth = yearMonth;
-    this.wins = wins;
+    this.grossWins = grossWins;
     this.loss = loss;
     this.taxes = taxes;
+    this.netWins = netWins;
     this.type = type;
   }
 
@@ -38,8 +40,8 @@ export default class MonthlyBalance {
     return this.yearMonth;
   }
 
-  getWins() {
-    return this.wins;
+  getGrossWins() {
+    return this.grossWins;
   }
 
   getLoss() {
@@ -54,12 +56,20 @@ export default class MonthlyBalance {
     return this.taxes;
   }
 
-  setLoss(loss) {
-    this.loss += Math.abs(loss);
+  getNetWins() {
+    return this.netWins;
   }
 
-  setWins(wins) {
-    this.wins += wins;
+  setLoss(loss) {
+    this.loss += loss;
+  }
+
+  setGrossWins(wins) {
+    this.grossWins = wins < 0 ? 0 : wins;
+  }
+
+  setNetWins(wins) {
+    this.netWins = wins;
   }
 
   setType(buyTransactions, sellTransactions) {

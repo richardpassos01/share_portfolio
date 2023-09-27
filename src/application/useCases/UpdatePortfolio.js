@@ -59,8 +59,13 @@ export default class UpdatePortfolio {
   }
 
   async handleDividends(transaction, monthlyBalance, totalBalance) {
-    monthlyBalance.setWins(transaction.getTotalCost());
-    totalBalance.setWins(transaction.getTotalCost());
+    monthlyBalance.setGrossWins(
+      monthlyBalance.getGrossWins() + transaction.getTotalCost(),
+    );
+    monthlyBalance.setNetWins(
+      monthlyBalance.getNetWins() + transaction.getTotalCost(),
+    );
+    totalBalance.setWins(totalBalance.getWins() + transaction.getTotalCost());
 
     return Promise.all([
       this.updateMonthlyBalance.execute(monthlyBalance),
@@ -105,8 +110,16 @@ export default class UpdatePortfolio {
     monthlyBalance.setType(buyTransactions, sellTransactions);
 
     if (operationResult < 0) {
-      totalBalance.setLoss(operationResult); // check
-      monthlyBalance.setLoss(operationResult);
+      const totalLoss = Math.abs(operationResult);
+
+      monthlyBalance.setLoss(totalLoss);
+      monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() - totalLoss);
+      monthlyBalance.setNetWins(
+        monthlyBalance.getNetWins() - monthlyBalance.getLoss(),
+      );
+
+      totalBalance.setLoss(totalLoss);
+      totalBalance.setWins(totalBalance.getWins() - totalLoss);
     }
 
     if (operationResult > 0) {
@@ -116,13 +129,21 @@ export default class UpdatePortfolio {
         totalBalance.getLoss(),
       );
       monthlyBalance.setTaxes(tax);
-      monthlyBalance.setWins(operationResult - tax);
+      monthlyBalance.setGrossWins(
+        monthlyBalance.getGrossWins() + operationResult,
+      );
+      monthlyBalance.setNetWins(
+        monthlyBalance.getNetWins() + (operationResult - tax),
+      );
 
       totalBalance.deductTaxFromLoss(tax);
-      monthlyBalance.setWins(operationResult - tax);
-      // totalBalance.setWins(operationResult);
-      // no get TotalBalance.wins, deduzir loss e taxes
+      totalBalance.setWins(
+        totalBalance.getWins() + monthlyBalance.getNetWins(),
+      );
     }
+
+    // monthlyBalance.updateBalance();
+    // totalBalance.updateBalance();
 
     await Promise.all([
       this.handleLiquidation(share),
