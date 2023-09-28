@@ -7,7 +7,7 @@
   "scripts": {
     "prestart": "npm run migration:up",
     "start": "node -r dotenv/config src/api/server.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --forceExit --detectOpenHandles",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "management": "node -r dotenv/config src/management/commands/${npm_config_command}.js",
     "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
     "migration:create": "npm run knex migrate:make",

@@ -25,10 +25,6 @@ class Database {
   connection() {
     return this.knexInstance;
   }
-
-  disconnect() {
-    this.knexInstance.destroy(() => console.log('database disconnected'));
-  }
 }
 
 export default Database;
