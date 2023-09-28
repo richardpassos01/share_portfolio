@@ -12,6 +12,10 @@ export default class TotalBalance {
     return this.id;
   }
 
+  getInstitutionId() {
+    return this.institutionId;
+  }
+
   getWins() {
     return this.wins;
   }

@@ -21,6 +21,8 @@ export const up = async (knex) => {
             .references('id')
             .inTable(Tables.INSTITUTION)
             .onDelete('CASCADE');
+
+          table.unique(['institution_id', 'year_month']);
         })
         .then();
     }

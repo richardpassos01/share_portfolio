@@ -5,10 +5,15 @@ import {
   transactionRepository,
   shareRepository,
   monthlyBalanceRepository,
+  totalBalanceRepository,
 } from '../../../../src/DependencyInjectionContainer';
 import app from '../../../../src/api/app';
-import TransactionFactory from '../../../factories/transactionFactory.js';
-import ShareFactory from '../../../factories/shareFactory.js';
+import TransactionFactory from '../../../factories/TransactionFactory.js';
+import ShareFactory from '../../../factories/ShareFactory.js';
+import MonthlyBalanceFactory from '../../../factories/MonthlyBalanceFactory.js';
+import TotalBalanceFactory from '../../../factories/TotalBalanceFactory.js';
+import { dateToMonthYear } from '../../../../src/helpers/Helpers.js';
+import { TRANSACTION_CATEGORY } from '../../../../src/domain/transaction/TransactionEnums.js';
 
 describe('transactionAPI', () => {
   beforeEach(async () => {
@@ -25,7 +30,7 @@ describe('transactionAPI', () => {
   });
 
   describe('POST /transaction', () => {
-    it('should return status and reason OK', async () => {
+    test('should return status and reason OK', async () => {
       const payload = new TransactionFactory().getPayloadObject();
 
       const response = await request(app).post('/transaction').send(payload);
@@ -34,7 +39,7 @@ describe('transactionAPI', () => {
       expect(response.text).toBe(ReasonPhrases.OK);
     });
 
-    it('should create transaction', async () => {
+    test('should create transaction', async () => {
       const transaction = new TransactionFactory();
       const payload = transaction.getPayloadObject();
       const expectedTransaction = transaction.getObject();
@@ -48,7 +53,25 @@ describe('transactionAPI', () => {
       expect(expectedTransaction).toEqual(result);
     });
 
-    describe('when the transaction is of type BUY', () => {
+    it('should create monthly balance if not exists', async () => {
+      const factory = new TransactionFactory();
+      const transaction = factory.get();
+      const payload = factory.getPayloadObject();
+      const expectedMonthlyBalance = new MonthlyBalanceFactory({
+        yearMonth: dateToMonthYear(transaction.getDate()),
+      }).getObject();
+
+      await request(app).post('/transaction').send(payload);
+
+      const { id, ...result } = await monthlyBalanceRepository.get(
+        transaction.getInstitutionId(),
+        dateToMonthYear(transaction.getDate()),
+      );
+
+      expect(expectedMonthlyBalance).toEqual(result);
+    });
+
+    describe('when the category of the transaction is BUY', () => {
       it('should create share if it not exists', async () => {
         const payload = new TransactionFactory().getPayloadObject();
         const expectedShare = new ShareFactory().getObject();
@@ -63,39 +86,86 @@ describe('transactionAPI', () => {
         expect(expectedShare).toEqual(result);
       });
 
-      // it('should update share if it already exists', async () => {
-      //   const payload = new TransactionFactory().getPayloadObject();
-      //   const share = new ShareFactory();
-      //   await share.save();
+      it('should update share if it already exists', async () => {
+        const payload = new TransactionFactory().getPayloadObject();
+        const share = new ShareFactory();
+        await share.save();
+        const expectedShare = new ShareFactory({
+          quantity: 200,
+          totalCost: 2000,
+        }).getObject();
 
-      //   const { id, ...result } = await shareRepository.get(
-      //     payload.ticketSymbol,
-      //     payload.institutionId,
-      //   );
+        await request(app).post('/transaction').send(payload);
 
-      //   console.log(result);
+        const { id, ...result } = await shareRepository.get(
+          payload.ticketSymbol,
+          payload.institutionId,
+        );
 
-      //   const expectedShare = new ShareFactory({
-      //     quantity: 200,
-      //     totalCost: 20000,
-      //   }).getObject();
+        expect(expectedShare).toEqual(result);
+      });
+    });
 
-      //   expect(expectedShare).toEqual(result);
-      // });
+    describe('when the category of the transaction is DIVIDENDS', () => {
+      it('should update monthly balance', async () => {
+        const factory = new TransactionFactory({
+          category: TRANSACTION_CATEGORY.DIVIDENDS,
+        });
+        const transaction = factory.get();
+        const payload = factory.getPayloadObject();
+        const monthlyBalance = new MonthlyBalanceFactory({
+          yearMonth: dateToMonthYear(transaction.getDate()),
+          grossWins: 200,
+          netWins: 100,
+        });
+        const expectedMonthlyBalance = new MonthlyBalanceFactory({
+          yearMonth: dateToMonthYear(transaction.getDate()),
+          grossWins: 1200,
+          netWins: 1100,
+        }).getObject();
 
-      // it('should create monthly balance if not exists', async () => {
-      //   const payload = new TransactionFactory().getPayloadObject();
-      //   const expectedMonthlyBalance = {};
+        await monthlyBalance.save();
+        await request(app).post('/transaction').send(payload);
 
-      //   await request(app).post('/transaction').send(payload);
+        const { id, ...result } = await monthlyBalanceRepository.get(
+          transaction.getInstitutionId(),
+          dateToMonthYear(transaction.getDate()),
+        );
 
-      //   const { id, ...monthlyBalance } = await monthlyBalanceRepository.get(
-      //     payload.ticketSymbol,
-      //     payload.institutionId,
-      //   );
+        expect(expectedMonthlyBalance).toEqual(result);
+      });
 
-      //   expect(expectedMonthlyBalance).toEqual(monthlyBalance);
-      // });
+      it('should update total balance', async () => {
+        const factory = new TransactionFactory({
+          category: TRANSACTION_CATEGORY.DIVIDENDS,
+        });
+        const transaction = factory.get();
+        const payload = factory.getPayloadObject();
+
+        const expectedTotalBalance = new TotalBalanceFactory({
+          wins: 1000,
+        }).getObject();
+
+        await request(app).post('/transaction').send(payload);
+
+        const { id, ...result } = await totalBalanceRepository.get(
+          transaction.getInstitutionId(),
+        );
+
+        expect(expectedTotalBalance).toEqual(result);
+      });
+    });
+
+    describe('when the category of the transaction is SELL', () => {
+      it('Should not charge taxes if the monthly sales amount was less than 20k', () => {});
+      it('Should charge taxes if there are day trade operations in the month', () => {});
+      it('Should deduct losses from the total balance on monthly balance taxes', () => {});
+      it('Should update total balance loss after deduct ir from tax', () => {});
+      it('Should update total balance loss if there are loss on the sale', () => {});
+      it('Should update total balance wins if there are gains on the sale', () => {});
+      it('Should update monthly balance loss if there are loss on the sale', () => {});
+      it('Should update monthly balance gross wins if there are gains on the sale', () => {});
+      it('Should update monthly balance net wins if there are gains on the sale', () => {});
     });
   });
 });

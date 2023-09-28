@@ -1,5 +1,5 @@
 import Share from '../../src/domain/share/Share.js';
-import { shareRepository } from '../../src/DependencyInjectionContainer';
+import { shareRepository } from '../../src/DependencyInjectionContainer.js';
 
 export default class ShareFactory {
   constructor({

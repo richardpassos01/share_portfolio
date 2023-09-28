@@ -5,7 +5,7 @@ import {
   TRANSACTION_CATEGORY,
 } from '../../src/domain/transaction/TransactionEnums.js';
 
-import { transactionRepository } from '../../src/DependencyInjectionContainer';
+import { transactionRepository } from '../../src/DependencyInjectionContainer.js';
 
 export default class TransactionFactory {
   constructor({
