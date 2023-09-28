@@ -17,60 +17,6 @@ router.get('/institution/:institutionId', (...args) =>
   institutionController.get(...args),
 );
 
-router.get('/institution/:institutionId/transaction/create', (...args) =>
-  transactionController.create(...args),
-);
-
-/*
-router.get('/accounts/:accountId', (req, res) => {
-  const account = {
-    id: '',
-    accountName: '',
-    totalLoss: '',
-    totalWins: '',
-    shares: [],
-  };
-
-  res.status(200).send(account);
-});
-
-router.get('/accounts/:accountId/situation/month', (req, res) => {
-  const situation = {
-    tradeYield: 1000,
-    dividendYield: 1000,
-    totalEarnings: 1000,
-    totalLoss: 1000,
-    tax: 100,
-  };
-
-  res.status(200).send(situation);
-});
-
-router.get('/accounts/:accountId/situation/previousMonth', (req, res) => {
-  const situation = {
-    tradeYield: 1000,
-    dividendYield: 1000,
-    totalEarnings: 1000,
-    totalLoss: 1000,
-    tax: 100,
-  };
-
-  res.status(200).send(situation);
-});
-
-router.get('/accounts/:accountId/situation/history', (req, res) => {
-  const situation = [
-    {
-      tradeYield: 1000,
-      dividendYield: 1000,
-      totalEarnings: 1000,
-      totalLoss: 1000,
-      tax: 100,
-    },
-  ];
-
-  res.status(200).send(situation);
-});
-*/
+router.post('/transaction', (...args) => transactionController.create(...args));
 
 export default router;

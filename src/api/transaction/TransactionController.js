@@ -7,8 +7,8 @@ export default class TransactionController {
   }
 
   async create(req, res, next) {
-    const { institutionId } = req.params;
     const {
+      institutionId,
       type,
       date,
       category,
