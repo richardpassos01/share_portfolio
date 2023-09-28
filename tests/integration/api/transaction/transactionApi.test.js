@@ -13,7 +13,11 @@ import ShareFactory from '../../../factories/ShareFactory.js';
 import MonthlyBalanceFactory from '../../../factories/MonthlyBalanceFactory.js';
 import TotalBalanceFactory from '../../../factories/TotalBalanceFactory.js';
 import { dateToMonthYear } from '../../../../src/helpers/Helpers.js';
-import { TRANSACTION_CATEGORY } from '../../../../src/domain/transaction/TransactionEnums.js';
+import {
+  TRANSACTION_CATEGORY,
+  TRANSACTION_TYPE,
+} from '../../../../src/domain/transaction/TransactionEnums.js';
+import { MONTHLY_BALANCE_TYPE } from '../../../../src/domain/monthlyBalance/MonthlyBalanceEnums.js';
 
 describe('transactionAPI', () => {
   beforeEach(async () => {
@@ -57,9 +61,7 @@ describe('transactionAPI', () => {
       const factory = new TransactionFactory();
       const transaction = factory.get();
       const payload = factory.getPayloadObject();
-      const expectedMonthlyBalance = new MonthlyBalanceFactory({
-        yearMonth: dateToMonthYear(transaction.getDate()),
-      }).getObject();
+      const expectedMonthlyBalance = new MonthlyBalanceFactory().getObject();
 
       await request(app).post('/transaction').send(payload);
 
@@ -114,17 +116,16 @@ describe('transactionAPI', () => {
         const transaction = factory.get();
         const payload = factory.getPayloadObject();
         const monthlyBalance = new MonthlyBalanceFactory({
-          yearMonth: dateToMonthYear(transaction.getDate()),
           grossWins: 200,
           netWins: 100,
         });
         const expectedMonthlyBalance = new MonthlyBalanceFactory({
-          yearMonth: dateToMonthYear(transaction.getDate()),
           grossWins: 1200,
           netWins: 1100,
         }).getObject();
-
+        await new ShareFactory().save();
         await monthlyBalance.save();
+
         await request(app).post('/transaction').send(payload);
 
         const { id, ...result } = await monthlyBalanceRepository.get(
@@ -141,10 +142,10 @@ describe('transactionAPI', () => {
         });
         const transaction = factory.get();
         const payload = factory.getPayloadObject();
-
         const expectedTotalBalance = new TotalBalanceFactory({
           wins: 1000,
         }).getObject();
+        await new MonthlyBalanceFactory().save();
 
         await request(app).post('/transaction').send(payload);
 
@@ -157,8 +158,88 @@ describe('transactionAPI', () => {
     });
 
     describe('when the category of the transaction is SELL', () => {
-      it('Should not charge taxes if the monthly sales amount was less than 20k', () => {});
-      it('Should charge taxes if there are day trade operations in the month', () => {});
+      it('Should not charge taxes if the monthly sales amount was less than 20k', async () => {
+        const buyTransaction = new TransactionFactory({
+          date: new Date(new Date().setDate(1)),
+        });
+        const payload = new TransactionFactory({
+          type: TRANSACTION_TYPE.SELL,
+          quantity: 50,
+          unityPrice: 20,
+          totalCost: 1000,
+          date: new Date(new Date().setDate(10)),
+        }).getPayloadObject();
+
+        const expectedMonthlyBalance = new MonthlyBalanceFactory({
+          grossWins: 500,
+          netWins: 500,
+        }).getObject();
+
+        await buyTransaction.save();
+        await new ShareFactory().save();
+        await new MonthlyBalanceFactory().save();
+
+        await request(app).post('/transaction').send(payload);
+
+        const { id, ...result } = await monthlyBalanceRepository.get(
+          buyTransaction.get().getInstitutionId(),
+          dateToMonthYear(buyTransaction.get().getDate()),
+        );
+
+        expect(expectedMonthlyBalance).toEqual(result);
+      });
+
+      it('Should delete the share if all shares have been sold', async () => {
+        const buyTransaction = new TransactionFactory({
+          date: new Date(new Date().setDate(1)),
+        });
+        const payload = new TransactionFactory({
+          type: TRANSACTION_TYPE.SELL,
+        }).getPayloadObject();
+
+        await buyTransaction.save();
+        await new ShareFactory().save();
+        await new MonthlyBalanceFactory().save();
+
+        await request(app).post('/transaction').send(payload);
+
+        const result = await shareRepository.get(
+          buyTransaction.get().getTicketSymbol(),
+          buyTransaction.get().getInstitutionId(),
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('Should charge taxes if there are day trade operations in the month', async () => {
+        const buyTransaction = new TransactionFactory();
+        const payload = new TransactionFactory({
+          type: TRANSACTION_TYPE.SELL,
+          quantity: 50,
+          unityPrice: 20,
+          totalCost: 1000,
+        }).getPayloadObject();
+
+        const expectedMonthlyBalance = new MonthlyBalanceFactory({
+          grossWins: 500,
+          netWins: 400,
+          taxes: 100,
+          type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
+        }).getObject();
+
+        await buyTransaction.save();
+        await new ShareFactory().save();
+        await new MonthlyBalanceFactory().save();
+
+        await request(app).post('/transaction').send(payload);
+
+        const { id, ...result } = await monthlyBalanceRepository.get(
+          buyTransaction.get().getInstitutionId(),
+          dateToMonthYear(buyTransaction.get().getDate()),
+        );
+
+        expect(expectedMonthlyBalance).toEqual(result);
+      });
       it('Should deduct losses from the total balance on monthly balance taxes', () => {});
       it('Should update total balance loss after deduct ir from tax', () => {});
       it('Should update total balance loss if there are loss on the sale', () => {});

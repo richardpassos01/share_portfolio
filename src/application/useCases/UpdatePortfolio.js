@@ -135,7 +135,7 @@ export default class UpdatePortfolio {
     }
 
     if (operationResult > 0) {
-      await this.calculateTax(
+      await UpdatePortfolio.calculateTax(
         sellTransactions,
         operationResult,
         monthlyBalance,
@@ -180,7 +180,12 @@ export default class UpdatePortfolio {
   }
 
   // will become use case
-  async calculateTax(sellTransactions, wins, monthlyBalance, totalBalance) {
+  static async calculateTax(
+    sellTransactions,
+    wins,
+    monthlyBalance,
+    totalBalance,
+  ) {
     const totalSold = sellTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
       0,
@@ -192,7 +197,7 @@ export default class UpdatePortfolio {
       tax = wins * SWING_TRADE_TAX_PERCENTAGE;
     }
 
-    if (this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
+    if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
       tax = wins * DAY_TRADE_TAX_PERCENTAGE;
     }
 
