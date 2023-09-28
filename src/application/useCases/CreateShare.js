@@ -1,6 +1,6 @@
 import Share from '../../domain/share/Share.js';
 
-export default class createShare {
+export default class CreateShare {
   constructor(shareRepository) {
     this.shareRepository = shareRepository;
   }

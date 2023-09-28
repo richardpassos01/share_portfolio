@@ -35,16 +35,12 @@ export default class UpdatePortfolio {
 
   async execute(transaction) {
     try {
-      const monthlyBalance = await this.getOrCreateMonthlyBalance(
-        transaction.getInstitutionId(),
-        transaction.getDate(),
-      );
       const totalBalance = await this.getTotalBalance.execute(
         transaction.getInstitutionId(),
       );
 
       if (transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS) {
-        return this.handleDividends(transaction, monthlyBalance, totalBalance);
+        return this.handleDividends(transaction, totalBalance);
       }
 
       if (transaction.getType() === TRANSACTION_TYPE.BUY) {
@@ -52,18 +48,19 @@ export default class UpdatePortfolio {
       }
 
       if (transaction.getType() === TRANSACTION_TYPE.SELL) {
-        return this.handleSellOperation(
-          transaction,
-          monthlyBalance,
-          totalBalance,
-        );
+        return this.handleSellOperation(transaction, totalBalance);
       }
     } catch (error) {
       console.error(error);
     }
   }
 
-  async handleDividends(transaction, monthlyBalance, totalBalance) {
+  async handleDividends(transaction, totalBalance) {
+    const monthlyBalance = await this.getMonthlyBalance.execute(
+      transaction.getInstitutionId(),
+      transaction.getDate(),
+    );
+
     monthlyBalance.setGrossWins(
       monthlyBalance.getGrossWins() + transaction.getTotalCost(),
     );
@@ -79,6 +76,11 @@ export default class UpdatePortfolio {
   }
 
   async handleBuyOperation(transaction) {
+    await this.getOrCreateMonthlyBalance(
+      transaction.getInstitutionId(),
+      transaction.getDate(),
+    );
+
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
@@ -88,7 +90,12 @@ export default class UpdatePortfolio {
     return this.updateShare.execute(share);
   }
 
-  async handleSellOperation(transaction, monthlyBalance, totalBalance) {
+  async handleSellOperation(transaction, totalBalance) {
+    const monthlyBalance = await this.getMonthlyBalance.execute(
+      transaction.getInstitutionId(),
+      transaction.getDate(),
+    );
+
     const share = await this.getShare.execute(transaction);
     const operationResult = UpdatePortfolio.calculateWinsOrLossOnSale(
       share,

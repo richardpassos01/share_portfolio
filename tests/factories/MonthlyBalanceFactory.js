@@ -1,11 +1,12 @@
 import MonthlyBalance from '../../src/domain/monthlyBalance/MonthlyBalance.js';
 import { monthlyBalanceRepository } from '../../src/DependencyInjectionContainer';
+import { dateToMonthYear } from '../../src/helpers/Helpers.js';
 
 export default class MonthlyBalanceFactory {
   constructor({
     id,
     institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    yearMonth,
+    yearMonth = dateToMonthYear(new Date()),
     grossWins,
     loss,
     taxes,
