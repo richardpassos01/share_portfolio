@@ -20,10 +20,6 @@ describe('transactionAPI', () => {
     await database.connection().migrate.rollback();
   });
 
-  afterAll(async () => {
-    await database.connection().destroy();
-  });
-
   describe('POST /transaction', () => {
     it('should return status and reason OK', async () => {
       const payload = new TransactionFactory().getPayloadObject();

@@ -8,17 +8,17 @@ import {
 import { transactionRepository } from '../../src/DependencyInjectionContainer';
 
 export default class TransactionFactory {
-  constructor(
+  constructor({
     id,
     institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type = TRANSACTION_TYPE.BUY,
-    date = new Date(),
+    date = new Date(new Date().setHours(0, 0, 0, 0)),
     category = TRANSACTION_CATEGORY.TRADE,
     ticketSymbol = 'TSLA',
     quantity = 100,
     unityPrice = 10,
     totalCost = 1000,
-  ) {
+  } = {}) {
     this.transaction = new Transaction({
       id,
       institutionId,
@@ -38,14 +38,9 @@ export default class TransactionFactory {
 
   getObject() {
     return {
-      id: this.transaction.getId(),
       institutionId: this.transaction.getInstitutionId(),
       type: this.transaction.getType(),
-      date: dateToString(this.transaction.getDate())
-        .split('-')
-        .reverse()
-        .join('-')
-        .replace(/-/g, '/'),
+      date: this.transaction.getDate(),
       category: this.transaction.getCategory(),
       ticketSymbol: this.transaction.getTicketSymbol(),
       quantity: this.transaction.getQuantity(),
@@ -54,7 +49,18 @@ export default class TransactionFactory {
     };
   }
 
+  getPayloadObject() {
+    const transaction = this.getObject();
+    transaction.date = dateToString(this.transaction.getDate())
+      .split('-')
+      .reverse()
+      .join('-')
+      .replace(/-/g, '/');
+
+    return transaction;
+  }
+
   async save() {
-    return transactionRepository.create(this.user);
+    return transactionRepository.create(this.transaction);
   }
 }

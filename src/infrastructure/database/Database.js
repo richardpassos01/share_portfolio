@@ -16,10 +16,12 @@ class Database {
     return Database.instance;
   }
 
-  async checkConnection() {
-    return this.knexInstance.select(1).then(() => {
-      console.log('database connected!');
-    });
+  checkConnection() {
+    this.knexInstance
+      .select(1)
+      .catch((error) =>
+        console.error('Error connecting to the database:', error.message),
+      );
   }
 
   connection() {
