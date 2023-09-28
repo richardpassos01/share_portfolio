@@ -6,11 +6,11 @@ export default class InstitutionRepository {
     this.database = database;
   }
 
-  async get(instituionId) {
+  async get(institutionId) {
     return this.database
       .connection()
       .select()
-      .where('id', instituionId)
+      .where('id', institutionId)
       .into(Tables.INSTITUTION)
       .first()
       .then((data) => InstitutionMapper.mapToEntity(data));

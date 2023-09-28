@@ -1,13 +1,19 @@
-import {
-  TRANSACTION_CATEGORY,
-  TRANSACTION_TYPE,
-} from '../../domain/transaction/TransactionEnums.js';
+import { TRANSACTION_CATEGORY } from '../../domain/transaction/TransactionEnums.js';
 import TransactionMapper from '../mappers/TransactionMapper.js';
 import Tables from '../database/Tables.js';
 
 export default class TransactionRepository {
   constructor(database) {
     this.database = database;
+  }
+
+  async get(institutionId) {
+    return this.database
+      .connection()
+      .select()
+      .where('institution_id', institutionId)
+      .into(Tables.TRANSACTION)
+      .then((data) => (data ? data.map(TransactionMapper.mapToEntity) : []));
   }
 
   async create(transaction) {
@@ -17,13 +23,13 @@ export default class TransactionRepository {
       .into(Tables.TRANSACTION);
   }
 
-  async getTransactionsFromMonth(instituionId, date) {
+  async getTransactionsFromMonth(institutionId, date) {
     return this.database
       .connection()
       .select()
       .where({
         category: TRANSACTION_CATEGORY.TRADE,
-        institution_id: instituionId,
+        institution_id: institutionId,
       })
       .whereRaw(
         `EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?`,
@@ -40,13 +46,13 @@ export default class TransactionRepository {
       );
   }
 
-  async getTrades(instituionId) {
+  async getTrades(institutionId) {
     return this.database
       .connection()
       .select()
       .where({
         category: TRANSACTION_CATEGORY.TRADE,
-        institution_id: instituionId,
+        institution_id: institutionId,
       })
       .into(Tables.TRANSACTION)
       .orderBy('date', 'asc')

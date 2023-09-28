@@ -6,11 +6,11 @@ export default class ShareRepository {
     this.database = database;
   }
 
-  async get(ticketSymbol, instituionId) {
+  async get(ticketSymbol, institutionId) {
     return this.database
       .connection()
       .select()
-      .where({ ticket_symbol: ticketSymbol, institution_id: instituionId })
+      .where({ ticket_symbol: ticketSymbol, institution_id: institutionId })
       .into(Tables.SHARE)
       .first()
       .then((data) => (data ? ShareMapper.mapToEntity(data) : null));

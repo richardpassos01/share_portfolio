@@ -6,11 +6,11 @@ export default class TotalBalanceRepository {
     this.database = database;
   }
 
-  async get(instituionId) {
+  async get(institutionId) {
     return this.database
       .connection()
       .select()
-      .where('institution_id', instituionId)
+      .where('institution_id', institutionId)
       .into(Tables.TOTAL_BALANCE)
       .first()
       .then((data) => (data ? TotalBalanceMapper.mapToEntity(data) : null));

@@ -6,13 +6,13 @@ export default class MonthlyBalanceRepository {
     this.database = database;
   }
 
-  async get(instituionId, yearMonth) {
+  async get(institutionId, yearMonth) {
     return this.database
       .connection()
       .select()
       .where({
         year_month: yearMonth,
-        institution_id: instituionId,
+        institution_id: institutionId,
       })
       .into(Tables.MONTHLY_BALANCE)
       .first()
