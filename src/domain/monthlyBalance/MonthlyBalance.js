@@ -57,7 +57,7 @@ export default class MonthlyBalance {
   }
 
   setLoss(loss) {
-    this.loss += loss;
+    this.loss = loss;
   }
 
   setGrossWins(wins) {
@@ -65,7 +65,7 @@ export default class MonthlyBalance {
   }
 
   setNetWins(wins) {
-    this.netWins = wins;
+    this.netWins = wins < 0 ? 0 : wins;
   }
 
   setType(buyTransactions, sellTransactions) {
@@ -91,6 +91,6 @@ export default class MonthlyBalance {
   }
 
   setTaxes(tax) {
-    this.taxes += tax;
+    this.taxes = tax;
   }
 }

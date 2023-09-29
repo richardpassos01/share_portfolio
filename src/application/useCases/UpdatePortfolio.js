@@ -35,12 +35,17 @@ export default class UpdatePortfolio {
 
   async execute(transaction) {
     try {
+      const monthlyBalance = await this.getOrCreateMonthlyBalance(
+        transaction.getInstitutionId(),
+        transaction.getDate(),
+      );
+
       const totalBalance = await this.getTotalBalance.execute(
         transaction.getInstitutionId(),
       );
 
       if (transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS) {
-        return this.handleDividends(transaction, totalBalance);
+        return this.handleDividends(transaction, monthlyBalance);
       }
 
       if (transaction.getType() === TRANSACTION_TYPE.BUY) {
@@ -48,39 +53,29 @@ export default class UpdatePortfolio {
       }
 
       if (transaction.getType() === TRANSACTION_TYPE.SELL) {
-        return this.handleSellOperation(transaction, totalBalance);
+        return this.handleSellOperation(
+          transaction,
+          totalBalance,
+          monthlyBalance,
+        );
       }
     } catch (error) {
       console.error(error);
     }
   }
 
-  async handleDividends(transaction, totalBalance) {
-    const monthlyBalance = await this.getMonthlyBalance.execute(
-      transaction.getInstitutionId(),
-      transaction.getDate(),
-    );
-
+  async handleDividends(transaction, monthlyBalance) {
     monthlyBalance.setGrossWins(
       monthlyBalance.getGrossWins() + transaction.getTotalCost(),
     );
     monthlyBalance.setNetWins(
       monthlyBalance.getNetWins() + transaction.getTotalCost(),
     );
-    totalBalance.setWins(totalBalance.getWins() + transaction.getTotalCost());
 
-    return Promise.all([
-      this.updateMonthlyBalance.execute(monthlyBalance),
-      this.updateTotalBalance.execute(totalBalance),
-    ]);
+    return this.updateMonthlyBalance.execute(monthlyBalance);
   }
 
   async handleBuyOperation(transaction) {
-    await this.getOrCreateMonthlyBalance(
-      transaction.getInstitutionId(),
-      transaction.getDate(),
-    );
-
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
@@ -90,12 +85,7 @@ export default class UpdatePortfolio {
     return this.updateShare.execute(share);
   }
 
-  async handleSellOperation(transaction, totalBalance) {
-    const monthlyBalance = await this.getMonthlyBalance.execute(
-      transaction.getInstitutionId(),
-      transaction.getDate(),
-    );
-
+  async handleSellOperation(transaction, totalBalance, monthlyBalance) {
     const share = await this.getShare.execute(transaction);
     const operationResult = UpdatePortfolio.calculateWinsOrLossOnSale(
       share,
@@ -123,13 +113,11 @@ export default class UpdatePortfolio {
 
     if (operationResult < 0) {
       const totalLoss = Math.abs(operationResult);
-
-      monthlyBalance.setLoss(totalLoss);
-      totalBalance.setLoss(totalBalance.getLoss() + totalLoss);
+      UpdatePortfolio.updateTax(monthlyBalance, totalBalance, totalLoss);
     }
 
     if (operationResult > 0) {
-      await UpdatePortfolio.calculateTax(
+      UpdatePortfolio.handleTax(
         sellTransactions,
         operationResult,
         monthlyBalance,
@@ -173,26 +161,53 @@ export default class UpdatePortfolio {
     return transactions.filter((transaction) => transaction.type === type);
   }
 
-  // will become use case
-  static async calculateTax(
-    sellTransactions,
-    wins,
-    monthlyBalance,
-    totalBalance,
-  ) {
+  static handleTax(sellTransactions, wins, monthlyBalance, totalBalance) {
+    monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() + wins);
+    const netWins = monthlyBalance.getGrossWins() - monthlyBalance.getLoss();
+
     const totalSold = sellTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
       0,
     );
 
+    if (
+      totalSold > TAX_FREE_SALES_LIMIT ||
+      monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE
+    ) {
+      UpdatePortfolio.calculateTax(monthlyBalance, totalBalance);
+    } else {
+      monthlyBalance.setNetWins(netWins);
+    }
+  }
+
+  static updateTax(monthlyBalance, totalBalance, totalLoss) {
+    const loss = Math.abs(totalLoss);
+    monthlyBalance.setGrossWins(
+      Math.max(0, monthlyBalance.getGrossWins() - loss),
+    );
+    monthlyBalance.setLoss(monthlyBalance.getLoss() + loss);
+
+    if (monthlyBalance.getTaxes() <= 0) {
+      totalBalance.setLoss(totalBalance.getLoss() + loss);
+      const netWins = monthlyBalance.getGrossWins() - monthlyBalance.getLoss();
+      monthlyBalance.setNetWins(netWins);
+      return;
+    }
+
+    UpdatePortfolio.calculateTax(monthlyBalance, totalBalance);
+  }
+
+  static calculateTax(monthlyBalance, totalBalance) {
+    let netWins = monthlyBalance.getGrossWins() - monthlyBalance.getLoss();
+
     let tax = 0;
 
-    if (totalSold > TAX_FREE_SALES_LIMIT) {
-      tax = wins * SWING_TRADE_TAX_PERCENTAGE;
+    if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.SWING_TRADE) {
+      tax = netWins * SWING_TRADE_TAX_PERCENTAGE;
     }
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
-      tax = wins * DAY_TRADE_TAX_PERCENTAGE;
+      tax = netWins * DAY_TRADE_TAX_PERCENTAGE;
     }
 
     if (totalBalance.getLoss() > 0 && tax > 0) {
@@ -209,10 +224,8 @@ export default class UpdatePortfolio {
       }
     }
 
+    netWins -= tax;
     monthlyBalance.setTaxes(tax);
-    monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() + wins);
-    monthlyBalance.setNetWins(monthlyBalance.getNetWins() + (wins - tax));
-
-    totalBalance.setWins(totalBalance.getWins() + monthlyBalance.getNetWins());
+    monthlyBalance.setNetWins(Math.max(0, netWins));
   }
 }

@@ -25,7 +25,7 @@ export default class TotalBalance {
   }
 
   setWins(wins) {
-    this.wins = wins;
+    this.wins = wins < 0 ? 0 : wins;
   }
 
   setLoss(loss) {
