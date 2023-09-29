@@ -125,13 +125,7 @@ export default class UpdatePortfolio {
       const totalLoss = Math.abs(operationResult);
 
       monthlyBalance.setLoss(totalLoss);
-      monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() - totalLoss);
-      monthlyBalance.setNetWins(
-        monthlyBalance.getNetWins() - monthlyBalance.getLoss(),
-      );
-
       totalBalance.setLoss(totalBalance.getLoss() + totalLoss);
-      totalBalance.setWins(totalBalance.getWins() - totalLoss);
     }
 
     if (operationResult > 0) {
@@ -219,10 +213,6 @@ export default class UpdatePortfolio {
     monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() + wins);
     monthlyBalance.setNetWins(monthlyBalance.getNetWins() + (wins - tax));
 
-    totalBalance.setWins(
-      totalBalance.getWins() +
-        monthlyBalance.getNetWins() -
-        totalBalance.getLoss(),
-    );
+    totalBalance.setWins(totalBalance.getWins() + monthlyBalance.getNetWins());
   }
 }
