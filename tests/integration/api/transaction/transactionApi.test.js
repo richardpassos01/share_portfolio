@@ -139,26 +139,54 @@ describe('transactionAPI', () => {
     });
 
     describe('when the category of the transaction is SELL', () => {
-      it('should delete the share if all shares have been sold', async () => {
-        const buyTransaction = new TransactionFactory({
-          date: new Date(new Date().setDate(1)),
+      describe('need to update share', () => {
+        let buyTransaction;
+
+        beforeEach(async () => {
+          buyTransaction = new TransactionFactory({
+            date: new Date(new Date().setDate(1)),
+          });
+          await buyTransaction.save();
+          await new ShareFactory().save();
+          await new MonthlyBalanceFactory().save();
         });
-        const payload = new TransactionFactory({
-          type: TRANSACTION_TYPE.SELL,
-        }).getPayloadObject();
 
-        await buyTransaction.save();
-        await new ShareFactory().save();
-        await new MonthlyBalanceFactory().save();
+        it('should update share if have not liquidated position', async () => {
+          const payload = new TransactionFactory({
+            type: TRANSACTION_TYPE.SELL,
+            quantity: 50,
+            unityPrice: 10,
+            totalCost: 500,
+          }).getPayloadObject();
+          const expectedShare = new ShareFactory({
+            quantity: 50,
+            totalCost: 500,
+          }).getObject();
 
-        await request(app).post('/transaction').send(payload);
+          await request(app).post('/transaction').send(payload);
 
-        const result = await shareRepository.get(
-          buyTransaction.get().getTicketSymbol(),
-          buyTransaction.get().getInstitutionId(),
-        );
+          const { id, ...share } = await shareRepository.get(
+            buyTransaction.get().getTicketSymbol(),
+            buyTransaction.get().getInstitutionId(),
+          );
 
-        expect(result).toBeNull();
+          expect(share).toEqual(expectedShare);
+        });
+
+        it('should delete shares if have liquidated position', async () => {
+          const payload = new TransactionFactory({
+            type: TRANSACTION_TYPE.SELL,
+          }).getPayloadObject();
+
+          await request(app).post('/transaction').send(payload);
+
+          const result = await shareRepository.get(
+            buyTransaction.get().getTicketSymbol(),
+            buyTransaction.get().getInstitutionId(),
+          );
+
+          expect(result).toBeNull();
+        });
       });
 
       it('should charge taxes if there are day trade operations in the month', async () => {
