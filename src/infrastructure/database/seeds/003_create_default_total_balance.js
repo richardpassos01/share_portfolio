@@ -6,7 +6,6 @@ export async function seed(knex) {
     {
       id: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
       institution_id: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-      wins: 0,
       loss: 0,
     },
   ]);

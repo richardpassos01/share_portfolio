@@ -61,11 +61,11 @@ export default class MonthlyBalance {
   }
 
   setGrossWins(wins) {
-    this.grossWins = wins < 0 ? 0 : wins;
+    this.grossWins = Math.max(0, wins);
   }
 
   setNetWins(wins) {
-    this.netWins = wins < 0 ? 0 : wins;
+    this.netWins = Math.max(0, wins);
   }
 
   setType(buyTransactions, sellTransactions) {

@@ -5,13 +5,11 @@ export default class TotalBalanceFactory {
   constructor({
     id,
     institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    wins,
     loss,
   } = {}) {
     this.totalBalance = new TotalBalance({
       id,
       institutionId,
-      wins,
       loss,
     });
   }
@@ -23,7 +21,6 @@ export default class TotalBalanceFactory {
   getObject() {
     return {
       institutionId: this.totalBalance.getInstitutionId(),
-      wins: this.totalBalance.getWins(),
       loss: this.totalBalance.getLoss(),
     };
   }

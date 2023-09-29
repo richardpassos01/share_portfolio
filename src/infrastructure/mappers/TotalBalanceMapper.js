@@ -5,7 +5,6 @@ export default class TotalBalanceMapper {
     return {
       id: entity.id,
       institution_id: entity.institutionId,
-      wins: entity.wins,
       loss: entity.loss,
     };
   }
@@ -14,7 +13,6 @@ export default class TotalBalanceMapper {
     return new TotalBalance({
       id: object.id,
       institutionId: object.institution_id,
-      wins: object.wins,
       loss: object.loss,
     });
   }
