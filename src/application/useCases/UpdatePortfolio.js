@@ -68,9 +68,7 @@ export default class UpdatePortfolio {
     monthlyBalance.setGrossWins(
       monthlyBalance.getGrossWins() + transaction.getTotalCost(),
     );
-    monthlyBalance.setNetWins(
-      monthlyBalance.getNetWins() + transaction.getTotalCost(),
-    );
+    monthlyBalance.setNetWins();
 
     return this.updateMonthlyBalance.execute(monthlyBalance);
   }
@@ -163,7 +161,6 @@ export default class UpdatePortfolio {
 
   static handleTax(sellTransactions, wins, monthlyBalance, totalBalance) {
     monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() + wins);
-    const netWins = monthlyBalance.getGrossWins() - monthlyBalance.getLoss();
 
     const totalSold = sellTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
@@ -176,7 +173,7 @@ export default class UpdatePortfolio {
     ) {
       UpdatePortfolio.calculateTax(monthlyBalance, totalBalance);
     } else {
-      monthlyBalance.setNetWins(netWins);
+      monthlyBalance.setNetWins();
     }
   }
 
@@ -189,8 +186,7 @@ export default class UpdatePortfolio {
 
     if (monthlyBalance.getTaxes() <= 0) {
       totalBalance.setLoss(totalBalance.getLoss() + loss);
-      const netWins = monthlyBalance.getGrossWins() - monthlyBalance.getLoss();
-      monthlyBalance.setNetWins(netWins);
+      monthlyBalance.setNetWins();
       return;
     }
 
@@ -198,16 +194,18 @@ export default class UpdatePortfolio {
   }
 
   static calculateTax(monthlyBalance, totalBalance) {
-    let netWins = monthlyBalance.getGrossWins() - monthlyBalance.getLoss();
-
+    const netWinsBeforeTax = Math.max(
+      0,
+      monthlyBalance.getGrossWins() - monthlyBalance.getLoss(),
+    );
     let tax = 0;
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.SWING_TRADE) {
-      tax = netWins * SWING_TRADE_TAX_PERCENTAGE;
+      tax = netWinsBeforeTax * SWING_TRADE_TAX_PERCENTAGE;
     }
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
-      tax = netWins * DAY_TRADE_TAX_PERCENTAGE;
+      tax = netWinsBeforeTax * DAY_TRADE_TAX_PERCENTAGE;
     }
 
     if (totalBalance.getLoss() > 0 && tax > 0) {
@@ -224,8 +222,7 @@ export default class UpdatePortfolio {
       }
     }
 
-    netWins -= tax;
     monthlyBalance.setTaxes(tax);
-    monthlyBalance.setNetWins(Math.max(0, netWins));
+    monthlyBalance.setNetWins();
   }
 }

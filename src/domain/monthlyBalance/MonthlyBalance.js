@@ -64,11 +64,16 @@ export default class MonthlyBalance {
     this.grossWins = Math.max(0, wins);
   }
 
-  setNetWins(wins) {
-    this.netWins = Math.max(0, wins);
+  setNetWins() {
+    const netWins = Math.max(0, this.grossWins - this.loss - this.taxes);
+    this.netWins = netWins;
   }
 
   setType(buyTransactions, sellTransactions) {
+    if (this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
+      return;
+    }
+
     const isMatch = (sellTransaction, buyTransaction) => {
       const sameTicket =
         sellTransaction.getTicketSymbol() === buyTransaction.getTicketSymbol();

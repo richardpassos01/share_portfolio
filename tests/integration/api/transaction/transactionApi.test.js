@@ -118,10 +118,12 @@ describe('transactionAPI', () => {
         const payload = factory.getPayloadObject();
         const monthlyBalance = new MonthlyBalanceFactory({
           grossWins: 200,
+          loss: 100,
           netWins: 100,
         });
         const expectedMonthlyBalance = new MonthlyBalanceFactory({
           grossWins: 1200,
+          loss: 100,
           netWins: 1100,
         }).getObject();
         await new ShareFactory().save();
@@ -189,37 +191,39 @@ describe('transactionAPI', () => {
         });
       });
 
-      it('should charge taxes if there are day trade operations in the month', async () => {
-        const buyTransaction = new TransactionFactory();
-        const payload = new TransactionFactory({
-          type: TRANSACTION_TYPE.SELL,
-          quantity: 50,
-          unityPrice: 20,
-          totalCost: 1000,
-        }).getPayloadObject();
-
-        const expectedMonthlyBalance = new MonthlyBalanceFactory({
-          grossWins: 500,
-          netWins: 400,
-          taxes: 100,
-          type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
-        }).getObject();
-
-        await buyTransaction.save();
-        await new ShareFactory().save();
-        await new MonthlyBalanceFactory().save();
-
-        await request(app).post('/transaction').send(payload);
-
-        const { id, ...result } = await monthlyBalanceRepository.get(
-          buyTransaction.get().getInstitutionId(),
-          dateToMonthYear(buyTransaction.get().getDate()),
-        );
-
-        expect(expectedMonthlyBalance).toEqual(result);
-      });
-
       describe('when there are wins on sale', () => {
+        describe('when there are day trade on month', () => {
+          it('should charge taxes independent of the total sale amount', async () => {
+            const buyTransaction = new TransactionFactory();
+            const payload = new TransactionFactory({
+              type: TRANSACTION_TYPE.SELL,
+              quantity: 50,
+              unityPrice: 20,
+              totalCost: 1000,
+            }).getPayloadObject();
+
+            const expectedMonthlyBalance = new MonthlyBalanceFactory({
+              grossWins: 500,
+              netWins: 400,
+              taxes: 100,
+              type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
+            }).getObject();
+
+            await buyTransaction.save();
+            await new ShareFactory().save();
+            await new MonthlyBalanceFactory().save();
+
+            await request(app).post('/transaction').send(payload);
+
+            const { id, ...result } = await monthlyBalanceRepository.get(
+              buyTransaction.get().getInstitutionId(),
+              dateToMonthYear(buyTransaction.get().getDate()),
+            );
+
+            expect(expectedMonthlyBalance).toEqual(result);
+          });
+        });
+
         describe('when monthly sales amount was less than 20k', () => {
           it('should not charge taxes ', async () => {
             const buyTransaction = new TransactionFactory({
@@ -305,7 +309,7 @@ describe('transactionAPI', () => {
               await new MonthlyBalanceFactory().save();
             });
 
-            describe('when there are losses left after tax deductions', () => {
+            describe('when there are losses remaining after tax deductions', () => {
               let totalBalance;
 
               beforeEach(async () => {
@@ -347,7 +351,7 @@ describe('transactionAPI', () => {
               });
             });
 
-            describe('when there are no losses left after tax deduction', () => {
+            describe('when there are no losses remaining after tax deduction', () => {
               let totalBalance;
 
               beforeEach(async () => {
@@ -373,6 +377,19 @@ describe('transactionAPI', () => {
                   dateToMonthYear(buyTransaction.get().getDate()),
                 );
                 expect(expectedMonthlyBalance).toEqual(result);
+              });
+
+              it('should update total balance', async () => {
+                const expectedTotalBalance = new TotalBalanceFactory({
+                  losss: 0,
+                }).getObject();
+
+                await request(app).post('/transaction').send(payload);
+
+                const { id, ...result } = await totalBalanceRepository.get(
+                  payload.institutionId,
+                );
+                expect(expectedTotalBalance).toEqual(result);
               });
             });
           });
@@ -400,12 +417,16 @@ describe('transactionAPI', () => {
             }).getPayloadObject();
             await buyTransaction.save();
             await new ShareFactory({ quantity: 10, totalCost: 10000 }).save();
-            await new MonthlyBalanceFactory().save();
+            await new MonthlyBalanceFactory({
+              grossWins: 100,
+              loss: 10,
+              taxes: 0,
+              netWins: 90,
+            }).save();
           });
 
           it('should update total balance loss', async () => {
             const expectedTotalBalance = new TotalBalanceFactory({
-              wins: 0,
               loss: 9900,
             }).getObject();
 
@@ -417,9 +438,12 @@ describe('transactionAPI', () => {
             expect(expectedTotalBalance).toEqual(totalBalance);
           });
 
-          it('should update monthly balance loss', async () => {
+          it('should update monthly balance', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              loss: 9900,
+              grossWins: 0,
+              taxes: 0,
+              loss: 9910,
+              netWins: 0,
             }).getObject();
 
             await request(app).post('/transaction').send(payload);
