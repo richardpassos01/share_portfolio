@@ -25,13 +25,13 @@ const institutionEventTypeMapper = {
   Rendimento: TRANSACTION_CATEGORY.DIVIDENDS,
   'Juros Sobre Capital Próprio': TRANSACTION_CATEGORY.DIVIDENDS,
   Dividendo: TRANSACTION_CATEGORY.DIVIDENDS,
+  Desdobro: TRANSACTION_CATEGORY.SPLIT,
+  'Bonificação em Ativos': TRANSACTION_CATEGORY.BONUS_SHARE, // ganhos de share
   'Direitos de Subscrição - Não Exercido': TRANSACTION_CATEGORY.OTHER,
   'Cessão de Direitos - Solicitada': TRANSACTION_CATEGORY.OTHER,
   'Cessão de Direitos': TRANSACTION_CATEGORY.OTHER,
   'Direito de Subscrição': TRANSACTION_CATEGORY.OTHER,
-  Atualização: TRANSACTION_CATEGORY.OTHER,
-  Desdobro: TRANSACTION_CATEGORY.OTHER,
-  'Bonificação em Ativos': TRANSACTION_CATEGORY.OTHER,
+  Atualização: TRANSACTION_CATEGORY.OTHER, // somente um update falando a quantidade atual de share
 };
 
 (async () => {
@@ -45,10 +45,6 @@ const institutionEventTypeMapper = {
       const [{ data }] = parse(filePath);
 
       for (const transactionObject of data.slice(1).reverse()) {
-        if (transactionObject[1] === '04/07/2023') {
-          console.log('1');
-        }
-
         await createTransaction.execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transactionObject[0]],

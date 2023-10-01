@@ -48,20 +48,37 @@ export default class UpdatePortfolio {
         return this.handleDividends(transaction, monthlyBalance);
       }
 
-      if (transaction.getType() === TRANSACTION_TYPE.BUY) {
-        return this.handleBuyOperation(transaction);
+      if (
+        transaction.getCategory() === TRANSACTION_CATEGORY.SPLIT ||
+        transaction.getCategory() === TRANSACTION_CATEGORY.BONUS_SHARE
+      ) {
+        return this.handleBonusAndSplitShare(transaction, monthlyBalance);
       }
 
-      if (transaction.getType() === TRANSACTION_TYPE.SELL) {
-        return this.handleSellOperation(
-          transaction,
-          totalBalance,
-          monthlyBalance,
-        );
+      if (transaction.getCategory() === TRANSACTION_CATEGORY.TRADE) {
+        if (transaction.getType() === TRANSACTION_TYPE.BUY) {
+          return this.handleBuyOperation(transaction);
+        }
+
+        if (transaction.getType() === TRANSACTION_TYPE.SELL) {
+          return this.handleSellOperation(
+            transaction,
+            totalBalance,
+            monthlyBalance,
+          );
+        }
       }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async handleBonusAndSplitShare(transaction) {
+    const share = await this.getShare.execute(transaction);
+    const quantity = share.getQuantity() + transaction.getQuantity();
+
+    share.setQuantity(quantity);
+    return this.updateShare.execute(share);
   }
 
   async handleDividends(transaction, monthlyBalance) {
@@ -149,10 +166,15 @@ export default class UpdatePortfolio {
   }
 
   static calculateWinsOrLossOnSale(share, transaction) {
-    const sellCost = transaction.getTotalCost();
-    const minIdealSellCost = transaction.getQuantity() * share.getMediumPrice();
-    const winsOrLoss = sellCost - minIdealSellCost;
-    return winsOrLoss;
+    try {
+      const sellCost = transaction.getTotalCost();
+      const minIdealSellCost =
+        transaction.getQuantity() * share.getMediumPrice();
+      const winsOrLoss = sellCost - minIdealSellCost;
+      return winsOrLoss;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   static filterTransactionByType(transactions, type) {

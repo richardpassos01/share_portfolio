@@ -41,23 +41,24 @@ export default class Share {
     return this.mediumPrice;
   }
 
-  setTotalCost(cost) {
-    this.totalCost += cost;
+  setQuantity(quantity) {
+    this.quantity = Math.max(0, quantity);
   }
 
-  setQuantity(quantity) {
-    this.quantity += quantity;
+  setTotalCost(totalCost) {
+    this.totalCost = Math.max(0, totalCost);
   }
 
   setMediumPrice() {
-    this.mediumPrice = this.quantity ? this.totalCost / this.quantity : 0;
+    this.mediumPrice = this.quantity > 0 ? this.totalCost / this.quantity : 0;
   }
 
   updatePosition({ quantity, totalCost, type }) {
-    const operationMultiplier = type === SHARE_OPERATION_TYPE.BUY ? 1 : -1;
+    const isBuyOperation = type === SHARE_OPERATION_TYPE.BUY;
+    const changeMultiplier = isBuyOperation ? 1 : -1;
 
-    this.setQuantity(quantity * operationMultiplier);
-    this.setTotalCost(totalCost * operationMultiplier);
+    this.setQuantity((this.quantity += changeMultiplier * quantity));
+    this.setTotalCost((this.totalCost += changeMultiplier * totalCost));
     this.setMediumPrice();
   }
 }
