@@ -9,16 +9,13 @@ import { createTransactionCases } from '../../fixtures/cases.js';
 import { dateToMonthYear } from '../../../src/helpers/Helpers.js';
 
 describe('CreateTransaction', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });
 
-  afterEach(async () => {
-    await database.connection().migrate.rollback();
-  });
-
   afterAll(async () => {
+    await database.connection().migrate.rollback();
     await database.connection().destroy();
   });
 
@@ -33,21 +30,28 @@ describe('CreateTransaction', () => {
       it(`Should create the transaction and update the monthly and total balances for the ${transaction.ticketSymbol} share `, async () => {
         await createTransaction.execute(transaction);
 
-        const { id: _shareId, ...share } = await shareRepository.get(
-          transaction.ticketSymbol,
-          transaction.institutionId,
-        );
-        const { id: _monthlyId, ...monthlyBalance } =
-          await monthlyBalanceRepository.get(
-            transaction.getInstitutionId(),
-            dateToMonthYear(transaction.date),
-          );
-        const { id: balanceId, ...totalBalance } =
-          await totalBalanceRepository.get(transaction.institutionId);
+        const shares = (
+          await shareRepository.getAll(transaction.institutionId)
+        ).map(({ id, institutionId, mediumPrice, ...share }) => share);
 
-        expect(expectedShare).toBe(share);
-        expect(expectedMonthlyBalance).toBe(monthlyBalance);
-        expect(expectedTotalBalance).toBe(totalBalance);
+        const {
+          id: __,
+          institutionId: ___,
+          ...monthlyBalance
+        } = await monthlyBalanceRepository.get(
+          transaction.institutionId,
+          dateToMonthYear(transaction.date),
+        );
+
+        const {
+          id: ____,
+          institutionId: _____,
+          ...totalBalance
+        } = await totalBalanceRepository.get(transaction.institutionId);
+
+        expect(expectedShare).toEqual(shares);
+        expect(expectedMonthlyBalance).toEqual(monthlyBalance);
+        expect(expectedTotalBalance).toEqual(totalBalance);
       });
     },
   );

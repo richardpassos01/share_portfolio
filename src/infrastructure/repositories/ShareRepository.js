@@ -16,6 +16,15 @@ export default class ShareRepository {
       .then((data) => (data ? ShareMapper.mapToEntity(data) : null));
   }
 
+  async getAll(institutionId) {
+    return this.database
+      .connection()
+      .select()
+      .where({ institution_id: institutionId })
+      .into(Tables.SHARE)
+      .then((data) => data.map(ShareMapper.mapToEntity));
+  }
+
   async create(share) {
     return this.database
       .connection()
