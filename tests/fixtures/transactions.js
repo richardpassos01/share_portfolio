@@ -6,8 +6,8 @@ import {
 export const transactions = [
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-07-31T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-07-31T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 100,
@@ -16,8 +16,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-07-31T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-07-31T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 100,
@@ -26,8 +26,9 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // LUCRO de 45.499999999999886
-    date: new Date('2019-08-01T00:00:00'),
+
     type: TRANSACTION_TYPE.SELL,
+    date: new Date('2019-08-01T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 50,
@@ -36,8 +37,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-08-01T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-08-01T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 100,
@@ -46,8 +47,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-09-01T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-09-01T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 1500, // 1700
@@ -56,8 +57,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-09-01T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-09-01T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 1500,
@@ -66,8 +67,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-09-10T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-09-10T00:00:00'),
     category: TRANSACTION_CATEGORY.DIVIDENDS,
     ticketSymbol: 'AAPL',
     quantity: 1500,
@@ -76,8 +77,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-09-11T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-09-11T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 10,
@@ -86,8 +87,9 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // lucro 9.762820512820525
-    date: new Date('2019-09-11T00:00:00'),
+
     type: TRANSACTION_TYPE.SELL,
+    date: new Date('2019-09-11T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 10,
@@ -96,8 +98,9 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // Perca -3776.1290322580644
-    date: new Date('2019-10-05T00:00:00'),
+
     type: TRANSACTION_TYPE.SELL,
+    date: new Date('2019-10-05T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 1500,
@@ -106,8 +109,9 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // lucro 110
-    date: new Date('2019-11-15T00:00:00'),
+
     type: TRANSACTION_TYPE.SELL,
+    date: new Date('2019-11-15T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 1700,
@@ -116,8 +120,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-11-16T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-11-16T00:00:00'),
     category: TRANSACTION_CATEGORY.BONUS_SHARE,
     ticketSymbol: 'AAPL',
     quantity: 10,
@@ -126,8 +130,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2019-12-01T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2019-12-01T00:00:00'),
     category: TRANSACTION_CATEGORY.SPLIT,
     ticketSymbol: 'AAPL',
     quantity: 100,
@@ -136,8 +140,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // perca de 1202
-    date: new Date('2020-01-02T00:00:00'),
     type: TRANSACTION_TYPE.SELL,
+    date: new Date('2020-01-02T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 160,
@@ -146,8 +150,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2020-02-01T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2020-02-01T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 100,
@@ -156,8 +160,8 @@ export const transactions = [
   },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    date: new Date('2020-04-01T00:00:00'),
     type: TRANSACTION_TYPE.BUY,
+    date: new Date('2020-04-01T00:00:00'),
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'META',
     quantity: 100,

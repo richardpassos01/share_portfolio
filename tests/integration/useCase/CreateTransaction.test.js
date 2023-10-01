@@ -1,8 +1,12 @@
 import {
   database,
   createTransaction,
+  shareRepository,
+  monthlyBalanceRepository,
+  totalBalanceRepository,
 } from '../../../src/DependencyInjectionContainer';
-import { transactions } from '../../fixtures/transactions.js';
+import { createTransactionCases } from '../../fixtures/cases.js';
+import { dateToMonthYear } from '../../../src/helpers/Helpers.js';
 
 describe('CreateTransaction', () => {
   beforeEach(async () => {
@@ -18,17 +22,33 @@ describe('CreateTransaction', () => {
     await database.connection().destroy();
   });
 
-  describe('when call user case with trade transactions', () => {
-    it('should update things', async () => {
-      console.log(transactions.length);
-
-      // eslint-disable-next-line no-restricted-syntax
-      for (const transaction of transactions) {
-        // eslint-disable-next-line no-await-in-loop
+  describe.each(createTransactionCases)(
+    'when call use case',
+    (
+      transaction,
+      expectedShare,
+      expectedMonthlyBalance,
+      expectedTotalBalance,
+    ) => {
+      it(`Should create the transaction and update the monthly and total balances for the ${transaction.ticketSymbol} share `, async () => {
         await createTransaction.execute(transaction);
-      }
 
-      expect(1).toBe(1);
-    });
-  });
+        const { id: _shareId, ...share } = await shareRepository.get(
+          transaction.ticketSymbol,
+          transaction.institutionId,
+        );
+        const { id: _monthlyId, ...monthlyBalance } =
+          await monthlyBalanceRepository.get(
+            transaction.getInstitutionId(),
+            dateToMonthYear(transaction.date),
+          );
+        const { id: balanceId, ...totalBalance } =
+          await totalBalanceRepository.get(transaction.institutionId);
+
+        expect(expectedShare).toBe(share);
+        expect(expectedMonthlyBalance).toBe(monthlyBalance);
+        expect(expectedTotalBalance).toBe(totalBalance);
+      });
+    },
+  );
 });

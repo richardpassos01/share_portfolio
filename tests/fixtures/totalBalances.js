@@ -1,4 +1,4 @@
-export const totalBalance = [
+export const totalBalances = [
   {
     loss: 0,
   },
