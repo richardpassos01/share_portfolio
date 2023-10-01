@@ -27,7 +27,7 @@ describe('CreateTransaction', () => {
       expectedMonthlyBalance,
       expectedTotalBalance,
     ) => {
-      it(`Should create the transaction and update the monthly and total balances for the ${transaction.ticketSymbol} share `, async () => {
+      it(`Should create the transaction and update the monthly and total balance for the ${transaction.ticketSymbol} share `, async () => {
         await createTransaction.execute(transaction);
 
         const shares = (

@@ -27,10 +27,10 @@ export const monthlyBalances = [
   }, // verificado
   {
     yearMonth: '2019-08',
-    grossWins: 0.0,
+    grossWins: 45.499999999999886,
     loss: 0.0,
     taxes: 0.0,
-    netWins: 0.0,
+    netWins: 45.499999999999886,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   }, // verificado
   {

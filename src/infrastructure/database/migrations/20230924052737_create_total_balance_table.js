@@ -7,7 +7,7 @@ export const up = async (knex) => {
         .createTable(Tables.TOTAL_BALANCE, (table) => {
           table.uuid('id').primary();
           table.uuid('institution_id').notNullable().unique();
-          table.decimal('loss', 10, 2);
+          table.decimal('loss', null);
           table.timestamps(true, true);
 
           table
@@ -24,3 +24,5 @@ export const up = async (knex) => {
 export const down = async (knex) => {
   return knex.schema.dropTable(Tables.TOTAL_BALANCE);
 };
+
+10000000000.0;

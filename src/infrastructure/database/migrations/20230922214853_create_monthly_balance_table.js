@@ -9,10 +9,10 @@ export const up = async (knex) => {
           table.uuid('id').primary();
           table.uuid('institution_id').notNullable();
           table.string('year_month', 7).notNullable();
-          table.decimal('gross_wins', 10, 2);
-          table.decimal('loss', 10, 2);
-          table.decimal('taxes', 10, 2);
-          table.decimal('net_wins', 10, 2);
+          table.decimal('gross_wins', null);
+          table.decimal('loss', null);
+          table.decimal('taxes', null);
+          table.decimal('net_wins', null);
           table.enu('type', Object.values(MONTHLY_BALANCE_TYPE)).notNullable();
           table.timestamps(true, true);
 

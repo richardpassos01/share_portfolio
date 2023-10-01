@@ -9,7 +9,7 @@ export const up = async (knex) => {
           table.uuid('institution_id').notNullable();
           table.string('ticket_symbol', 10).notNullable();
           table.integer('quantity').notNullable();
-          table.decimal('total_cost', 10, 2);
+          table.decimal('total_cost', null);
           table.timestamps(true, true);
 
           table

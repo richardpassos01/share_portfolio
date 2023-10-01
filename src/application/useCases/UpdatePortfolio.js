@@ -216,6 +216,7 @@ export default class UpdatePortfolio {
   }
 
   static calculateTax(monthlyBalance, totalBalance) {
+    // fix, is calculating dividends, and it need to calculate just trade
     const netWinsBeforeTax = Math.max(
       0,
       monthlyBalance.getGrossWins() - monthlyBalance.getLoss(),
