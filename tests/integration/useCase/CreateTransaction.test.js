@@ -4,6 +4,7 @@ import {
   shareRepository,
   monthlyBalanceRepository,
   totalBalanceRepository,
+  getProfit,
 } from '../../../src/DependencyInjectionContainer';
 import { createTransactionCases } from '../../fixtures/cases.js';
 import { dateToMonthYear } from '../../../src/helpers/Helpers.js';
@@ -55,4 +56,16 @@ describe('CreateTransaction', () => {
       });
     },
   );
+
+  describe('totalBalance ', () => {
+    it('should get profit', async () => {
+      const profit = await getProfit.execute(
+        'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      );
+
+      expect(profit).toBe(100);
+    });
+
+    it('should return loss', () => {});
+  });
 });

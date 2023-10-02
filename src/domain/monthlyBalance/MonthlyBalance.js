@@ -10,9 +10,7 @@ export default class MonthlyBalance {
     yearMonth,
     tradeEarnings = 0,
     dividendEarnings = 0,
-    loss = 0,
-    taxes = 0,
-    netWins = 0,
+    tax = 0,
     type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   }) {
     this.id = id;
@@ -20,9 +18,7 @@ export default class MonthlyBalance {
     this.yearMonth = yearMonth;
     this.tradeEarnings = tradeEarnings;
     this.dividendEarnings = dividendEarnings;
-    this.loss = loss;
-    this.taxes = taxes;
-    this.netWins = netWins;
+    this.tax = tax;
     this.type = type;
   }
 
@@ -46,24 +42,12 @@ export default class MonthlyBalance {
     return this.dividendEarnings;
   }
 
-  getLoss() {
-    return this.loss;
-  }
-
   getType() {
     return this.type;
   }
 
-  getTaxes() {
-    return this.taxes;
-  }
-
-  getNetWins() {
-    return this.netWins;
-  }
-
-  setLoss(loss) {
-    this.loss = loss;
+  getTax() {
+    return this.tax;
   }
 
   setTradeEarnings(earning) {
@@ -72,14 +56,6 @@ export default class MonthlyBalance {
 
   setDividendEarnings(earning) {
     this.dividendEarnings += earning;
-  }
-
-  setNetWins() {
-    const netWins = Math.max(
-      0,
-      this.tradeEarnings + this.dividendEarnings - this.loss - this.taxes,
-    );
-    this.netWins = netWins;
   }
 
   setType(buyTransactions, sellTransactions) {
@@ -108,7 +84,7 @@ export default class MonthlyBalance {
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
   }
 
-  setTaxes(tax) {
-    this.taxes = tax;
+  setTax(tax) {
+    this.tax = tax;
   }
 }

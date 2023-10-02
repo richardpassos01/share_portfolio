@@ -8,9 +8,7 @@ export default class MonthlyBalanceMapper {
       year_month: entity.yearMonth,
       trade_earnings: entity.tradeEarnings,
       dividend_earnings: entity.dividendEarnings,
-      loss: entity.loss,
-      taxes: entity.taxes,
-      net_wins: entity.netWins,
+      tax: entity.tax,
       type: entity.type,
     };
   }
@@ -22,9 +20,7 @@ export default class MonthlyBalanceMapper {
       yearMonth: object.year_month,
       tradeEarnings: object.trade_earnings,
       dividendEarnings: object.dividend_earnings,
-      loss: object.loss,
-      taxes: object.taxes,
-      netWins: object.net_wins,
+      tax: object.tax,
       type: object.type,
     });
   }

@@ -118,13 +118,9 @@ describe('transactionAPI', () => {
         const payload = factory.getPayloadObject();
         const monthlyBalance = new MonthlyBalanceFactory({
           tradeEarnings: 200,
-          loss: 100,
-          netWins: 100,
         });
         const expectedMonthlyBalance = new MonthlyBalanceFactory({
           tradeEarnings: 1200,
-          loss: 100,
-          netWins: 1100,
         }).getObject();
         await new ShareFactory().save();
         await monthlyBalance.save();
@@ -193,7 +189,7 @@ describe('transactionAPI', () => {
 
       describe('when there are earnings on sale', () => {
         describe('when there are day trade on month', () => {
-          it('should charge taxes independent of the total sale amount', async () => {
+          it('should charge tax independent of the total sale amount', async () => {
             const buyTransaction = new TransactionFactory();
             const payload = new TransactionFactory({
               type: TRANSACTION_TYPE.SELL,
@@ -204,8 +200,7 @@ describe('transactionAPI', () => {
 
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
               tradeEarnings: 500,
-              netWins: 400,
-              taxes: 100,
+              tax: 100,
               type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
             }).getObject();
 
@@ -225,7 +220,7 @@ describe('transactionAPI', () => {
         });
 
         describe('when monthly sales amount was less than 20k', () => {
-          it('should not charge taxes ', async () => {
+          it('should not charge tax ', async () => {
             const buyTransaction = new TransactionFactory({
               date: new Date(new Date().setDate(1)),
             });
@@ -239,7 +234,6 @@ describe('transactionAPI', () => {
 
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
               tradeEarnings: 500,
-              netWins: 500,
             }).getObject();
 
             await buyTransaction.save();
@@ -277,8 +271,8 @@ describe('transactionAPI', () => {
 
               const expectedMonthlyBalance = new MonthlyBalanceFactory({
                 tradeEarnings: 29000,
-                netWins: 24650,
-                taxes: 4350,
+
+                tax: 4350,
               }).getObject();
 
               await request(app).post('/transaction').send(payload);
@@ -323,8 +317,8 @@ describe('transactionAPI', () => {
               it('should update monthly balance', async () => {
                 const expectedMonthlyBalance = new MonthlyBalanceFactory({
                   tradeEarnings: 500,
-                  netWins: 500,
-                  taxes: 0,
+
+                  tax: 0,
                   type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
                 }).getObject();
 
@@ -365,8 +359,8 @@ describe('transactionAPI', () => {
               it('should update monthly balance', async () => {
                 const expectedMonthlyBalance = new MonthlyBalanceFactory({
                   tradeEarnings: 500,
-                  netWins: 410,
-                  taxes: 90,
+
+                  tax: 90,
                   type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
                 }).getObject();
 
@@ -397,7 +391,7 @@ describe('transactionAPI', () => {
       });
 
       describe('when there are loss on sale', () => {
-        describe('when do not have taxes on month to pay ', () => {
+        describe('when do not have tax on month to pay ', () => {
           let buyTransaction;
           let payload;
 
@@ -419,9 +413,7 @@ describe('transactionAPI', () => {
             await new ShareFactory({ quantity: 10, totalCost: 10000 }).save();
             await new MonthlyBalanceFactory({
               tradeEarnings: 100,
-              loss: 10,
-              taxes: 0,
-              netWins: 90,
+              tax: 0,
             }).save();
           });
 
@@ -441,9 +433,7 @@ describe('transactionAPI', () => {
           it('should update monthly balance', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
               tradeEarnings: 0,
-              taxes: 0,
-              loss: 9910,
-              netWins: 0,
+              tax: 0,
             }).getObject();
 
             await request(app).post('/transaction').send(payload);
@@ -458,7 +448,7 @@ describe('transactionAPI', () => {
           });
         });
 
-        describe('when have taxes on month to pay', () => {
+        describe('when have tax on month to pay', () => {
           let buyTransaction;
           let payload;
 
@@ -480,18 +470,14 @@ describe('transactionAPI', () => {
             await new ShareFactory({ quantity: 10, totalCost: 110 }).save();
             await new MonthlyBalanceFactory({
               tradeEarnings: 1000,
-              loss: 100,
-              taxes: 135,
-              netWins: 765,
+              tax: 135,
             }).save();
           });
 
           it('should recalculate tax and update monthly balance', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
               tradeEarnings: 990,
-              loss: 110,
-              taxes: 132,
-              netWins: 748,
+              tax: 132,
             }).getObject();
 
             await request(app).post('/transaction').send(payload);

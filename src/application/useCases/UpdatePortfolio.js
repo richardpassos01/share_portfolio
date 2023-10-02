@@ -83,7 +83,6 @@ export default class UpdatePortfolio {
 
   async handleDividends(transaction, monthlyBalance) {
     monthlyBalance.setDividendEarnings(transaction.getTotalCost());
-    monthlyBalance.setNetWins();
 
     return this.updateMonthlyBalance.execute(monthlyBalance);
   }
@@ -192,8 +191,6 @@ export default class UpdatePortfolio {
       monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE
     ) {
       UpdatePortfolio.calculateTax(monthlyBalance, totalBalance);
-    } else {
-      monthlyBalance.setNetWins();
     }
   }
 
@@ -202,12 +199,10 @@ export default class UpdatePortfolio {
     monthlyBalance.setTradeEarnings(
       Math.max(0, monthlyBalance.getTradeEarnings() - loss),
     );
-    monthlyBalance.setLoss(monthlyBalance.getLoss() + loss);
 
     totalBalance.setLoss(totalBalance.getLoss() + loss);
 
-    if (monthlyBalance.getTaxes() <= 0) {
-      monthlyBalance.setNetWins();
+    if (monthlyBalance.getTax() <= 0) {
       return;
     }
 
@@ -239,7 +234,6 @@ export default class UpdatePortfolio {
       }
     }
 
-    monthlyBalance.setTaxes(tax);
-    monthlyBalance.setNetWins();
+    monthlyBalance.setTax(tax);
   }
 }

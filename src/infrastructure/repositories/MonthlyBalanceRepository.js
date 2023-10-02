@@ -19,6 +19,19 @@ export default class MonthlyBalanceRepository {
       .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : null));
   }
 
+  async sumEarnings(institutionId) {
+    return this.database
+      .connection()
+      .select(
+        this.database
+          .connection()
+          .raw('SUM(trade_earnings + dividend_earnings - tax) as earnings'),
+      )
+      .from(Tables.MONTHLY_BALANCE)
+      .where('institution_id', institutionId)
+      .first();
+  }
+
   async create(balance) {
     return this.database
       .connection()

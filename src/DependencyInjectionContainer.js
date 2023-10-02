@@ -15,6 +15,7 @@ import UpdateMonthlyBalance from './application/useCases/UpdateMonthlyBalance.js
 import GetTotalBalance from './application/useCases/GetTotalBalance.js';
 import CreateTotalBalance from './application/useCases/CreateTotalBalance.js';
 import UpdateTotalBalance from './application/useCases/UpdateTotalBalance.js';
+import GetProfit from './application/useCases/GetProfit.js';
 
 import InstitutionRepository from './infrastructure/repositories/InstitutionRepository.js';
 import ShareRepository from './infrastructure/repositories/ShareRepository.js';
@@ -62,6 +63,10 @@ export const updatePortfolio = new UpdatePortfolio(
   updateMonthlyBalance,
   getTotalBalance,
   updateTotalBalance,
+);
+export const getProfit = new GetProfit(
+  monthlyBalanceRepository,
+  totalBalanceRepository,
 );
 export const createTransaction = new CreateTransaction(
   transactionRepository,

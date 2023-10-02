@@ -11,9 +11,7 @@ export const up = async (knex) => {
           table.string('year_month', 7).notNullable();
           table.decimal('trade_earnings', null);
           table.decimal('dividend_earnings', null);
-          table.decimal('loss', null);
-          table.decimal('taxes', null);
-          table.decimal('net_wins', null);
+          table.decimal('tax', null);
           table.enu('type', Object.values(MONTHLY_BALANCE_TYPE)).notNullable();
           table.timestamps(true, true);
 
