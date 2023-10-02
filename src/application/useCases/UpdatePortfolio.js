@@ -82,9 +82,7 @@ export default class UpdatePortfolio {
   }
 
   async handleDividends(transaction, monthlyBalance) {
-    monthlyBalance.setGrossWins(
-      monthlyBalance.getGrossWins() + transaction.getTotalCost(),
-    );
+    monthlyBalance.setDividendEarnings(transaction.getTotalCost());
     monthlyBalance.setNetWins();
 
     return this.updateMonthlyBalance.execute(monthlyBalance);
@@ -182,7 +180,7 @@ export default class UpdatePortfolio {
   }
 
   static handleTax(sellTransactions, wins, monthlyBalance, totalBalance) {
-    monthlyBalance.setGrossWins(monthlyBalance.getGrossWins() + wins);
+    monthlyBalance.setTradeEarnings(monthlyBalance.getTradeEarnings() + wins);
 
     const totalSold = sellTransactions.reduce(
       (acc, transaction) => acc + transaction.totalCost,
@@ -201,8 +199,8 @@ export default class UpdatePortfolio {
 
   static updateTax(monthlyBalance, totalBalance, totalLoss) {
     const loss = Math.abs(totalLoss);
-    monthlyBalance.setGrossWins(
-      Math.max(0, monthlyBalance.getGrossWins() - loss),
+    monthlyBalance.setTradeEarnings(
+      Math.max(0, monthlyBalance.getTradeEarnings() - loss),
     );
     monthlyBalance.setLoss(monthlyBalance.getLoss() + loss);
 
@@ -216,19 +214,20 @@ export default class UpdatePortfolio {
   }
 
   static calculateTax(monthlyBalance, totalBalance) {
-    // fix, is calculating dividends, and it need to calculate just trade
-    const netWinsBeforeTax = Math.max(
+    const eligibleToChargeTax = Math.max(
       0,
-      monthlyBalance.getGrossWins() - monthlyBalance.getLoss(),
+      monthlyBalance.getTradeEarnings() -
+        monthlyBalance.getLoss() -
+        monthlyBalance.getDividendEarnings(),
     );
     let tax = 0;
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.SWING_TRADE) {
-      tax = netWinsBeforeTax * SWING_TRADE_TAX_PERCENTAGE;
+      tax = eligibleToChargeTax * SWING_TRADE_TAX_PERCENTAGE;
     }
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
-      tax = netWinsBeforeTax * DAY_TRADE_TAX_PERCENTAGE;
+      tax = eligibleToChargeTax * DAY_TRADE_TAX_PERCENTAGE;
     }
 
     if (totalBalance.getLoss() > 0 && tax > 0) {

@@ -8,7 +8,8 @@ export default class MonthlyBalance {
     id = uuid(),
     institutionId,
     yearMonth,
-    grossWins = 0,
+    tradeEarnings = 0,
+    dividendEarnings = 0,
     loss = 0,
     taxes = 0,
     netWins = 0,
@@ -17,7 +18,8 @@ export default class MonthlyBalance {
     this.id = id;
     this.institutionId = institutionId;
     this.yearMonth = yearMonth;
-    this.grossWins = grossWins;
+    this.tradeEarnings = tradeEarnings;
+    this.dividendEarnings = dividendEarnings;
     this.loss = loss;
     this.taxes = taxes;
     this.netWins = netWins;
@@ -36,8 +38,12 @@ export default class MonthlyBalance {
     return this.yearMonth;
   }
 
-  getGrossWins() {
-    return this.grossWins;
+  getTradeEarnings() {
+    return this.tradeEarnings;
+  }
+
+  getDividendEarnings() {
+    return this.dividendEarnings;
   }
 
   getLoss() {
@@ -60,12 +66,19 @@ export default class MonthlyBalance {
     this.loss = loss;
   }
 
-  setGrossWins(wins) {
-    this.grossWins = Math.max(0, wins);
+  setTradeEarnings(earning) {
+    this.tradeEarnings = Math.max(0, earning);
+  }
+
+  setDividendEarnings(earning) {
+    this.dividendEarnings += earning;
   }
 
   setNetWins() {
-    const netWins = Math.max(0, this.grossWins - this.loss - this.taxes);
+    const netWins = Math.max(
+      0,
+      this.tradeEarnings + this.dividendEarnings - this.loss - this.taxes,
+    );
     this.netWins = netWins;
   }
 

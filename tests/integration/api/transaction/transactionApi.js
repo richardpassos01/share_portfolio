@@ -117,12 +117,12 @@ describe('transactionAPI', () => {
         const transaction = factory.get();
         const payload = factory.getPayloadObject();
         const monthlyBalance = new MonthlyBalanceFactory({
-          grossWins: 200,
+          tradeEarnings: 200,
           loss: 100,
           netWins: 100,
         });
         const expectedMonthlyBalance = new MonthlyBalanceFactory({
-          grossWins: 1200,
+          tradeEarnings: 1200,
           loss: 100,
           netWins: 1100,
         }).getObject();
@@ -191,7 +191,7 @@ describe('transactionAPI', () => {
         });
       });
 
-      describe('when there are wins on sale', () => {
+      describe('when there are earnings on sale', () => {
         describe('when there are day trade on month', () => {
           it('should charge taxes independent of the total sale amount', async () => {
             const buyTransaction = new TransactionFactory();
@@ -203,7 +203,7 @@ describe('transactionAPI', () => {
             }).getPayloadObject();
 
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              grossWins: 500,
+              tradeEarnings: 500,
               netWins: 400,
               taxes: 100,
               type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
@@ -238,7 +238,7 @@ describe('transactionAPI', () => {
             }).getPayloadObject();
 
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              grossWins: 500,
+              tradeEarnings: 500,
               netWins: 500,
             }).getObject();
 
@@ -276,7 +276,7 @@ describe('transactionAPI', () => {
               await new MonthlyBalanceFactory().save();
 
               const expectedMonthlyBalance = new MonthlyBalanceFactory({
-                grossWins: 29000,
+                tradeEarnings: 29000,
                 netWins: 24650,
                 taxes: 4350,
               }).getObject();
@@ -322,7 +322,7 @@ describe('transactionAPI', () => {
 
               it('should update monthly balance', async () => {
                 const expectedMonthlyBalance = new MonthlyBalanceFactory({
-                  grossWins: 500,
+                  tradeEarnings: 500,
                   netWins: 500,
                   taxes: 0,
                   type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
@@ -364,7 +364,7 @@ describe('transactionAPI', () => {
 
               it('should update monthly balance', async () => {
                 const expectedMonthlyBalance = new MonthlyBalanceFactory({
-                  grossWins: 500,
+                  tradeEarnings: 500,
                   netWins: 410,
                   taxes: 90,
                   type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
@@ -418,7 +418,7 @@ describe('transactionAPI', () => {
             await buyTransaction.save();
             await new ShareFactory({ quantity: 10, totalCost: 10000 }).save();
             await new MonthlyBalanceFactory({
-              grossWins: 100,
+              tradeEarnings: 100,
               loss: 10,
               taxes: 0,
               netWins: 90,
@@ -440,7 +440,7 @@ describe('transactionAPI', () => {
 
           it('should update monthly balance', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              grossWins: 0,
+              tradeEarnings: 0,
               taxes: 0,
               loss: 9910,
               netWins: 0,
@@ -479,7 +479,7 @@ describe('transactionAPI', () => {
             await buyTransaction.save();
             await new ShareFactory({ quantity: 10, totalCost: 110 }).save();
             await new MonthlyBalanceFactory({
-              grossWins: 1000,
+              tradeEarnings: 1000,
               loss: 100,
               taxes: 135,
               netWins: 765,
@@ -488,7 +488,7 @@ describe('transactionAPI', () => {
 
           it('should recalculate tax and update monthly balance', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              grossWins: 990,
+              tradeEarnings: 990,
               loss: 110,
               taxes: 132,
               netWins: 748,

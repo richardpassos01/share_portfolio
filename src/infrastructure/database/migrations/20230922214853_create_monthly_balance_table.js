@@ -9,7 +9,8 @@ export const up = async (knex) => {
           table.uuid('id').primary();
           table.uuid('institution_id').notNullable();
           table.string('year_month', 7).notNullable();
-          table.decimal('gross_wins', null);
+          table.decimal('trade_earnings', null);
+          table.decimal('dividend_earnings', null);
           table.decimal('loss', null);
           table.decimal('taxes', null);
           table.decimal('net_wins', null);
