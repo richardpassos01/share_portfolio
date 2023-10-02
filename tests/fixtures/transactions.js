@@ -13,7 +13,7 @@ export const transactions = [
     quantity: 100,
     unityPrice: 20.19,
     totalCost: 2019.0,
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -23,7 +23,7 @@ export const transactions = [
     quantity: 100,
     unityPrice: 12.54,
     totalCost: 1254.0,
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // LUCRO de 45.499999999999886
     type: TRANSACTION_TYPE.SELL,
@@ -33,7 +33,7 @@ export const transactions = [
     quantity: 50,
     unityPrice: 21.1,
     totalCost: 1055.0, // restando 50 com custo total de 964, pm de 19.28
-  }, // verificado - ganho
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -43,7 +43,7 @@ export const transactions = [
     quantity: 100,
     unityPrice: 13.0,
     totalCost: 1300.0,
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -53,7 +53,7 @@ export const transactions = [
     quantity: 1500, // 1700
     unityPrice: 12.3, // 12.355294117647059
     totalCost: 18450.0, // 21004
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -63,7 +63,7 @@ export const transactions = [
     quantity: 1500,
     unityPrice: 12.3,
     totalCost: 18450.0, // restando 1550 com custo total de 19414, pm de 12.52516129032258
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -73,7 +73,7 @@ export const transactions = [
     quantity: 1500,
     unityPrice: 10,
     totalCost: 15000.0,
-  }, // verificado - dividendos
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -83,17 +83,17 @@ export const transactions = [
     quantity: 10,
     unityPrice: 12.3,
     totalCost: 123, // restando 1560 com custo total de 19537, pm de 12.523717948717948
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // lucro 9.762820512820525
     type: TRANSACTION_TYPE.SELL,
     date: new Date('2019-09-11T00:00:00'),
-    category: TRANSACTION_CATEGORY.TRADE,
+    category: TRANSACTION_CATEGORY.TRADE, // ERRO
     ticketSymbol: 'AAPL',
     quantity: 10,
     unityPrice: 13.5,
     totalCost: 135, // restando 1550 com custo total de 19402, pm de 12.51741935483871
-  }, // verificado - ganho
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // Perca -3776.1290322580644
     type: TRANSACTION_TYPE.SELL,
@@ -103,7 +103,7 @@ export const transactions = [
     quantity: 1500,
     unityPrice: 10,
     totalCost: 15000, // restando 50 com custo total de 4402, pm de 88.04
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // lucro 110
     type: TRANSACTION_TYPE.SELL,
@@ -113,7 +113,7 @@ export const transactions = [
     quantity: 1700,
     unityPrice: 12.42,
     totalCost: 21114, // restando 0 com custo total de 0, pm de 0
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -123,7 +123,7 @@ export const transactions = [
     quantity: 10,
     unityPrice: 0,
     totalCost: 0, // restando 60 com custo total de 4402, pm de 73.36666666666666
-  }, // verificado - BONUS SHARE
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -133,7 +133,7 @@ export const transactions = [
     quantity: 100,
     unityPrice: 0,
     totalCost: 0, // restando 160 com custo total de 4402, pm de 27.5125
-  }, // verificado - SPLIT
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // perca de 1202
     type: TRANSACTION_TYPE.SELL,
@@ -143,7 +143,7 @@ export const transactions = [
     quantity: 160,
     unityPrice: 20,
     totalCost: 3200, // restando 0 com custo total de 0, pm de 0
-  }, // verificado
+  },
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
@@ -153,17 +153,7 @@ export const transactions = [
     quantity: 100,
     unityPrice: 10,
     totalCost: 1000,
-  }, // verificado
-  {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-    type: TRANSACTION_TYPE.BUY,
-    date: new Date('2020-04-01T00:00:00'),
-    category: TRANSACTION_CATEGORY.TRADE,
-    ticketSymbol: 'META',
-    quantity: 100,
-    unityPrice: 10,
-    totalCost: 1000,
-  }, // verificado
+  },
 
   // custo_total_novo = custo_total - custo_transaction
   // qtd = quantitade - quantidade_nova

@@ -143,11 +143,4 @@ export const shares = [
       totalCost: 1000,
     },
   ],
-  [
-    {
-      ticketSymbol: 'META',
-      quantity: 100,
-      totalCost: 1000,
-    },
-  ],
 ];

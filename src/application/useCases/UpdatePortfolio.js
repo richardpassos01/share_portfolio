@@ -204,8 +204,9 @@ export default class UpdatePortfolio {
     );
     monthlyBalance.setLoss(monthlyBalance.getLoss() + loss);
 
+    totalBalance.setLoss(totalBalance.getLoss() + loss);
+
     if (monthlyBalance.getTaxes() <= 0) {
-      totalBalance.setLoss(totalBalance.getLoss() + loss);
       monthlyBalance.setNetWins();
       return;
     }
@@ -214,20 +215,14 @@ export default class UpdatePortfolio {
   }
 
   static calculateTax(monthlyBalance, totalBalance) {
-    const eligibleToChargeTax = Math.max(
-      0,
-      monthlyBalance.getTradeEarnings() -
-        monthlyBalance.getLoss() -
-        monthlyBalance.getDividendEarnings(),
-    );
     let tax = 0;
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.SWING_TRADE) {
-      tax = eligibleToChargeTax * SWING_TRADE_TAX_PERCENTAGE;
+      tax = monthlyBalance.getTradeEarnings() * SWING_TRADE_TAX_PERCENTAGE;
     }
 
     if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
-      tax = eligibleToChargeTax * DAY_TRADE_TAX_PERCENTAGE;
+      tax = monthlyBalance.getTradeEarnings() * DAY_TRADE_TAX_PERCENTAGE;
     }
 
     if (totalBalance.getLoss() > 0 && tax > 0) {
