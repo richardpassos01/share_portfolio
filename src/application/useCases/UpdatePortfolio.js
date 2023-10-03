@@ -219,11 +219,10 @@ export default class UpdatePortfolio {
   }
 
   static calculateTax(monthlyBalance, totalBalance) {
-    const netEarning =
-      monthlyBalance.getTradeEarnings() - monthlyBalance.getLoss();
+    const tradetEarning = monthlyBalance.getTradeEarnings();
 
     let tax =
-      netEarning * TAX_PERCENTAGE[monthlyBalance.getType()] -
+      tradetEarning * TAX_PERCENTAGE[monthlyBalance.getType()] -
       monthlyBalance.getTaxWithholding();
 
     if (totalBalance.getLoss() > 0 && tax > 0) {
