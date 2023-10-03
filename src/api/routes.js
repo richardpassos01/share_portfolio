@@ -17,6 +17,10 @@ router.get('/institution/:institutionId', (...args) =>
   institutionController.get(...args),
 );
 
+router.get('/institution/:institutionId/profit', (...args) =>
+  institutionController.profit(...args),
+);
+
 router.post('/transaction', (...args) => transactionController.create(...args));
 
 export default router;

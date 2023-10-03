@@ -73,7 +73,10 @@ export const createTransaction = new CreateTransaction(
   updatePortfolio,
 );
 
-export const institutionController = new InstitutionController(getInstitution);
+export const institutionController = new InstitutionController(
+  getInstitution,
+  getProfit,
+);
 export const transactionController = new TransactionController(
   createTransaction,
 );
