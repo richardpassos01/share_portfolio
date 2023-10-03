@@ -10,6 +10,8 @@ export default class MonthlyBalanceFactory {
     tradeEarnings,
     dividendEarnings,
     tax,
+    taxWithholding,
+    loss,
     type,
   } = {}) {
     this.monthlyBalance = new MonthlyBalance({
@@ -19,6 +21,8 @@ export default class MonthlyBalanceFactory {
       tradeEarnings,
       dividendEarnings,
       tax,
+      taxWithholding,
+      loss,
       type,
     });
   }
@@ -34,6 +38,8 @@ export default class MonthlyBalanceFactory {
       tradeEarnings: this.monthlyBalance.getTradeEarnings(),
       dividendEarnings: this.monthlyBalance.getDividendEarnings(),
       tax: this.monthlyBalance.getTax(),
+      taxWithholding: this.monthlyBalance.getTaxWithholding(),
+      loss: this.monthlyBalance.getLoss(),
       type: this.monthlyBalance.getType(),
     };
   }

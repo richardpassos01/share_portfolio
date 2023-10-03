@@ -2,11 +2,15 @@ import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
 } from '../../domain/transaction/TransactionEnums.js';
-import { MONTHLY_BALANCE_TYPE } from '../../domain/monthlyBalance/MonthlyBalanceEnums.js';
+import {
+  MONTHLY_BALANCE_TYPE,
+  MONTHLY_SALES_LIMIT,
+} from '../../domain/monthlyBalance/MonthlyBalanceEnums.js';
 
-const TAX_FREE_SALES_LIMIT = 20000;
-const DAY_TRADE_TAX_PERCENTAGE = 0.2;
-const SWING_TRADE_TAX_PERCENTAGE = 0.15;
+const TAX_PERCENTAGE = {
+  SWING_TRADE: 0.15,
+  DAY_TRADE: 0.2,
+};
 
 export default class UpdatePortfolio {
   constructor(
@@ -99,10 +103,7 @@ export default class UpdatePortfolio {
 
   async handleSellOperation(transaction, totalBalance, monthlyBalance) {
     const share = await this.getShare.execute(transaction);
-    const operationResult = UpdatePortfolio.calculateWinsOrLossOnSale(
-      share,
-      transaction,
-    );
+    const earning = UpdatePortfolio.calculateEarning(share, transaction);
 
     share.updatePosition(transaction);
 
@@ -121,20 +122,34 @@ export default class UpdatePortfolio {
       TRANSACTION_TYPE.SELL,
     );
 
-    monthlyBalance.setType(buyTransactions, sellTransactions);
+    const monthlySales = sellTransactions.reduce(
+      (acc, sellTransaction) => acc + sellTransaction.getTotalCost(),
+      0,
+    );
 
-    if (operationResult < 0) {
-      const totalLoss = Math.abs(operationResult);
-      UpdatePortfolio.updateTax(monthlyBalance, totalBalance, totalLoss);
+    if (transaction.totalCost === 21114) {
+      console.log(1);
     }
 
-    if (operationResult > 0) {
-      UpdatePortfolio.handleTax(
-        sellTransactions,
-        operationResult,
+    monthlyBalance.setType(buyTransactions, sellTransactions);
+    // INTER bank are charging tax withholding if the total sales are higher than 20k, independent of monthly balance
+    monthlyBalance.setTaxWithholding(monthlySales);
+
+    if (earning < 0) {
+      const totalLoss = Math.abs(earning);
+      UpdatePortfolio.handleLoss(monthlyBalance, totalBalance, totalLoss);
+    }
+
+    if (earning > 0) {
+      UpdatePortfolio.handleEarnings(
+        monthlySales,
+        earning,
         monthlyBalance,
         totalBalance,
       );
+    }
+
+    if (earning === 0) {
     }
 
     await Promise.all([
@@ -162,13 +177,13 @@ export default class UpdatePortfolio {
     return monthlyBalance;
   }
 
-  static calculateWinsOrLossOnSale(share, transaction) {
+  static calculateEarning(share, transaction) {
     try {
       const sellCost = transaction.getTotalCost();
       const minIdealSellCost =
         transaction.getQuantity() * share.getMediumPrice();
-      const winsOrLoss = sellCost - minIdealSellCost;
-      return winsOrLoss;
+      const earning = sellCost - minIdealSellCost;
+      return earning;
     } catch (err) {
       console.log(err);
     }
@@ -178,29 +193,22 @@ export default class UpdatePortfolio {
     return transactions.filter((transaction) => transaction.type === type);
   }
 
-  static handleTax(sellTransactions, wins, monthlyBalance, totalBalance) {
-    monthlyBalance.setTradeEarnings(monthlyBalance.getTradeEarnings() + wins);
-
-    const totalSold = sellTransactions.reduce(
-      (acc, transaction) => acc + transaction.totalCost,
-      0,
+  static handleEarnings(monthlySales, earning, monthlyBalance, totalBalance) {
+    monthlyBalance.setTradeEarnings(
+      monthlyBalance.getTradeEarnings() + earning,
     );
 
     if (
-      totalSold > TAX_FREE_SALES_LIMIT ||
+      monthlySales > MONTHLY_SALES_LIMIT ||
       monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE
     ) {
       UpdatePortfolio.calculateTax(monthlyBalance, totalBalance);
     }
   }
 
-  static updateTax(monthlyBalance, totalBalance, totalLoss) {
-    const loss = Math.abs(totalLoss);
-    monthlyBalance.setTradeEarnings(
-      Math.max(0, monthlyBalance.getTradeEarnings() - loss),
-    );
-
-    totalBalance.setLoss(totalBalance.getLoss() + loss);
+  static handleLoss(monthlyBalance, totalBalance, totalLoss) {
+    monthlyBalance.setLoss(totalLoss);
+    totalBalance.setLoss(totalBalance.getLoss() + totalLoss);
 
     if (monthlyBalance.getTax() <= 0) {
       return;
@@ -210,15 +218,12 @@ export default class UpdatePortfolio {
   }
 
   static calculateTax(monthlyBalance, totalBalance) {
-    let tax = 0;
+    const netEarning =
+      monthlyBalance.getTradeEarnings() - monthlyBalance.getLoss();
 
-    if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.SWING_TRADE) {
-      tax = monthlyBalance.getTradeEarnings() * SWING_TRADE_TAX_PERCENTAGE;
-    }
-
-    if (monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
-      tax = monthlyBalance.getTradeEarnings() * DAY_TRADE_TAX_PERCENTAGE;
-    }
+    let tax =
+      netEarning * TAX_PERCENTAGE[monthlyBalance.getType()] -
+      monthlyBalance.getTaxWithholding();
 
     if (totalBalance.getLoss() > 0 && tax > 0) {
       const taxDeductedFromLoss = tax - totalBalance.getLoss();

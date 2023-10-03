@@ -25,7 +25,9 @@ export default class MonthlyBalanceRepository {
       .select(
         this.database
           .connection()
-          .raw('SUM(trade_earnings + dividend_earnings - tax) as earnings'),
+          .raw(
+            'SUM(trade_earnings + dividend_earnings - tax - tax_withholding) as earnings',
+          ),
       )
       .from(Tables.MONTHLY_BALANCE)
       .where('institution_id', institutionId)

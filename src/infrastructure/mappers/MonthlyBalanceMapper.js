@@ -9,6 +9,8 @@ export default class MonthlyBalanceMapper {
       trade_earnings: entity.tradeEarnings,
       dividend_earnings: entity.dividendEarnings,
       tax: entity.tax,
+      tax_withholding: entity.taxWithholding,
+      loss: entity.loss,
       type: entity.type,
     };
   }
@@ -21,6 +23,8 @@ export default class MonthlyBalanceMapper {
       tradeEarnings: object.trade_earnings,
       dividendEarnings: object.dividend_earnings,
       tax: object.tax,
+      taxWithholding: object.tax_withholding,
+      loss: object.loss,
       type: object.type,
     });
   }

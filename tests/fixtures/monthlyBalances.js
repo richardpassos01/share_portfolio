@@ -6,6 +6,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -13,6 +15,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -20,6 +24,8 @@ export const monthlyBalances = [
     tradeEarnings: 45.499999999999886,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -27,6 +33,8 @@ export const monthlyBalances = [
     tradeEarnings: 45.499999999999886,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -34,6 +42,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -41,6 +51,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -48,6 +60,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 15000.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -55,6 +69,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 15000.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -62,6 +78,8 @@ export const monthlyBalances = [
     tradeEarnings: 9.762820512820525,
     dividendEarnings: 15000.0, // ERROR
     tax: 1.9525641025641052,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
   },
   {
@@ -69,6 +87,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 3776.1290322580644,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -76,6 +96,8 @@ export const monthlyBalances = [
     tradeEarnings: 110,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 1.0557,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -83,6 +105,8 @@ export const monthlyBalances = [
     tradeEarnings: 110,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 1.0557,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -90,6 +114,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -97,6 +123,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 1202,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -104,6 +132,8 @@ export const monthlyBalances = [
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
     tax: 0.0,
+    taxWithholding: 0,
+    loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
 ];

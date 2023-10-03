@@ -4,3 +4,5 @@ export const MONTHLY_BALANCE_TYPE = {
   BUY: 'BUY',
   SELL: 'SELL',
 };
+
+export const MONTHLY_SALES_LIMIT = 20000;

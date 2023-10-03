@@ -1,7 +1,15 @@
 import { uuid } from 'uuidv4';
 
-import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums.js';
+import {
+  MONTHLY_BALANCE_TYPE,
+  MONTHLY_SALES_LIMIT,
+} from './MonthlyBalanceEnums.js';
 import { dateToString } from '../../helpers/Helpers.js';
+
+const TAX_PERCENTAGE = {
+  SWING_TRADE: 0.005,
+  DAY_TRADE: 1,
+};
 
 export default class MonthlyBalance {
   constructor({
@@ -11,6 +19,8 @@ export default class MonthlyBalance {
     tradeEarnings = 0,
     dividendEarnings = 0,
     tax = 0,
+    taxWithholding = 0,
+    loss = 0,
     type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   }) {
     this.id = id;
@@ -19,6 +29,8 @@ export default class MonthlyBalance {
     this.tradeEarnings = tradeEarnings;
     this.dividendEarnings = dividendEarnings;
     this.tax = tax;
+    this.taxWithholding = taxWithholding;
+    this.loss = loss;
     this.type = type;
   }
 
@@ -48,6 +60,14 @@ export default class MonthlyBalance {
 
   getTax() {
     return this.tax;
+  }
+
+  getLoss() {
+    return this.loss;
+  }
+
+  getTaxWithholding() {
+    return this.taxWithholding;
   }
 
   setTradeEarnings(earning) {
@@ -86,5 +106,19 @@ export default class MonthlyBalance {
 
   setTax(tax) {
     this.tax = tax;
+  }
+
+  setTaxWithholding(monthlySales) {
+    if (monthlySales < MONTHLY_SALES_LIMIT) {
+      return;
+    }
+
+    const taxWithholding = (monthlySales * TAX_PERCENTAGE[this.type]) / 100;
+
+    this.taxWithholding += taxWithholding;
+  }
+
+  setLoss(loss) {
+    this.loss += loss;
   }
 }
