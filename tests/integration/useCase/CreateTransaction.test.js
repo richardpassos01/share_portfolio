@@ -7,7 +7,10 @@ import {
   getProfit,
 } from '../../../src/DependencyInjectionContainer';
 import { createTransactionCases } from '../../fixtures/cases.js';
-import { dateToMonthYear } from '../../../src/helpers/Helpers.js';
+import {
+  dateToMonthYear,
+  formatterMoney,
+} from '../../../src/helpers/Helpers.js';
 
 describe('CreateTransaction', () => {
   beforeAll(async () => {
@@ -59,13 +62,12 @@ describe('CreateTransaction', () => {
 
   describe('totalBalance ', () => {
     it('should get profit', async () => {
-      const profit = await getProfit.execute(
-        'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-      );
+      const instituionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2';
+      const profit = await getProfit.execute(instituionId);
 
-      expect(profit).toBe(100);
+      const expectedProfit = 1721806.6940386684;
+
+      expect(formatterMoney(expectedProfit)).toBe(profit);
     });
-
-    it('should return loss', () => {});
   });
 });

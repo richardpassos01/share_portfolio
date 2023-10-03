@@ -1,3 +1,5 @@
+import { formatterMoney } from '../../helpers/Helpers.js';
+
 export default class GetProfit {
   constructor(monthlyBalanceRepository, totalBalanceRepository) {
     this.monthlyBalanceRepository = monthlyBalanceRepository;
@@ -5,15 +7,11 @@ export default class GetProfit {
   }
 
   async execute(institutionId) {
-    try {
-      const { earnings } =
-        await this.monthlyBalanceRepository.sumEarnings(institutionId);
+    const { earnings } =
+      await this.monthlyBalanceRepository.sumEarnings(institutionId);
 
-      const balance = await this.totalBalanceRepository.get(institutionId);
-
-      return Math.max(0, earnings - balance.getLoss());
-    } catch (error) {
-      return 0;
-    }
+    const balance = await this.totalBalanceRepository.get(institutionId);
+    const profit = Math.max(0, earnings - balance.getLoss());
+    return formatterMoney(profit);
   }
 }
