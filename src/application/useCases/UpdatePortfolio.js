@@ -128,8 +128,10 @@ export default class UpdatePortfolio {
     );
 
     monthlyBalance.setType(buyTransactions, sellTransactions);
-    // INTER bank are charging tax withholding if the total sales are higher than 20k, independent of monthly balance
-    monthlyBalance.setTaxWithholding(monthlySales);
+
+    if (transaction.totalCost > MONTHLY_SALES_LIMIT) {
+      monthlyBalance.setTaxWithholding(transaction.totalCost);
+    }
 
     if (earning < 0) {
       const totalLoss = Math.abs(earning);
@@ -143,9 +145,6 @@ export default class UpdatePortfolio {
         monthlyBalance,
         totalBalance,
       );
-    }
-
-    if (earning === 0) {
     }
 
     await Promise.all([
@@ -193,6 +192,12 @@ export default class UpdatePortfolio {
     monthlyBalance.setTradeEarnings(
       monthlyBalance.getTradeEarnings() + earning,
     );
+
+    // Inter bank is charging tax for all sales transactions above 20k. Which is incorrect. I am analyzing it together with the bank
+    // this is the right way
+    // if (monthlySales > MONTHLY_SALES_LIMIT) {
+    //   monthlyBalance.setTaxWithholding(monthlyBalance.getTradeEarnings());
+    // }
 
     if (
       monthlySales > MONTHLY_SALES_LIMIT ||
