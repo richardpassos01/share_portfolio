@@ -154,4 +154,34 @@ export const transactions = [
     unityPrice: 10,
     totalCost: 1000,
   },
+  {
+    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    type: TRANSACTION_TYPE.BUY,
+    date: new Date('2020-03-01T00:00:00'),
+    category: TRANSACTION_CATEGORY.TRADE,
+    ticketSymbol: 'TSLA',
+    quantity: 100,
+    unityPrice: 12.93,
+    totalCost: 1293, // Holding 200 shares with total cost of 2293 and pm of 11.465
+  },
+  {
+    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // EARNING 9988.535
+    type: TRANSACTION_TYPE.SELL,
+    date: new Date('2021-02-01T00:00:00'),
+    category: TRANSACTION_CATEGORY.TRADE,
+    ticketSymbol: 'TSLA',
+    quantity: 1,
+    unityPrice: 10000,
+    totalCost: 10000,
+  },
+  {
+    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2', // EARNING 1991990
+    type: TRANSACTION_TYPE.SELL,
+    date: new Date('2021-02-02T00:00:00'),
+    category: TRANSACTION_CATEGORY.TRADE,
+    ticketSymbol: 'TSLA',
+    quantity: 199,
+    unityPrice: 10010,
+    totalCost: 1991990,
+  },
 ];

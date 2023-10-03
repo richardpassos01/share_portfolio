@@ -127,10 +127,6 @@ export default class UpdatePortfolio {
       0,
     );
 
-    if (transaction.totalCost === 21114) {
-      console.log(1);
-    }
-
     monthlyBalance.setType(buyTransactions, sellTransactions);
     // INTER bank are charging tax withholding if the total sales are higher than 20k, independent of monthly balance
     monthlyBalance.setTaxWithholding(monthlySales);

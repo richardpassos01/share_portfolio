@@ -7,8 +7,8 @@ import {
 import { dateToString } from '../../helpers/Helpers.js';
 
 const TAX_PERCENTAGE = {
-  SWING_TRADE: 0.005,
-  DAY_TRADE: 1,
+  SWING_TRADE: 0.00005,
+  DAY_TRADE: 0.01,
 };
 
 export default class MonthlyBalance {
@@ -113,7 +113,7 @@ export default class MonthlyBalance {
       return;
     }
 
-    const taxWithholding = (monthlySales * TAX_PERCENTAGE[this.type]) / 100;
+    const taxWithholding = monthlySales * TAX_PERCENTAGE[this.type];
 
     this.taxWithholding += taxWithholding;
   }

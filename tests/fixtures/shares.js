@@ -143,4 +143,19 @@ export const shares = [
       totalCost: 1000,
     },
   ],
+  [
+    {
+      ticketSymbol: 'TSLA',
+      quantity: 200,
+      totalCost: 2293,
+    },
+  ],
+  [
+    {
+      ticketSymbol: 'TSLA',
+      quantity: 199,
+      totalCost: 0,
+    },
+  ],
+  [],
 ];
