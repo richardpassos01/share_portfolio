@@ -1,31 +1,44 @@
-import Transaction from '../../domain/transaction/Transaction';
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/constants';
+import Transaction from '@domain/transaction/Transaction';
+
+type MapToEntityInput = {
+  id: string,
+  institution_id: string,
+  type: TRANSACTION_TYPE,
+  date: Date,
+  category: TRANSACTION_CATEGORY,
+  ticket_symbol: string,
+  quantity: number,
+  unity_price: number,
+  total_cost: number,
+};
 
 export default class TransactionMapper {
-  static mapToDatabaseObject(entity) {
+  static mapToDatabaseObject(entity: Transaction): MapToEntityInput {
     return {
-      id: entity.id,
-      institution_id: entity.institutionId,
-      type: entity.type,
-      date: entity.date,
-      category: entity.category,
-      ticket_symbol: entity.ticketSymbol,
-      quantity: entity.quantity,
-      unity_price: entity.unityPrice,
-      total_cost: entity.totalCost,
+      id: entity.getId(),
+      institution_id: entity.getInstitutionId(),
+      type: entity.getType(),
+      date: entity.getDate(),
+      category: entity.getCategory(),
+      ticket_symbol: entity.getTicketSymbol(),
+      quantity: entity.getQuantity(),
+      unity_price: entity.getUnityPrice(),
+      total_cost: entity.getTotalCost(),
     };
   }
 
-  static mapToEntity(object) {
-    return new Transaction({
-      id: object.id,
-      institutionId: object.institution_id,
-      type: object.type,
-      date: object.date,
-      category: object.category,
-      ticketSymbol: object.ticket_symbol,
-      quantity: object.quantity,
-      unityPrice: object.unity_price,
-      totalCost: object.total_cost,
-    });
+  static mapToEntity(object: MapToEntityInput): Transaction {
+    return new Transaction(
+      object.id,
+      object.institution_id,
+      object.type,
+      object.date,
+      object.category,
+      object.ticket_symbol,
+      object.quantity,
+      object.unity_price,
+      object.total_cost,
+    );
   }
 }

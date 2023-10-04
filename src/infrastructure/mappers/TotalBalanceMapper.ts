@@ -1,19 +1,25 @@
-import TotalBalance from '../../domain/totalBalance/TotalBalance';
+import TotalBalance from '@domain/totalBalance/TotalBalance';
+
+type MapToEntityInput = {
+  id: string;
+  institution_id: string;
+  loss: number;
+};
 
 export default class TotalBalanceMapper {
-  static mapToDatabaseObject(entity) {
+  static mapToDatabaseObject(entity: TotalBalance): MapToEntityInput {
     return {
-      id: entity.id,
-      institution_id: entity.institutionId,
-      loss: entity.loss,
+      id: entity.getId(),
+      institution_id: entity.getInstitutionId(),
+      loss: entity.getLoss(),
     };
   }
 
-  static mapToEntity(object) {
-    return new TotalBalance({
-      id: object.id,
-      institutionId: object.institution_id,
-      loss: object.loss,
-    });
+  static mapToEntity(object: MapToEntityInput): TotalBalance {
+    return new TotalBalance(
+      object.id,
+      object.institution_id,
+      object.loss,
+    );
   }
 }

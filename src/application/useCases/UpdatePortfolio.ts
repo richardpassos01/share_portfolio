@@ -97,7 +97,7 @@ export default class UpdatePortfolio {
     if (!share) {
       return this.createShare.execute(transaction);
     }
-    share.updatePosition(transaction);
+    share.updatePosition(transaction.getQuantity(), transaction.getTotalCost(), transaction.getType());
     return this.updateShare.execute(share);
   }
 
@@ -105,7 +105,7 @@ export default class UpdatePortfolio {
     const share = await this.getShare.execute(transaction);
     const earning = UpdatePortfolio.calculateEarning(share, transaction);
 
-    share.updatePosition(transaction);
+    share.updatePosition(transaction.getQuantity(), transaction.getTotalCost(), transaction.getType());
 
     const monthTransactions =
       await this.transactionRepository.getFromMonth(

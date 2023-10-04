@@ -1,23 +1,31 @@
-import Share from '../../domain/share/Share';
+import Share from '@domain/share/Share';
+
+type MapToEntityInput = {
+  id: string;
+  institution_id: string;
+  ticket_symbol: string;
+  quantity: number;
+  total_cost: number;
+};
 
 export default class ShareMapper {
-  static mapToDatabaseObject(entity) {
+  static mapToDatabaseObject(entity: Share): MapToEntityInput {
     return {
-      id: entity.id,
-      institution_id: entity.institutionId,
-      ticket_symbol: entity.ticketSymbol,
-      quantity: entity.quantity,
-      total_cost: entity.totalCost,
+      id: entity.getId(),
+      institution_id: entity.getInstitutionId(),
+      ticket_symbol: entity.getTicketSymbol(),
+      quantity: entity.getQuantity(),
+      total_cost: entity.getTotalCost(),
     };
   }
 
-  static mapToEntity(object) {
-    return new Share({
-      id: object.id,
-      institutionId: object.institution_id,
-      ticketSymbol: object.ticket_symbol,
-      quantity: object.quantity,
-      totalCost: object.total_cost,
-    });
+  static mapToEntity(object: MapToEntityInput): Share {
+    return new Share(
+       object.id,
+       object.institution_id,
+       object.ticket_symbol,
+       object.quantity,
+       object.total_cost,
+    );
   }
 }

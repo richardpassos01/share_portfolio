@@ -1,19 +1,16 @@
 import { uuid } from 'uuidv4';
-import { SHARE_OPERATION_TYPE } from './ShareEnums';
+import { TRANSACTION_TYPE } from '@domain/shared/constants';
 
 export default class Share {
-  constructor({
-    id = uuid(),
-    institutionId,
-    ticketSymbol,
-    quantity,
-    totalCost,
-  }) {
-    this.id = id;
-    this.institutionId = institutionId;
-    this.ticketSymbol = ticketSymbol;
-    this.quantity = quantity;
-    this.totalCost = totalCost;
+  private mediumPrice: number = 0; 
+
+  constructor(
+    private readonly id: string = uuid(),
+    private readonly institutionId: string,
+    private readonly ticketSymbol: string,
+    private quantity: number,
+    private totalCost: number,
+  ) {
     this.setMediumPrice();
   }
 
@@ -41,11 +38,11 @@ export default class Share {
     return this.mediumPrice;
   }
 
-  setQuantity(quantity) {
+  setQuantity(quantity: number) {
     this.quantity = Math.max(0, quantity);
   }
 
-  setTotalCost(totalCost) {
+  setTotalCost(totalCost: number) {
     this.totalCost = Math.max(0, totalCost);
   }
 
@@ -53,8 +50,8 @@ export default class Share {
     this.mediumPrice = this.quantity > 0 ? this.totalCost / this.quantity : 0;
   }
 
-  updatePosition({ quantity, totalCost, type }) {
-    const isBuyOperation = type === SHARE_OPERATION_TYPE.BUY;
+  updatePosition(quantity: number, totalCost: number, type: TRANSACTION_TYPE) {
+    const isBuyOperation = type === TRANSACTION_TYPE.BUY;
     const changeMultiplier = isBuyOperation ? 1 : -1;
 
     this.setQuantity((this.quantity += changeMultiplier * quantity));

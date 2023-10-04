@@ -15,11 +15,11 @@ export default class InstitutionMapper {
     };
   }
 
-  static mapToEntity({ id, name, user_id }: MapToEntityInput): Institution {
+  static mapToEntity(object: MapToEntityInput): Institution {
     return new Institution(
-      id,
-      name,
-      user_id,
+      object.id,
+      object.name,
+      object.user_id,
     );
   }
 }

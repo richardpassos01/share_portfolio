@@ -1,11 +1,11 @@
 import { uuid } from 'uuidv4';
 
 export default class TotalBalance {
-  constructor({ id = uuid(), institutionId, loss = 0 }) {
-    this.id = id;
-    this.institutionId = institutionId;
-    this.loss = loss;
-  }
+  constructor(
+    private readonly id: string = uuid(),
+    private readonly institutionId: string,
+    private loss: number = 0,
+  ) { }
 
   getId() {
     return this.id;
@@ -19,7 +19,7 @@ export default class TotalBalance {
     return this.loss;
   }
 
-  setLoss(loss) {
+  setLoss(loss: number) {
     this.loss = loss;
   }
 }
