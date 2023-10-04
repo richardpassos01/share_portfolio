@@ -1,4 +1,4 @@
-import {injectable} from 'inversify';
+import { injectable } from 'inversify';
 import knex, { Knex } from 'knex';
 import KnexConfig from '../../../knexfile';
 
@@ -10,8 +10,8 @@ class Database {
     this.instance = knex(KnexConfig);
   }
 
-  async checkConnection(): Promise<void> {
-    return this.instance.select(1).then(() => {
+  checkConnection(): void {
+    this.instance.select(1).then(() => {
       console.log('database connected!');
     });
   }

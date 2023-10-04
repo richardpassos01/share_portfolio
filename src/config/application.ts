@@ -1,4 +1,4 @@
-import env from 'env-var';
+import * as env from 'env-var';
 
 const application = Object.freeze({
   port: env.get('PORT').default(3000).asIntPositive(),

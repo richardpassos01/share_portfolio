@@ -1,10 +1,12 @@
-import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/constants';
+import {
+  TRANSACTION_CATEGORY,
+  TRANSACTION_TYPE,
+} from '@domain/shared/constants';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import { uuid } from 'uuidv4';
 
 export default class Transaction implements AbstractTransaction {
   constructor(
-    private readonly id = uuid(),
     private readonly institutionId: string,
     private readonly type: TRANSACTION_TYPE,
     private readonly date: Date,
@@ -13,6 +15,7 @@ export default class Transaction implements AbstractTransaction {
     private readonly quantity: number,
     private readonly unityPrice: number,
     private readonly totalCost: number,
+    private readonly id: string = uuid(),
   ) {}
 
   getId() {

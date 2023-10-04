@@ -1,4 +1,15 @@
-import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from "./constants";
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from './constants';
+
+export interface TransactionParams {
+  institutionId: string;
+  type: string;
+  date: Date;
+  category: string;
+  ticketSymbol: string;
+  quantity: number;
+  unityPrice: number;
+  totalCost: number;
+}
 
 export interface AbstractTransaction {
   getId(): string;
@@ -10,4 +21,8 @@ export interface AbstractTransaction {
   getQuantity(): number;
   getUnityPrice(): number;
   getTotalCost(): number;
+}
+
+export interface AbstractUseCase<TInput, TOutput> {
+  execute(input: TInput): Promise<TOutput>;
 }

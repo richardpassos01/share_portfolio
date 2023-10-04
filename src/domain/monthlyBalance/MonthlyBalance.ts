@@ -7,7 +7,6 @@ import {
 import { dateToString } from '../../helpers/Helpers';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 
-
 const TAX_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {
   [MONTHLY_BALANCE_TYPE.SWING_TRADE]: 0.00005,
   [MONTHLY_BALANCE_TYPE.DAY_TRADE]: 0.01,
@@ -15,7 +14,6 @@ const TAX_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {
 
 export default class MonthlyBalance {
   constructor(
-    private readonly id: string = uuid(),
     private readonly institutionId: string,
     private readonly yearMonth: string,
     private tradeEarnings = 0,
@@ -23,7 +21,8 @@ export default class MonthlyBalance {
     private tax = 0,
     private taxWithholding = 0,
     private loss = 0,
-    private type = MONTHLY_BALANCE_TYPE.SWING_TRADE
+    private type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
+    private readonly id: string = uuid(),
   ) {}
 
   getId() {
@@ -70,12 +69,18 @@ export default class MonthlyBalance {
     this.dividendEarnings += earning;
   }
 
-  setType(buyTransactions: AbstractTransaction[], sellTransactions: AbstractTransaction[]) {
+  setType(
+    buyTransactions: AbstractTransaction[],
+    sellTransactions: AbstractTransaction[],
+  ) {
     if (this.type === MONTHLY_BALANCE_TYPE.DAY_TRADE) {
       return;
     }
 
-    const isMatch = (sellTransaction: AbstractTransaction, buyTransaction: AbstractTransaction) => {
+    const isMatch = (
+      sellTransaction: AbstractTransaction,
+      buyTransaction: AbstractTransaction,
+    ) => {
       const sameTicket =
         sellTransaction.getTicketSymbol() === buyTransaction.getTicketSymbol();
       const sameDate =

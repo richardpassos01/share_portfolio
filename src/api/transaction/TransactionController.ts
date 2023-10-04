@@ -1,12 +1,22 @@
+import * as Koa from 'koa';
+
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { dateStringToDate } from '../../helpers/Helpers';
+import { TYPES } from '@constants/types';
+import { inject, injectable } from 'inversify';
+import { AbstractUseCase, TransactionParams } from '@domain/shared/interfaces';
 
+@injectable()
 export default class TransactionController {
-  constructor(createTransaction) {
-    this.createTransaction = createTransaction;
-  }
+  constructor(
+    @inject(TYPES.CreateTransaction)
+    private readonly createTransaction: AbstractUseCase<
+      TransactionParams,
+      void
+    >,
+  ) {}
 
-  async create(req, res, next) {
+  async create(ctx: Koa.DefaultContext): Promise<void> {
     const {
       institutionId,
       type,
@@ -16,20 +26,20 @@ export default class TransactionController {
       quantity,
       unityPrice,
       totalCost,
-    } = req.body;
+    } = ctx.request.body;
 
-    return this.createTransaction
-      .execute({
-        institutionId,
-        type,
-        date: dateStringToDate(date),
-        category,
-        ticketSymbol,
-        quantity,
-        unityPrice,
-        totalCost,
-      })
-      .then(() => res.status(StatusCodes.OK).send(ReasonPhrases.OK))
-      .catch(next);
+    await this.createTransaction.execute({
+      institutionId,
+      type,
+      date: dateStringToDate(date),
+      category,
+      ticketSymbol,
+      quantity,
+      unityPrice,
+      totalCost,
+    });
+
+    ctx.response.status = StatusCodes.NO_CONTENT;
+    ctx.body = ReasonPhrases.NO_CONTENT;
   }
 }

@@ -2,14 +2,14 @@ import { uuid } from 'uuidv4';
 import { TRANSACTION_TYPE } from '@domain/shared/constants';
 
 export default class Share {
-  private mediumPrice: number = 0; 
+  private mediumPrice = 0;
 
   constructor(
-    private readonly id: string = uuid(),
     private readonly institutionId: string,
     private readonly ticketSymbol: string,
     private quantity: number,
     private totalCost: number,
+    private readonly id: string = uuid(),
   ) {
     this.setMediumPrice();
   }

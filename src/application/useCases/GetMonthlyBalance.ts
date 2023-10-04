@@ -1,13 +1,22 @@
+import { TYPES } from '@constants/types';
 import { dateToMonthYear } from '../../helpers/Helpers';
+import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import { injectable, inject } from 'inversify';
+import { AbstractTransaction } from '@domain/shared/interfaces';
 
+@injectable()
 export default class GetMonthlyBalance {
-  constructor(monthlyBalanceRepository) {
-    this.monthlyBalanceRepository = monthlyBalanceRepository;
-  }
+  constructor(
+    @inject(TYPES.MonthlyBalanceRepository)
+    private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
+  ) {}
 
-  async execute(institutionId, date) {
-    const yearMonth = dateToMonthYear(date);
+  async execute(transaction: AbstractTransaction) {
+    const yearMonth = dateToMonthYear(transaction.getDate());
 
-    return this.monthlyBalanceRepository.get(institutionId, yearMonth);
+    return this.monthlyBalanceRepository.get(
+      transaction.getInstitutionId(),
+      yearMonth,
+    );
   }
 }

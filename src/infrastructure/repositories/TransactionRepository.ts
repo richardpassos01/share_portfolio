@@ -1,17 +1,20 @@
-import { TRANSACTION_CATEGORY } from '@domain/transaction/TransactionEnums';
 import TransactionMapper from '@infrastructure/mappers/TransactionMapper';
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import Database, {Tables} from '@infrastructure/database';
-import {inject, injectable} from 'inversify';
+import Database, { Tables } from '@infrastructure/database';
+import { inject, injectable } from 'inversify';
 import Transaction from '@domain/transaction/Transaction';
+import { TRANSACTION_CATEGORY } from '@domain/shared/constants';
 
 @injectable()
-export default class TransactionRepository implements TransactionRepositoryInterface  {
+export default class TransactionRepository
+  implements TransactionRepositoryInterface
+{
   constructor(
     @inject(TYPES.Database)
-    private readonly database: Database
+    private readonly database: Database,
   ) {}
+
   async get(institutionId: string) {
     return this.database
       .connection()
@@ -37,7 +40,7 @@ export default class TransactionRepository implements TransactionRepositoryInter
         institution_id: institutionId,
       })
       .whereRaw(
-        `EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?`,
+        'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
         [date.getFullYear(), date.getMonth() + 1],
       )
       .into(Tables.TRANSACTION)

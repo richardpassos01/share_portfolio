@@ -21,11 +21,11 @@ export default class ShareMapper {
 
   static mapToEntity(object: MapToEntityInput): Share {
     return new Share(
-       object.id,
-       object.institution_id,
-       object.ticket_symbol,
-       object.quantity,
-       object.total_cost,
+      object.id,
+      object.institution_id,
+      object.ticket_symbol,
+      object.quantity,
+      object.total_cost,
     );
   }
 }

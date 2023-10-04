@@ -1,48 +1,70 @@
 import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
-} from '../../domain/transaction/TransactionEnums';
+} from '@domain/shared/constants';
 import {
   MONTHLY_BALANCE_TYPE,
-  MONTHLY_SALES_LIMIT,
-} from '../../domain/monthlyBalance/MonthlyBalanceEnums';
+  MONTHLY_BALANCE_SALES_LIMIT,
+} from '@domain/monthlyBalance/MonthlyBalanceEnums';
+import { inject, injectable } from 'inversify';
+import ShareRepository from '@infrastructure/repositories/ShareRepository';
+import TransactionRepository from '@infrastructure/repositories/TransactionRepository';
+import GetShare from './GetShare';
+import UpdateShare from './UpdateShare';
+import CreateShare from './CreateShare';
+import GetMonthlyBalance from './GetMonthlyBalance';
+import CreateMonthlyBalance from './CreateMonthlyBalance';
+import UpdateMonthlyBalance from './UpdateMonthlyBalance';
+import GetTotalBalance from './GetTotalBalance';
+import UpdateTotalBalance from './UpdateTotalBalance';
+import { TYPES } from '@constants/types';
+import { AbstractTransaction } from '@domain/shared/interfaces';
+import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
+import TotalBalance from '@domain/totalBalance/TotalBalance';
+import Share from '@domain/share/Share';
 
 const TAX_PERCENTAGE = {
   SWING_TRADE: 0.15,
   DAY_TRADE: 0.2,
 };
 
+@injectable()
 export default class UpdatePortfolio {
   constructor(
-    shareRepository,
-    transactionRepository,
-    getShare,
-    createShare,
-    updateShare,
-    getMonthlyBalance,
-    createMonthlyBalance,
-    updateMonthlyBalance,
-    getTotalBalance,
-    updateTotalBalance,
-  ) {
-    this.shareRepository = shareRepository;
-    this.transactionRepository = transactionRepository;
-    this.getShare = getShare;
-    this.createShare = createShare;
-    this.updateShare = updateShare;
-    this.getMonthlyBalance = getMonthlyBalance;
-    this.createMonthlyBalance = createMonthlyBalance;
-    this.updateMonthlyBalance = updateMonthlyBalance;
-    this.getTotalBalance = getTotalBalance;
-    this.updateTotalBalance = updateTotalBalance;
-  }
+    @inject(TYPES.ShareRepository)
+    private readonly shareRepository: ShareRepository,
 
-  async execute(transaction) {
+    @inject(TYPES.TransactionRepository)
+    private readonly transactionRepository: TransactionRepository,
+
+    @inject(TYPES.GetShare)
+    private readonly getShare: GetShare,
+
+    @inject(TYPES.CreateShare)
+    private readonly createShare: CreateShare,
+
+    @inject(TYPES.UpdateShare)
+    private readonly updateShare: UpdateShare,
+
+    @inject(TYPES.GetMonthlyBalance)
+    private readonly getMonthlyBalance: GetMonthlyBalance,
+
+    @inject(TYPES.CreateMonthlyBalance)
+    private readonly createMonthlyBalance: CreateMonthlyBalance,
+
+    @inject(TYPES.UpdateMonthlyBalance)
+    private readonly updateMonthlyBalance: UpdateMonthlyBalance,
+
+    @inject(TYPES.GetTotalBalance)
+    private readonly getTotalBalance: GetTotalBalance,
+
+    @inject(TYPES.UpdateTotalBalance)
+    private readonly updateTotalBalance: UpdateTotalBalance,
+  ) {}
+
+  async execute(transaction: AbstractTransaction) {
     try {
-      const monthlyBalance = await this.getOrCreateMonthlyBalance(
-        transaction.getInstitutionId(),
-        transaction.getDate(),
-      );
+      const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
 
       const totalBalance = await this.getTotalBalance.execute(
         transaction.getInstitutionId(),
@@ -56,7 +78,7 @@ export default class UpdatePortfolio {
         transaction.getCategory() === TRANSACTION_CATEGORY.SPLIT ||
         transaction.getCategory() === TRANSACTION_CATEGORY.BONUS_SHARE
       ) {
-        return this.handleBonusAndSplitShare(transaction, monthlyBalance);
+        return this.handleBonusAndSplitShare(transaction);
       }
 
       if (transaction.getCategory() === TRANSACTION_CATEGORY.TRADE) {
@@ -77,41 +99,64 @@ export default class UpdatePortfolio {
     }
   }
 
-  async handleBonusAndSplitShare(transaction) {
+  async handleBonusAndSplitShare(transaction: AbstractTransaction) {
     const share = await this.getShare.execute(transaction);
+
+    if (!share) {
+      return;
+    }
+
     const quantity = share.getQuantity() + transaction.getQuantity();
 
     share.setQuantity(quantity);
     return this.updateShare.execute(share);
   }
 
-  async handleDividends(transaction, monthlyBalance) {
+  async handleDividends(
+    transaction: AbstractTransaction,
+    monthlyBalance: MonthlyBalance,
+  ) {
     monthlyBalance.setDividendEarnings(transaction.getTotalCost());
 
     return this.updateMonthlyBalance.execute(monthlyBalance);
   }
 
-  async handleBuyOperation(transaction) {
+  async handleBuyOperation(transaction: AbstractTransaction) {
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
       return this.createShare.execute(transaction);
     }
-    share.updatePosition(transaction.getQuantity(), transaction.getTotalCost(), transaction.getType());
+    share.updatePosition(
+      transaction.getQuantity(),
+      transaction.getTotalCost(),
+      transaction.getType(),
+    );
     return this.updateShare.execute(share);
   }
 
-  async handleSellOperation(transaction, totalBalance, monthlyBalance) {
+  async handleSellOperation(
+    transaction: AbstractTransaction,
+    totalBalance: TotalBalance,
+    monthlyBalance: MonthlyBalance,
+  ) {
     const share = await this.getShare.execute(transaction);
+    if (!share) {
+      return;
+    }
+
     const earning = UpdatePortfolio.calculateEarning(share, transaction);
 
-    share.updatePosition(transaction.getQuantity(), transaction.getTotalCost(), transaction.getType());
+    share.updatePosition(
+      transaction.getQuantity(),
+      transaction.getTotalCost(),
+      transaction.getType(),
+    );
 
-    const monthTransactions =
-      await this.transactionRepository.getFromMonth(
-        transaction.getInstitutionId(),
-        transaction.getDate(),
-      );
+    const monthTransactions = await this.transactionRepository.getFromMonth(
+      transaction.getInstitutionId(),
+      transaction.getDate(),
+    );
 
     const buyTransactions = UpdatePortfolio.filterTransactionByType(
       monthTransactions,
@@ -129,8 +174,10 @@ export default class UpdatePortfolio {
 
     monthlyBalance.setType(buyTransactions, sellTransactions);
 
-    if (transaction.totalCost > MONTHLY_SALES_LIMIT) {
-      monthlyBalance.setTaxWithholding(transaction.totalCost);
+    if (
+      transaction.getTotalCost() > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX
+    ) {
+      monthlyBalance.setTaxWithholding(transaction.getTotalCost());
     }
 
     if (earning < 0) {
@@ -154,48 +201,48 @@ export default class UpdatePortfolio {
     ]);
   }
 
-  async handleLiquidation(share) {
+  async handleLiquidation(share: Share) {
     if (share.getQuantity() === 0) {
       return this.shareRepository.delete(share);
     }
     return this.updateShare.execute(share);
   }
 
-  async getOrCreateMonthlyBalance(institutionId, date) {
-    const monthlyBalance = await this.getMonthlyBalance.execute(
-      institutionId,
-      date,
-    );
+  async getOrCreateMonthlyBalance(transaction: AbstractTransaction) {
+    const monthlyBalance = await this.getMonthlyBalance.execute(transaction);
     if (!monthlyBalance) {
-      return this.createMonthlyBalance.execute(institutionId, date);
+      return this.createMonthlyBalance.execute(transaction);
     }
     return monthlyBalance;
   }
 
-  static calculateEarning(share, transaction) {
-    try {
-      const sellCost = transaction.getTotalCost();
-      const minIdealSellCost =
-        transaction.getQuantity() * share.getMediumPrice();
-      const earning = sellCost - minIdealSellCost;
-      return earning;
-    } catch (err) {
-      console.log(err);
-    }
+  static calculateEarning(
+    share: Share,
+    transaction: AbstractTransaction,
+  ): number {
+    const sellCost = transaction.getTotalCost();
+    const minIdealSellCost = transaction.getQuantity() * share.getMediumPrice();
+    const earning = sellCost - minIdealSellCost;
+    return earning;
   }
 
-  static filterTransactionByType(transactions, type) {
+  static filterTransactionByType(transactions: AbstractTransaction[], type) {
     return transactions.filter((transaction) => transaction.type === type);
   }
 
-  static handleEarnings(monthlySales, earning, monthlyBalance, totalBalance) {
+  static handleEarnings(
+    monthlySales: number,
+    earning: number,
+    monthlyBalance: MonthlyBalance,
+    totalBalance: TotalBalance,
+  ) {
     monthlyBalance.setTradeEarnings(
       monthlyBalance.getTradeEarnings() + earning,
     );
 
     // Inter bank is charging tax for all sales transactions above 20k. Which is incorrect. I am analyzing it together with the bank
     // this is the right way
-    // if (monthlySales > MONTHLY_SALES_LIMIT) {
+    // if (monthlySales > MONTHLY_BALANCE_SALES_LIMIT) {
     //   monthlyBalance.setTaxWithholding(monthlyBalance.getTradeEarnings());
     // }
 
@@ -207,7 +254,11 @@ export default class UpdatePortfolio {
     }
   }
 
-  static handleLoss(monthlyBalance, totalBalance, totalLoss) {
+  static handleLoss(
+    monthlyBalance: MonthlyBalance,
+    totalBalance: TotalBalance,
+    totalLoss: number,
+  ) {
     monthlyBalance.setLoss(totalLoss);
     totalBalance.setLoss(totalBalance.getLoss() + totalLoss);
 
@@ -218,7 +269,10 @@ export default class UpdatePortfolio {
     UpdatePortfolio.calculateTax(monthlyBalance, totalBalance);
   }
 
-  static calculateTax(monthlyBalance, totalBalance) {
+  static calculateTax(
+    monthlyBalance: MonthlyBalance,
+    totalBalance: TotalBalance,
+  ) {
     const tradetEarning = monthlyBalance.getTradeEarnings();
 
     let tax =

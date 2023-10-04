@@ -1,19 +1,17 @@
 import * as Router from '@koa/router';
 
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
-import {ReasonPhrases, StatusCodes} from 'http-status-codes';
-import AuthenticationController from './authentication/AuthenticationController';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
-import UserController from './user/UserController';
-
+import TransactionController from './transaction/TransactionController';
 
 const router = new Router();
 
-router.get('/healthy-check', ctx => {
+router.get('/healthy-check', (ctx) => {
   ctx.response.status = StatusCodes.OK;
   ctx.body = ReasonPhrases.OK;
-})
+});
 
 // router.get('/institution/:institutionId', (...args) =>
 //   institutionController.get(...args),
@@ -25,27 +23,23 @@ router.get('/healthy-check', ctx => {
 
 // router.post('/transaction', (...args) => transactionController.create(...args));
 
+router.post('/transaction', (ctx) => {
+  const transactionController = container.get<TransactionController>(
+    TYPES.TransactionController,
+  );
+  return transactionController.create(ctx);
+});
 
-router.patch(
-  '/user/update-password',
-  async ctx => {
-    const userController = container.get<UserController>(TYPES.UserController);
-    await userController.updatePassword(ctx);
-    ctx.response.status = StatusCodes.NO_CONTENT;
-    ctx.body = ReasonPhrases.NO_CONTENT;
-  }
-);
-
-router.post(
-  '/authentication/authenticate',
-  async ctx => {
-    const authenticationController = container.get<AuthenticationController>(
-      TYPES.AuthenticationController
-    );
-    const result = await authenticationController.authenticate(ctx);
-    ctx.response.status = StatusCodes.OK;
-    ctx.body = result;
-  }
-);
+// router.post(
+//   '/authentication/authenticate',
+//   async ctx => {
+//     const authenticationController = container.get<AuthenticationController>(
+//       TYPES.AuthenticationController
+//     );
+//     const result = await authenticationController.authenticate(ctx);
+//     ctx.response.status = StatusCodes.OK;
+//     ctx.body = result;
+//   }
+// );
 
 export default router;

@@ -1,16 +1,19 @@
-import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/constants';
+import {
+  TRANSACTION_CATEGORY,
+  TRANSACTION_TYPE,
+} from '@domain/shared/constants';
 import Transaction from '@domain/transaction/Transaction';
 
 type MapToEntityInput = {
-  id: string,
-  institution_id: string,
-  type: TRANSACTION_TYPE,
-  date: Date,
-  category: TRANSACTION_CATEGORY,
-  ticket_symbol: string,
-  quantity: number,
-  unity_price: number,
-  total_cost: number,
+  id: string;
+  institution_id: string;
+  type: TRANSACTION_TYPE;
+  date: Date;
+  category: TRANSACTION_CATEGORY;
+  ticket_symbol: string;
+  quantity: number;
+  unity_price: number;
+  total_cost: number;
 };
 
 export default class TransactionMapper {

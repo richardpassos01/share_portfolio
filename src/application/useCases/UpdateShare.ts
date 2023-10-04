@@ -1,9 +1,16 @@
-export default class UpdateShare {
-  constructor(shareRepository) {
-    this.shareRepository = shareRepository;
-  }
+import { TYPES } from '@constants/types';
+import Share from '@domain/share/Share';
+import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
+import { injectable, inject } from 'inversify';
 
-  async execute(share) {
+@injectable()
+export default class UpdateShare {
+  constructor(
+    @inject(TYPES.ShareRepository)
+    private readonly shareRepository: ShareRepositoryInterface,
+  ) {}
+
+  async execute(share: Share) {
     return this.shareRepository.update(share);
   }
 }

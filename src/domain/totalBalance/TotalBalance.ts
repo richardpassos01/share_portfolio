@@ -2,10 +2,10 @@ import { uuid } from 'uuidv4';
 
 export default class TotalBalance {
   constructor(
-    private readonly id: string = uuid(),
     private readonly institutionId: string,
     private loss: number = 0,
-  ) { }
+    private readonly id: string = uuid(),
+  ) {}
 
   getId() {
     return this.id;

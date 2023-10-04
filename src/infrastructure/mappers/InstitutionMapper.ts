@@ -16,10 +16,6 @@ export default class InstitutionMapper {
   }
 
   static mapToEntity(object: MapToEntityInput): Institution {
-    return new Institution(
-      object.id,
-      object.name,
-      object.user_id,
-    );
+    return new Institution(object.id, object.name, object.user_id);
   }
 }

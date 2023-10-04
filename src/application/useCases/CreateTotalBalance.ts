@@ -1,14 +1,18 @@
+import { injectable, inject } from 'inversify';
 import TotalBalance from '../../domain/totalBalance/TotalBalance';
+import { TYPES } from '@constants/types';
+import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import { AbstractTransaction } from '@domain/shared/interfaces';
 
+@injectable()
 export default class CreateTotalBalance {
-  constructor(totalBalanceRepository) {
-    this.totalBalanceRepository = totalBalanceRepository;
-  }
+  constructor(
+    @inject(TYPES.TotalBalanceRepository)
+    private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
+  ) {}
 
-  async execute(institutionId) {
-    const totalBalance = new TotalBalance({
-      institutionId,
-    });
+  async execute(transaction: AbstractTransaction) {
+    const totalBalance = new TotalBalance(transaction.getInstitutionId());
 
     return this.totalBalanceRepository.create(totalBalance);
   }

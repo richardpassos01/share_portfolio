@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import * as Koa from 'koa';
 
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database';
 import * as cors from '@koa/cors';

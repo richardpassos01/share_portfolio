@@ -1,15 +1,17 @@
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import MonthlyBalanceMapper from '@infrastructure/mappers/MonthlyBalanceMapper';
-import Database, {Tables} from '@infrastructure/database';
-import {inject, injectable} from 'inversify';
+import Database, { Tables } from '@infrastructure/database';
+import { inject, injectable } from 'inversify';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
 
 @injectable()
-export default class MonthlyBalanceRepository implements MonthlyBalanceRepositoryInterface  {
+export default class MonthlyBalanceRepository
+  implements MonthlyBalanceRepositoryInterface
+{
   constructor(
     @inject(TYPES.Database)
-    private readonly database: Database
+    private readonly database: Database,
   ) {}
 
   async get(institutionId: string, yearMonth: string) {

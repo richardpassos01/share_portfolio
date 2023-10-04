@@ -1,9 +1,16 @@
-export default class UpdateMonthlyBalance {
-  constructor(monthlyBalanceRepository) {
-    this.monthlyBalanceRepository = monthlyBalanceRepository;
-  }
+import { TYPES } from '@constants/types';
+import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
+import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import { injectable, inject } from 'inversify';
 
-  async execute(monthlyBalance) {
+@injectable()
+export default class UpdateMonthlyBalance {
+  constructor(
+    @inject(TYPES.MonthlyBalanceRepository)
+    private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
+  ) {}
+
+  async execute(monthlyBalance: MonthlyBalance) {
     return this.monthlyBalanceRepository.update(monthlyBalance);
   }
 }

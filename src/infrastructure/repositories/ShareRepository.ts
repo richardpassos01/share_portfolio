@@ -2,7 +2,7 @@ import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryIn
 import Tables from '../database/Tables';
 import ShareMapper from '../mappers/ShareMapper';
 import Database from '@infrastructure/database';
-import {inject, injectable} from 'inversify';
+import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import Share from '@domain/share/Share';
 
@@ -10,7 +10,7 @@ import Share from '@domain/share/Share';
 export default class ShareRepository implements ShareRepositoryInterface {
   constructor(
     @inject(TYPES.Database)
-    private readonly database: Database
+    private readonly database: Database,
   ) {}
 
   async get(institutionId: string, ticketSymbol: string) {

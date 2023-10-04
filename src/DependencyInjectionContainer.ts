@@ -1,4 +1,5 @@
-import {Container} from 'inversify';
+import { Container } from 'inversify';
+import { TYPES } from '@constants/types';
 
 import Database from '@infrastructure/database/Database';
 
@@ -25,68 +26,59 @@ import TransactionRepository from '@infrastructure/repositories/TransactionRepos
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
 import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRepository';
 
-import {TYPES} from '@constants/types';
+import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
+import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
+import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import { AbstractUseCase, TransactionParams } from '@domain/shared/interfaces';
 
 const container = new Container();
 
 container.bind<Database>(TYPES.Database).to(Database).inSingletonScope();
 
+// container.bind<InstitutionController>(TYPES.InstitutionController).to(InstitutionController).inSingletonScope();
+container
+  .bind<TransactionController>(TYPES.TransactionController)
+  .to(TransactionController)
+  .inSingletonScope();
 
-export const institutionRepository = new InstitutionRepository(database);
-export const shareRepository = new ShareRepository(database);
-export const transactionRepository = new TransactionRepository(database);
-export const monthlyBalanceRepository = new MonthlyBalanceRepository(database);
-export const totalBalanceRepository = new TotalBalanceRepository(database);
+// container.bind<AbstractUseCase>(TYPES.GetInstitution).to(GetInstitution).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.GetShare).to(GetShare).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.CreateShare).to(CreateShare).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.UpdateShare).to(UpdateShare).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.UpdatePortfolio).to(UpdatePortfolio).inSingletonScope();
+container
+  .bind<AbstractUseCase<TransactionParams, void>>(TYPES.CreateTransaction)
+  .to(CreateTransaction)
+  .inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.GetMonthlyBalance).to(GetMonthlyBalance).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.CreateMonthlyBalance).to(CreateMonthlyBalance).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.UpdateMonthlyBalance).to(UpdateMonthlyBalance).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.GetTotalBalance).to(GetTotalBalance).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.CreateTotalBalance).to(CreateTotalBalance).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.UpdateTotalBalance).to(UpdateTotalBalance).inSingletonScope();
+// container.bind<AbstractUseCase>(TYPES.GetProfit).to(GetProfit).inSingletonScope();
 
-export const getInstitution = new GetInstitution(institutionRepository);
-export const createShare = new CreateShare(shareRepository);
-export const getShare = new GetShare(shareRepository);
-export const updateShare = new UpdateShare(shareRepository);
-export const getMonthlyBalance = new GetMonthlyBalance(
-  monthlyBalanceRepository,
-);
-export const createMonthlyBalance = new CreateMonthlyBalance(
-  monthlyBalanceRepository,
-);
-export const updateMonthlyBalance = new UpdateMonthlyBalance(
-  monthlyBalanceRepository,
-);
-
-export const getTotalBalance = new GetTotalBalance(totalBalanceRepository);
-export const createTotalBalance = new CreateTotalBalance(
-  totalBalanceRepository,
-);
-export const updateTotalBalance = new UpdateTotalBalance(
-  totalBalanceRepository,
-);
-export const updatePortfolio = new UpdatePortfolio(
-  shareRepository,
-  transactionRepository,
-  getShare,
-  createShare,
-  updateShare,
-  getMonthlyBalance,
-  createMonthlyBalance,
-  updateMonthlyBalance,
-  getTotalBalance,
-  updateTotalBalance,
-);
-export const getProfit = new GetProfit(
-  monthlyBalanceRepository,
-  totalBalanceRepository,
-);
-export const createTransaction = new CreateTransaction(
-  transactionRepository,
-  updatePortfolio,
-);
-
-export const institutionController = new InstitutionController(
-  getInstitution,
-  getProfit,
-);
-export const transactionController = new TransactionController(
-  createTransaction,
-);
-
+container
+  .bind<InstitutionRepositoryInterface>(TYPES.InstitutionRepository)
+  .to(InstitutionRepository)
+  .inSingletonScope();
+container
+  .bind<ShareRepositoryInterface>(TYPES.ShareRepository)
+  .to(ShareRepository)
+  .inSingletonScope();
+container
+  .bind<TransactionRepositoryInterface>(TYPES.TransactionRepository)
+  .to(TransactionRepository)
+  .inSingletonScope();
+container
+  .bind<MonthlyBalanceRepositoryInterface>(TYPES.MonthlyBalanceRepository)
+  .to(MonthlyBalanceRepository)
+  .inSingletonScope();
+container
+  .bind<TotalBalanceRepositoryInterface>(TYPES.TotalBalanceRepository)
+  .to(TotalBalanceRepository)
+  .inSingletonScope();
 
 export default container;
