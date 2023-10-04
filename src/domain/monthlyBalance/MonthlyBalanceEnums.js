@@ -1,8 +1,0 @@
-export const MONTHLY_BALANCE_TYPE = {
-  DAY_TRADE: 'DAY_TRADE',
-  SWING_TRADE: 'SWING_TRADE',
-  BUY: 'BUY',
-  SELL: 'SELL',
-};
-
-export const MONTHLY_SALES_LIMIT = 20000;

@@ -1,0 +1,25 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["reflect-metadata", "jest"],
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "build",
+    "paths": {
+      "@api/*": ["./src/api/*"],
+      "@application/*": ["./src/application/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@dependencyInjectionContainer": ["./src/DependencyInjectionContainer"],
+      "@factories/*": ["./tests/factories/*"],
+      "@fixtures/*": ["./tests/fixtures/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+  ]
+}
