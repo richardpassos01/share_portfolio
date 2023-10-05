@@ -9,7 +9,6 @@ import TransactionController from '@api/transaction/TransactionController';
 import GetInstitution from '@application/useCases/GetInstitution';
 import GetShare from '@application/useCases/GetShare';
 import CreateShare from '@application/useCases/CreateShare';
-import UpdateShare from '@application/useCases/UpdateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import GetMonthlyBalance from '@application/useCases/GetMonthlyBalance';
@@ -31,34 +30,67 @@ import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryIn
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import { TransactionParams } from '@domain/shared/interfaces';
+import UpdateShare from '@application/useCases/UpdateShare';
 
 const container = new Container();
 
 container.bind<Database>(TYPES.Database).to(Database).inSingletonScope();
 
-// container.bind<InstitutionController>(TYPES.InstitutionController).to(InstitutionController).inSingletonScope();
+container
+  .bind<InstitutionController>(TYPES.InstitutionController)
+  .to(InstitutionController)
+  .inSingletonScope();
 container
   .bind<TransactionController>(TYPES.TransactionController)
   .to(TransactionController)
   .inSingletonScope();
 
-// container.bind<GenericUseCase>(TYPES.GetInstitution).to(GetInstitution).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.GetShare).to(GetShare).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.CreateShare).to(CreateShare).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.UpdateShare).to(UpdateShare).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.UpdatePortfolio).to(UpdatePortfolio).inSingletonScope();
+container
+  .bind<GetInstitution>(TYPES.GetInstitution)
+  .to(GetInstitution)
+  .inSingletonScope();
+container.bind<GetShare>(TYPES.GetShare).to(GetShare).inSingletonScope();
+container
+  .bind<CreateShare>(TYPES.CreateShare)
+  .to(CreateShare)
+  .inSingletonScope();
+container
+  .bind<UpdateShare>(TYPES.UpdateShare)
+  .to(UpdateShare)
+  .inSingletonScope();
+container
+  .bind<UpdatePortfolio>(TYPES.UpdatePortfolio)
+  .to(UpdatePortfolio)
+  .inSingletonScope();
 container
   .bind<CreateTransaction>(TYPES.CreateTransaction)
   .to(CreateTransaction)
   .inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.GetMonthlyBalance).to(GetMonthlyBalance).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.CreateMonthlyBalance).to(CreateMonthlyBalance).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.UpdateMonthlyBalance).to(UpdateMonthlyBalance).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.GetTotalBalance).to(GetTotalBalance).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.CreateTotalBalance).to(CreateTotalBalance).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.UpdateTotalBalance).to(UpdateTotalBalance).inSingletonScope();
-// container.bind<GenericUseCase>(TYPES.GetProfit).to(GetProfit).inSingletonScope();
+container
+  .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)
+  .to(GetMonthlyBalance)
+  .inSingletonScope();
+container
+  .bind<CreateMonthlyBalance>(TYPES.CreateMonthlyBalance)
+  .to(CreateMonthlyBalance)
+  .inSingletonScope();
+container
+  .bind<UpdateMonthlyBalance>(TYPES.UpdateMonthlyBalance)
+  .to(UpdateMonthlyBalance)
+  .inSingletonScope();
+container
+  .bind<GetTotalBalance>(TYPES.GetTotalBalance)
+  .to(GetTotalBalance)
+  .inSingletonScope();
+container
+  .bind<CreateTotalBalance>(TYPES.CreateTotalBalance)
+  .to(CreateTotalBalance)
+  .inSingletonScope();
+container
+  .bind<UpdateTotalBalance>(TYPES.UpdateTotalBalance)
+  .to(UpdateTotalBalance)
+  .inSingletonScope();
+container.bind<GetProfit>(TYPES.GetProfit).to(GetProfit).inSingletonScope();
 
 container
   .bind<InstitutionRepositoryInterface>(TYPES.InstitutionRepository)
