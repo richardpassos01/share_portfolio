@@ -11,7 +11,7 @@
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run lint",
-    "test": "jest  --config jest.config.ts",
+    "test": "jest",
     "start": "node -r dotenv/config build/src/api/server.js",
     "predevelopment": "npm run migration:up",
     "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",

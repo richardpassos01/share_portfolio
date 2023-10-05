@@ -24,7 +24,7 @@ export default class MonthlyBalanceRepository
       })
       .into(Tables.MONTHLY_BALANCE)
       .first()
-      .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : null));
+      .then((data) => (data ? MonthlyBalanceMapper.mapToEntity(data) : undefined));
   }
 
   async create(balance: MonthlyBalance) {

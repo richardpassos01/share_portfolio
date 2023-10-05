@@ -1,4 +1,4 @@
-import * as Router from '@koa/router';
+import Router from '@koa/router';
 
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';

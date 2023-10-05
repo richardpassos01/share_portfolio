@@ -2,8 +2,13 @@ import { transactions } from './transactions';
 import { shares } from './shares';
 import { monthlyBalances } from './monthlyBalances';
 import { totalBalances } from './totalBalances';
+import { TransactionParams } from '@domain/shared/interfaces';
 
-export const createTransactionCases = transactions.map((transaction, i) => [
+type Case = 
+  | TransactionParams
+  | any;
+
+export const createTransactionCases: Case[] = transactions.map((transaction, i) => [
   transaction,
   shares[i],
   monthlyBalances[i],

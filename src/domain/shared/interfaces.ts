@@ -2,9 +2,9 @@ import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from './constants';
 
 export interface TransactionParams {
   institutionId: string;
-  type: string;
+  type: TRANSACTION_TYPE;
   date: Date;
-  category: string;
+  category: TRANSACTION_CATEGORY;
   ticketSymbol: string;
   quantity: number;
   unityPrice: number;

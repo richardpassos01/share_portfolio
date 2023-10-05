@@ -1,4 +1,4 @@
-import * as env from 'env-var';
+import env from 'env-var';
 
 export default Object.freeze({
   client: 'pg',

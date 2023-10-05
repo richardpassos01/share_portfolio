@@ -17,8 +17,8 @@ import { dateToMonthYear } from '../../../../src/helpers/Helpers';
 import {
   TRANSACTION_CATEGORY,
   TRANSACTION_TYPE,
-} from '../../../../src/domain/transaction/TransactionEnums';
-import { MONTHLY_BALANCE_TYPE } from '../../../../src/domain/monthlyBalance/MonthlyBalanceEnums';
+} from '../../@domain/transaction/TransactionEnums';
+import { MONTHLY_BALANCE_TYPE } from '../../@domain/monthlyBalance/MonthlyBalanceEnums';
 
 describe('transactionAPI', () => {
   beforeEach(async () => {

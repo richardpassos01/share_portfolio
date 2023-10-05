@@ -1,8 +1,25 @@
-import MonthlyBalance from '../../src/domain/monthlyBalance/MonthlyBalance';
-import { monthlyBalanceRepository } from '../../src/DependencyInjectionContainer';
-import { dateToMonthYear } from '../../src/helpers/Helpers';
+import {TYPES} from '@constants/types';
+import container from '@dependencyInjectionContainer';
+import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
+import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
+import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import { dateToMonthYear } from '@helpers/Helpers';
+
+type Params = {
+  id?: string;
+  institutionId?: string;
+  yearMonth?: string;
+  tradeEarnings?: number;
+  dividendEarnings?: number;
+  tax?: number;
+  taxWithholding?: number;
+  loss?: number;
+  type?: MONTHLY_BALANCE_TYPE;
+} 
 
 export default class MonthlyBalanceFactory {
+  private monthlyBalance: MonthlyBalance;
+
   constructor({
     id,
     institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
@@ -13,9 +30,10 @@ export default class MonthlyBalanceFactory {
     taxWithholding,
     loss,
     type,
-  } = {}) {
-    this.monthlyBalance = new MonthlyBalance({
-      id,
+  } = {} as Params,
+  monthlyBalance?: MonthlyBalance
+  ) {
+    this.monthlyBalance = monthlyBalance || new MonthlyBalance(
       institutionId,
       yearMonth,
       tradeEarnings,
@@ -24,7 +42,8 @@ export default class MonthlyBalanceFactory {
       taxWithholding,
       loss,
       type,
-    });
+      id,
+    );
   }
 
   get() {
@@ -45,6 +64,7 @@ export default class MonthlyBalanceFactory {
   }
 
   async save() {
+    const monthlyBalanceRepository = container.get<MonthlyBalanceRepositoryInterface>(TYPES.MonthlyBalanceRepository);
     return monthlyBalanceRepository.create(this.monthlyBalance);
   }
 }

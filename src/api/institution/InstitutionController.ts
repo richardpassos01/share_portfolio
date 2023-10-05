@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 
 import { TYPES } from '@constants/types';
 import { StatusCodes } from 'http-status-codes';

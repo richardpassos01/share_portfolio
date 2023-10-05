@@ -1,13 +1,28 @@
-import Transaction from '../../src/domain/transaction/Transaction';
-import { dateToString } from '../../src/helpers/Helpers';
+import {TYPES} from '@constants/types';
+import container from '@dependencyInjectionContainer';
+import Transaction from '@domain/transaction/Transaction';
+import { dateToString } from '@helpers/Helpers';
 import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
-} from '../../src/domain/transaction/TransactionEnums';
+} from '@domain/shared/constants';
+import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 
-import { transactionRepository } from '../../src/DependencyInjectionContainer';
+type Params = {
+  id?: string;
+  institutionId: string;
+  type: TRANSACTION_TYPE;
+  date: Date;
+  category: TRANSACTION_CATEGORY;
+  ticketSymbol: string;
+  quantity: number;
+  unityPrice: number;
+  totalCost: number;
+}
 
 export default class TransactionFactory {
+  private transaction: Transaction;
+
   constructor({
     id,
     institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
@@ -18,9 +33,8 @@ export default class TransactionFactory {
     quantity = 100,
     unityPrice = 10,
     totalCost = 1000,
-  } = {}) {
-    this.transaction = new Transaction({
-      id,
+  } = {} as Params) {
+    this.transaction = new Transaction(
       institutionId,
       type,
       date,
@@ -29,7 +43,8 @@ export default class TransactionFactory {
       quantity,
       unityPrice,
       totalCost,
-    });
+      id,
+    );
   }
 
   get() {
@@ -51,16 +66,20 @@ export default class TransactionFactory {
 
   getPayloadObject() {
     const transaction = this.getObject();
-    transaction.date = dateToString(this.transaction.getDate())
+    const date = dateToString(this.transaction.getDate())
       .split('-')
       .reverse()
       .join('-')
       .replace(/-/g, '/');
 
-    return transaction;
+    return {
+      ...transaction,
+      date
+    };
   }
 
   async save() {
+    const transactionRepository = container.get<TransactionRepositoryInterface>(TYPES.TransactionRepository);
     return transactionRepository.create(this.transaction);
   }
 }

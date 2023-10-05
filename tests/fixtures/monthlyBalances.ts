@@ -1,4 +1,4 @@
-import { MONTHLY_BALANCE_TYPE } from '../../src/domain/monthlyBalance/MonthlyBalanceEnums';
+import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
 
 export const monthlyBalances = [
   {

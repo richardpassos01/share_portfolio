@@ -3,6 +3,7 @@ import { TYPES } from '@constants/types';
 import Database, { Tables } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
+import Institution from '@domain/institution/Institution';
 
 @injectable()
 export default class InstitutionRepository
@@ -21,5 +22,12 @@ export default class InstitutionRepository
       .into(Tables.INSTITUTION)
       .first()
       .then((data) => InstitutionMapper.mapToEntity(data));
+  }
+
+  async create(institution: Institution) {
+    await this.database
+      .connection()
+      .insert(InstitutionMapper.mapToDatabaseObject(institution))
+      .into(Tables.MONTHLY_BALANCE);
   }
 }

@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { dateStringToDate } from '../../helpers/Helpers';

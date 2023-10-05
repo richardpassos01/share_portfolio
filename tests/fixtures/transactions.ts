@@ -1,9 +1,10 @@
 import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
-} from '../../src/domain/transaction/TransactionEnums';
+} from '@domain/shared/constants';
+import { TransactionParams } from '@domain/shared/interfaces';
 
-export const transactions = [
+export const transactions: TransactionParams[] = [
   {
     institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
     type: TRANSACTION_TYPE.BUY,
