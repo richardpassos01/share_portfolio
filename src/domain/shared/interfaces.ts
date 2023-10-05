@@ -22,7 +22,3 @@ export interface AbstractTransaction {
   getUnityPrice(): number;
   getTotalCost(): number;
 }
-
-export interface AbstractUseCase<TInput, TOutput> {
-  execute(input: TInput): Promise<TOutput>;
-}

@@ -1,4 +1,3 @@
-import { AbstractUseCase } from '@domain/shared/interfaces';
 import Transaction from '../../domain/transaction/Transaction';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
@@ -21,9 +20,7 @@ export interface TransactionParams {
 }
 
 @injectable()
-export default class CreateTransaction
-  implements AbstractUseCase<TransactionParams, void>
-{
+export default class CreateTransaction {
   constructor(
     @inject(TYPES.TransactionRepository)
     private readonly transactionRepository: TransactionRepositoryInterface,

@@ -226,8 +226,11 @@ export default class UpdatePortfolio {
     return earning;
   }
 
-  static filterTransactionByType(transactions: AbstractTransaction[], type) {
-    return transactions.filter((transaction) => transaction.type === type);
+  static filterTransactionByType(
+    transactions: AbstractTransaction[],
+    type: TRANSACTION_TYPE,
+  ) {
+    return transactions.filter((transaction) => transaction.getType() === type);
   }
 
   static handleEarnings(

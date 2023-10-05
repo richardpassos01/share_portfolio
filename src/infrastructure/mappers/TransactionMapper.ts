@@ -33,7 +33,6 @@ export default class TransactionMapper {
 
   static mapToEntity(object: MapToEntityInput): Transaction {
     return new Transaction(
-      object.id,
       object.institution_id,
       object.type,
       object.date,
@@ -42,6 +41,7 @@ export default class TransactionMapper {
       object.quantity,
       object.unity_price,
       object.total_cost,
+      object.id,
     );
   }
 }

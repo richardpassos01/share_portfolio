@@ -4,16 +4,13 @@ import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { dateStringToDate } from '../../helpers/Helpers';
 import { TYPES } from '@constants/types';
 import { inject, injectable } from 'inversify';
-import { AbstractUseCase, TransactionParams } from '@domain/shared/interfaces';
+import CreateTransaction from '@application/useCases/CreateTransaction';
 
 @injectable()
 export default class TransactionController {
   constructor(
     @inject(TYPES.CreateTransaction)
-    private readonly createTransaction: AbstractUseCase<
-      TransactionParams,
-      void
-    >,
+    private readonly createTransaction: CreateTransaction,
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<void> {

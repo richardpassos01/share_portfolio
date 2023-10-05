@@ -30,7 +30,6 @@ export default class MonthlyBalanceMapper {
 
   static mapToEntity(object: MapToEntityInput): MonthlyBalance {
     return new MonthlyBalance(
-      object.id,
       object.institution_id,
       object.year_month,
       object.trade_earnings,
@@ -39,6 +38,7 @@ export default class MonthlyBalanceMapper {
       object.tax_withholding,
       object.loss,
       object.type,
+      object.id,
     );
   }
 }

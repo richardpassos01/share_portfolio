@@ -16,6 +16,6 @@ export default class TotalBalanceMapper {
   }
 
   static mapToEntity(object: MapToEntityInput): TotalBalance {
-    return new TotalBalance(object.id, object.institution_id, object.loss);
+    return new TotalBalance(object.institution_id, object.loss, object.id);
   }
 }

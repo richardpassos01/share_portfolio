@@ -1,6 +1,7 @@
+import { Knex } from 'knex';
 import Tables from '../Tables';
 
-export async function seed(knex) {
+export async function seed(knex: Knex): Promise<void> {
   await knex(Tables.USER).del();
   await knex(Tables.USER).insert([
     {

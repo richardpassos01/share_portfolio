@@ -1,26 +1,36 @@
+import * as Koa from 'koa';
+
+import { TYPES } from '@constants/types';
 import { StatusCodes } from 'http-status-codes';
+import { injectable, inject } from 'inversify';
+import GetInstitution from '@application/useCases/GetInstitution';
+import GetProfit from '@application/useCases/GetProfit';
 
+@injectable()
 export default class InstitutionController {
-  constructor(getInstitution, getProfit) {
-    this.getInstitution = getInstitution;
-    this.getProfit = getProfit;
+  constructor(
+    @inject(TYPES.GetInstitution)
+    private readonly getInstitution: GetInstitution,
+
+    @inject(TYPES.GetProfit)
+    private readonly getProfit: GetProfit,
+  ) {}
+
+  async get(ctx: Koa.DefaultContext): Promise<void> {
+    const { institutionId } = ctx.params;
+
+    const institution = await this.getInstitution.execute(institutionId);
+
+    ctx.response.status = StatusCodes.OK;
+    ctx.body = institution;
   }
 
-  get(req, res, next) {
-    const { institutionId } = req.params;
+  async profit(ctx: Koa.DefaultContext): Promise<void> {
+    const { institutionId } = ctx.params;
 
-    return this.getInstitution
-      .execute(institutionId)
-      .then((institution) => res.status(StatusCodes.OK).send(institution))
-      .catch(next);
-  }
+    const profit = await this.getProfit.execute(institutionId);
 
-  profit(req, res, next) {
-    const { institutionId } = req.params;
-
-    return this.getProfit
-      .execute(institutionId)
-      .then((profit) => res.status(StatusCodes.OK).send(profit))
-      .catch(next);
+    ctx.response.status = StatusCodes.OK;
+    ctx.body = profit;
   }
 }
