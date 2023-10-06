@@ -1,4 +1,4 @@
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import TotalBalance from '@domain/totalBalance/TotalBalance';
 import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
@@ -8,23 +8,17 @@ type Params = {
   id?: string;
   institutionId?: string;
   loss?: number;
-}
+};
 
 export default class TotalBalanceFactory {
   private totalBalance: TotalBalance;
 
-  constructor({
-    id,
-    institutionId = institution.id,
-    loss,
-  } = {} as Params,
-  totalBalance?: TotalBalance
+  constructor(
+    { id, institutionId = institution.id, loss } = {} as Params,
+    totalBalance?: TotalBalance,
   ) {
-    this.totalBalance = totalBalance || new TotalBalance(
-      institutionId,
-      loss,
-      id,
-    );
+    this.totalBalance =
+      totalBalance || new TotalBalance(institutionId, loss, id);
   }
 
   get() {
@@ -39,7 +33,10 @@ export default class TotalBalanceFactory {
   }
 
   async save() {
-    const totalBalanceRepository = container.get<TotalBalanceRepositoryInterface>(TYPES.TotalBalanceRepository);
+    const totalBalanceRepository =
+      container.get<TotalBalanceRepositoryInterface>(
+        TYPES.TotalBalanceRepository,
+      );
     return totalBalanceRepository.create(this.totalBalance);
   }
 }

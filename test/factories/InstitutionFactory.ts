@@ -1,5 +1,5 @@
 import Institution from '@domain/institution/Institution';
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import institution from '@fixtures/institution';
@@ -16,7 +16,9 @@ export default class InstitutionFactory {
   }
 
   async save() {
-    const institutionRepository = container.get<InstitutionRepositoryInterface>(TYPES.InstitutionRepository);
+    const institutionRepository = container.get<InstitutionRepositoryInterface>(
+      TYPES.InstitutionRepository,
+    );
     return institutionRepository.create(this.institution);
   }
 

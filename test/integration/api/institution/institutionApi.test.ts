@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import supertest from 'supertest';
 import app from '@api/app';
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { StatusCodes } from 'http-status-codes';

@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import supertest from 'supertest';
 import app from '@api/app';
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Transaction from '@domain/transaction/Transaction';
-import TotalBalance from '@domain/totalBalance/TotalBalance'
+import TotalBalance from '@domain/totalBalance/TotalBalance';
 import Database from '@infrastructure/database/Database';
 import UpdateTotalBalance from '@application/useCases/UpdateTotalBalance';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
@@ -27,19 +27,27 @@ describe('transactionAPI', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
-  let shareRepository: ShareRepository; 
-  let monthlyBalanceRepository: MonthlyBalanceRepository; 
-  let totalBalanceRepository: TotalBalanceRepository; 
+  let shareRepository: ShareRepository;
+  let monthlyBalanceRepository: MonthlyBalanceRepository;
+  let totalBalanceRepository: TotalBalanceRepository;
   let transactionRepository: TransactionRepository;
   let updateTotalBalance: UpdateTotalBalance;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
     shareRepository = container.get<ShareRepository>(TYPES.ShareRepository);
-    monthlyBalanceRepository = container.get<MonthlyBalanceRepository>(TYPES.MonthlyBalanceRepository);
-    totalBalanceRepository = container.get<TotalBalanceRepository>(TYPES.TotalBalanceRepository);
-    transactionRepository = container.get<TransactionRepository>(TYPES.TransactionRepository);
-    updateTotalBalance = container.get<UpdateTotalBalance>(TYPES.UpdateTotalBalance);
+    monthlyBalanceRepository = container.get<MonthlyBalanceRepository>(
+      TYPES.MonthlyBalanceRepository,
+    );
+    totalBalanceRepository = container.get<TotalBalanceRepository>(
+      TYPES.TotalBalanceRepository,
+    );
+    transactionRepository = container.get<TransactionRepository>(
+      TYPES.TransactionRepository,
+    );
+    updateTotalBalance = container.get<UpdateTotalBalance>(
+      TYPES.UpdateTotalBalance,
+    );
   });
 
   beforeEach(async () => {
@@ -62,7 +70,10 @@ describe('transactionAPI', () => {
     it('should return status and reason CREATED', async () => {
       const payload = new TransactionFactory().getPayloadObject();
 
-      const response = await request.post('/transaction').set('Content-Type', 'application/json').send(payload);
+      const response = await request
+        .post('/transaction')
+        .set('Content-Type', 'application/json')
+        .send(payload);
 
       expect(response.status).toBe(StatusCodes.CREATED);
       expect(response.text).toBe(ReasonPhrases.CREATED);
@@ -75,11 +86,11 @@ describe('transactionAPI', () => {
 
       await request.post('/transaction').send(payload);
 
-      const [result] = await transactionRepository.get(
-        payload.institutionId,
-      );
+      const [result] = await transactionRepository.get(payload.institutionId);
 
-      expect(expectedTransaction).toEqual(new TransactionFactory({}, result).getObject());
+      expect(expectedTransaction).toEqual(
+        new TransactionFactory({}, result).getObject(),
+      );
     });
 
     it('should create monthly balance if not exists', async () => {
@@ -95,7 +106,9 @@ describe('transactionAPI', () => {
         dateToMonthYear(transaction.getDate()),
       );
 
-      expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+      expect(expectedMonthlyBalance).toEqual(
+        new MonthlyBalanceFactory({}, result).getObject(),
+      );
     });
 
     describe('when the category of the transaction is BUY', () => {
@@ -153,7 +166,9 @@ describe('transactionAPI', () => {
           dateToMonthYear(transaction.getDate()),
         );
 
-        expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+        expect(expectedMonthlyBalance).toEqual(
+          new MonthlyBalanceFactory({}, result).getObject(),
+        );
       });
     });
 
@@ -189,7 +204,9 @@ describe('transactionAPI', () => {
             buyTransaction.get().getTicketSymbol(),
           );
 
-          expect(expectedShare).toEqual(new ShareFactory({}, result).getObject());
+          expect(expectedShare).toEqual(
+            new ShareFactory({}, result).getObject(),
+          );
         });
 
         it('should delete shares if have liquidated position', async () => {
@@ -236,7 +253,9 @@ describe('transactionAPI', () => {
               dateToMonthYear(buyTransaction.get().getDate()),
             );
 
-            expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+            expect(expectedMonthlyBalance).toEqual(
+              new MonthlyBalanceFactory({}, result).getObject(),
+            );
           });
         });
 
@@ -268,7 +287,9 @@ describe('transactionAPI', () => {
               dateToMonthYear(buyTransaction.get().getDate()),
             );
 
-            expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+            expect(expectedMonthlyBalance).toEqual(
+              new MonthlyBalanceFactory({}, result).getObject(),
+            );
           });
         });
 
@@ -302,7 +323,9 @@ describe('transactionAPI', () => {
                 dateToMonthYear(new Date()),
               );
 
-              expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+              expect(expectedMonthlyBalance).toEqual(
+                new MonthlyBalanceFactory({}, result).getObject(),
+              );
             });
           });
 
@@ -349,7 +372,9 @@ describe('transactionAPI', () => {
                   buyTransaction.get().getInstitutionId(),
                   dateToMonthYear(buyTransaction.get().getDate()),
                 );
-                expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+                expect(expectedMonthlyBalance).toEqual(
+                  new MonthlyBalanceFactory({}, result).getObject(),
+                );
               });
 
               it('should update total balance', async () => {
@@ -362,7 +387,9 @@ describe('transactionAPI', () => {
                 const result = await totalBalanceRepository.get(
                   payload.institutionId,
                 );
-                expect(expectedTotalBalance).toEqual(new TotalBalanceFactory({}, result).getObject());
+                expect(expectedTotalBalance).toEqual(
+                  new TotalBalanceFactory({}, result).getObject(),
+                );
               });
             });
 
@@ -390,7 +417,9 @@ describe('transactionAPI', () => {
                   buyTransaction.get().getInstitutionId(),
                   dateToMonthYear(buyTransaction.get().getDate()),
                 );
-                expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+                expect(expectedMonthlyBalance).toEqual(
+                  new MonthlyBalanceFactory({}, result).getObject(),
+                );
               });
 
               it('should update total balance', async () => {
@@ -403,7 +432,9 @@ describe('transactionAPI', () => {
                 const result = await totalBalanceRepository.get(
                   payload.institutionId,
                 );
-                expect(expectedTotalBalance).toEqual(new TotalBalanceFactory({}, result).getObject());
+                expect(expectedTotalBalance).toEqual(
+                  new TotalBalanceFactory({}, result).getObject(),
+                );
               });
             });
           });
@@ -444,7 +475,9 @@ describe('transactionAPI', () => {
             const result = await totalBalanceRepository.get(
               payload.institutionId,
             );
-            expect(expectedTotalBalance).toEqual(new TotalBalanceFactory({}, result).getObject());
+            expect(expectedTotalBalance).toEqual(
+              new TotalBalanceFactory({}, result).getObject(),
+            );
           });
 
           it('should update monthly balance loss', async () => {
@@ -454,13 +487,14 @@ describe('transactionAPI', () => {
 
             await request.post('/transaction').send(payload);
 
-            const result =
-              await monthlyBalanceRepository.get(
-                buyTransaction.get().getInstitutionId(),
-                dateToMonthYear(buyTransaction.get().getDate()),
-              );
+            const result = await monthlyBalanceRepository.get(
+              buyTransaction.get().getInstitutionId(),
+              dateToMonthYear(buyTransaction.get().getDate()),
+            );
 
-            expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+            expect(expectedMonthlyBalance).toEqual(
+              new MonthlyBalanceFactory({}, result).getObject(),
+            );
           });
         });
 
@@ -487,7 +521,7 @@ describe('transactionAPI', () => {
             await new ShareFactory({ quantity: 10, totalCost: 110 }).save();
             await new MonthlyBalanceFactory({
               tradeEarnings: 1000,
-              taxWithholding: 0.05, 
+              taxWithholding: 0.05,
               tax: 149.95,
             }).save();
           });
@@ -496,19 +530,20 @@ describe('transactionAPI', () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
               tradeEarnings: 1000,
               loss: 10,
-              taxWithholding: 0.05, 
+              taxWithholding: 0.05,
               tax: 139.95,
             }).getObject();
 
             await request.post('/transaction').send(payload);
 
-            const result =
-              await monthlyBalanceRepository.get(
-                buyTransaction.get().getInstitutionId(),
-                dateToMonthYear(buyTransaction.get().getDate()),
-              );
+            const result = await monthlyBalanceRepository.get(
+              buyTransaction.get().getInstitutionId(),
+              dateToMonthYear(buyTransaction.get().getDate()),
+            );
 
-            expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
+            expect(expectedMonthlyBalance).toEqual(
+              new MonthlyBalanceFactory({}, result).getObject(),
+            );
           });
         });
       });

@@ -1,4 +1,4 @@
-import {TYPES} from '@constants/types';
+import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Transaction from '@domain/transaction/Transaction';
 import { dateToString } from '@helpers';
@@ -19,35 +19,38 @@ type Params = {
   quantity?: number;
   unityPrice?: number;
   totalCost?: number;
-}
+};
 
 export default class TransactionFactory {
   private transaction: Transaction;
 
-  constructor({
-    id,
-    institutionId = institution.id,
-    type = TRANSACTION_TYPE.BUY,
-    date = new Date(new Date().setHours(0, 0, 0, 0)),
-    category = TRANSACTION_CATEGORY.TRADE,
-    ticketSymbol = 'TSLA',
-    quantity = 100,
-    unityPrice = 10,
-    totalCost = 1000,
-  } = {} as Params,
-  transaction?: Transaction
-  ) {
-    this.transaction = transaction || new Transaction(
-      institutionId,
-      type,
-      date,
-      category,
-      ticketSymbol,
-      quantity,
-      unityPrice,
-      totalCost,
+  constructor(
+    {
       id,
-    );
+      institutionId = institution.id,
+      type = TRANSACTION_TYPE.BUY,
+      date = new Date(new Date().setHours(0, 0, 0, 0)),
+      category = TRANSACTION_CATEGORY.TRADE,
+      ticketSymbol = 'TSLA',
+      quantity = 100,
+      unityPrice = 10,
+      totalCost = 1000,
+    } = {} as Params,
+    transaction?: Transaction,
+  ) {
+    this.transaction =
+      transaction ||
+      new Transaction(
+        institutionId,
+        type,
+        date,
+        category,
+        ticketSymbol,
+        quantity,
+        unityPrice,
+        totalCost,
+        id,
+      );
   }
 
   get() {
@@ -77,12 +80,14 @@ export default class TransactionFactory {
 
     return {
       ...transaction,
-      date
+      date,
     };
   }
 
   async save() {
-    const transactionRepository = container.get<TransactionRepositoryInterface>(TYPES.TransactionRepository);
+    const transactionRepository = container.get<TransactionRepositoryInterface>(
+      TYPES.TransactionRepository,
+    );
     return transactionRepository.create(this.transaction);
   }
 }

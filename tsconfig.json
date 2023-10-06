@@ -18,12 +18,8 @@
       "@constants/*": ["./src/constants/*"],
       "@middleware/*": ["./src/middleware/*"],
       "@dependencyInjectionContainer": ["./src/DependencyInjectionContainer"],
-      "@factories/*": ["./tests/factories/*"],
-      "@fixtures/*": ["./tests/fixtures/*"]
+      "@factories/*": ["./test/factories/*"],
+      "@fixtures/*": ["./test/fixtures/*"]
     }
-  },
-  "exclude": [
-    "./build/**/*" 
-  ],
-  "include": ["src/**/*.ts"]
+  }
 }
