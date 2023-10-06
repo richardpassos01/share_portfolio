@@ -39,8 +39,6 @@ describe('CreateTransaction', () => {
   afterAll(async () => {
     await database.connection().migrate.rollback();
     await database.connection().destroy();
-
-    jest.clearAllMocks();
   });
 
   describe.each(createTransactionCases)(

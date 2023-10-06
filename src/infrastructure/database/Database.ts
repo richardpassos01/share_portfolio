@@ -10,10 +10,8 @@ class Database {
     this.instance = knex(Config.database);
   }
 
-  checkConnection(): void {
-    this.instance.select(1).then(() => {
-      console.log('database connected!');
-    });
+  async checkConnection(): Promise<void> {
+    return this.instance.select(1);
   }
 
   connection(): Knex {

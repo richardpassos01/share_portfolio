@@ -2,3 +2,6 @@ build/
 data/
 node_modules
 .vscode
+tests/
+jest.config.ts
+knexfile.ts

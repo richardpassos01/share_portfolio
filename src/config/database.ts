@@ -8,11 +8,23 @@ export default Object.freeze({
   client: 'pg',
   connection: env.get('DATABASE_CONNECTION_STRING').required(true).asString(),
   migrations: {
-    directory: path.resolve(__dirname, '..', 'infrastructure', 'database', 'migrations'),
+    directory: path.resolve(
+      __dirname,
+      '..',
+      'infrastructure',
+      'database',
+      'migrations',
+    ),
     tableName: 'migrations',
   },
   seeds: {
-    directory: path.resolve(__dirname, '..', 'infrastructure', 'database', 'seeds')
+    directory: path.resolve(
+      __dirname,
+      '..',
+      'infrastructure',
+      'database',
+      'seeds',
+    ),
   },
   useNullAsDefault: true,
   searchPath: ['knex', 'public'],

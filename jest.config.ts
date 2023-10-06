@@ -1,4 +1,4 @@
-import type { JestConfigWithTsJest } from 'ts-jest'
+import type { JestConfigWithTsJest } from 'ts-jest';
 const dotenv = require('dotenv');
 
 const dotenvConfigPath = '.env.test';
@@ -20,7 +20,8 @@ const jestConfig: JestConfigWithTsJest = {
     '^@infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1',
     '^@constants/(.*)$': '<rootDir>/src/constants/$1',
     '^@middleware/(.*)$': '<rootDir>/src/middleware/$1',
-    '^@dependencyInjectionContainer': '<rootDir>/src/DependencyInjectionContainer',
+    '^@dependencyInjectionContainer':
+      '<rootDir>/src/DependencyInjectionContainer',
     '^@factories/(.*)$': '<rootDir>/tests/factories/$1',
     '^@fixtures/(.*)$': '<rootDir>/tests/fixtures/$1',
   },

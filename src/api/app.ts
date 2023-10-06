@@ -19,7 +19,12 @@ app.use(routes.routes()).use(routes.allowedMethods()).use(routes.middleware());
 
 (() => {
   const database = container.get<Database>(TYPES.Database);
-  database.checkConnection();
+  database
+    .checkConnection()
+    .then(() => {
+      console.log('database connected!');
+    })
+    .catch((error) => console.error(error));
 })();
 
 export default app;

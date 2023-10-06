@@ -3,7 +3,7 @@ import application from './application';
 import currency from './currency';
 
 export default {
-    database,
-    application,
-    currency,
-}
+  database,
+  application,
+  currency,
+};
