@@ -9,8 +9,5 @@
     "es6": true,
     "jest": true,
     "node": true
-  },
-  "include": [
-    "src/**/*.ts"
-  ]
+  }
 }

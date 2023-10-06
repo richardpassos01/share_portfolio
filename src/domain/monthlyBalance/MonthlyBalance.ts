@@ -4,7 +4,7 @@ import {
   MONTHLY_BALANCE_TYPE,
   MONTHLY_BALANCE_SALES_LIMIT,
 } from './MonthlyBalanceEnums';
-import { dateToString } from '../../helpers/Helpers';
+import { dateToString } from '../../helpers';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 
 const TAX_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {

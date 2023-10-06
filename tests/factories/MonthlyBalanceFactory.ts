@@ -3,7 +3,7 @@ import container from '@dependencyInjectionContainer';
 import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
 import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import { dateToMonthYear } from '@helpers/Helpers';
+import { dateToMonthYear } from '@helpers';
 
 type Params = {
   id?: string;

@@ -1,13 +1,13 @@
 import { injectable } from 'inversify';
 import knex, { Knex } from 'knex';
-import KnexConfig from '../../../knexfile';
+import Config from '@config';
 
 @injectable()
 class Database {
   private instance: Knex;
 
   constructor() {
-    this.instance = knex(KnexConfig);
+    this.instance = knex(Config.database);
   }
 
   checkConnection(): void {

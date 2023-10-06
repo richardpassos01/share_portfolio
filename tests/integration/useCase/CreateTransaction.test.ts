@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
@@ -5,7 +6,7 @@ import { createTransactionCases } from '@fixtures/cases';
 import {
   dateToMonthYear,
   formatterMoney,
-} from '@helpers/Helpers';
+} from '@helpers';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
@@ -53,13 +54,13 @@ describe('CreateTransaction', () => {
       it(`Should create the transaction and update the monthly and total balance for the ${transaction.ticketSymbol} share `, async () => {
         await createTransaction.execute(transaction);
 
-        const shares = (
-          await shareRepository.getAll(transaction.instituionId)
-        );
+        const shares = await shareRepository.getAll(transaction.institutionId)
+
         const monthlyBalance = await monthlyBalanceRepository.get(
           transaction.institutionId,
           dateToMonthYear(transaction.date),
         );
+
         const totalBalance = await totalBalanceRepository.get(transaction.institutionId);
 
         expect(expectedShare).toEqual(shares.map((share) => new ShareFactory({}, share).getObject()));

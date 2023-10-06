@@ -10,7 +10,7 @@ import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
 } from '@domain/shared/constants';
-import { dateStringToDate } from '../../helpers/Helpers';
+import { dateStringToDate } from '../../helpers';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import { TYPES } from '@constants/types';
 

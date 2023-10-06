@@ -1,7 +1,7 @@
 import Koa from 'koa';
 
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
-import { dateStringToDate } from '../../helpers/Helpers';
+import { dateStringToDate } from '../../helpers';
 import { TYPES } from '@constants/types';
 import { inject, injectable } from 'inversify';
 import CreateTransaction from '@application/useCases/CreateTransaction';

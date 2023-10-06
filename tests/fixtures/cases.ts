@@ -4,9 +4,12 @@ import { monthlyBalances } from './monthlyBalances';
 import { totalBalances } from './totalBalances';
 import { TransactionParams } from '@domain/shared/interfaces';
 
-type Case = 
-  | TransactionParams
-  | any;
+type Case = [
+  TransactionParams, 
+  Record<any, any>, 
+  Record<any, any>, 
+  Record<any, any>
+];
 
 export const createTransactionCases: Case[] = transactions.map((transaction, i) => [
   transaction,

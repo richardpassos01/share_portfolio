@@ -1,5 +1,5 @@
 import { TYPES } from '@constants/types';
-import { formatterMoney } from '../../helpers/Helpers';
+import { formatterMoney } from '../../helpers';
 import { injectable, inject } from 'inversify';
 import GetTotalBalance from './GetTotalBalance';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';

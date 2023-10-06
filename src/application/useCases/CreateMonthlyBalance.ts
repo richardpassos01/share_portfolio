@@ -1,6 +1,6 @@
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import MonthlyBalance from '../../domain/monthlyBalance/MonthlyBalance';
-import { dateToMonthYear } from '../../helpers/Helpers';
+import { dateToMonthYear } from '../../helpers';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';

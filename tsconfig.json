@@ -7,13 +7,13 @@
     "target": "es5",
     "types": ["reflect-metadata", "jest"],
     "baseUrl": ".",
-    "rootDir": ".",
     "outDir": "build",
     "paths": {
       "@api/*": ["./src/api/*"],
       "@application/*": ["./src/application/*"],
       "@domain/*": ["./src/domain/*"],
-      "@helpers/*": ["./src/helpers/*"],
+      "@config": ["./src/config/index"],
+      "@helpers": ["./src/helpers/index"],
       "@infrastructure/*": ["./src/infrastructure/*"],
       "@constants/*": ["./src/constants/*"],
       "@middleware/*": ["./src/middleware/*"],
@@ -22,4 +22,8 @@
       "@fixtures/*": ["./tests/fixtures/*"]
     }
   },
+  "exclude": [
+    "./build/**/*" 
+  ],
+  "include": ["src/**/*.ts"]
 }
