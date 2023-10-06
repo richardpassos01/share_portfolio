@@ -177,6 +177,7 @@ export default class UpdatePortfolio {
     if (
       transaction.getTotalCost() > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX
     ) {
+      // it should charge above operations wins, but, bank are charging above totalCost
       monthlyBalance.setTaxWithholding(transaction.getTotalCost());
     }
 

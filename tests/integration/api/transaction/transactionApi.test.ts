@@ -106,8 +106,8 @@ describe('transactionAPI', () => {
         await request.post('/transaction').send(payload);
 
         const result = await shareRepository.get(
-          payload.ticketSymbol,
           payload.institutionId,
+          payload.ticketSymbol,
         );
 
         expect(expectedShare).toEqual(new ShareFactory({}, result).getObject());
@@ -125,8 +125,8 @@ describe('transactionAPI', () => {
         await request.post('/transaction').send(payload);
 
         const result = await shareRepository.get(
-          payload.ticketSymbol,
           payload.institutionId,
+          payload.ticketSymbol,
         );
 
         expect(expectedShare).toEqual(new ShareFactory({}, result).getObject());
@@ -140,14 +140,11 @@ describe('transactionAPI', () => {
         });
         const transaction = factory.get();
         const payload = factory.getPayloadObject();
-        const monthlyBalance = new MonthlyBalanceFactory({
-          tradeEarnings: 200,
-        });
+        await new MonthlyBalanceFactory().save();
+
         const expectedMonthlyBalance = new MonthlyBalanceFactory({
-          tradeEarnings: 1200,
+          dividendEarnings: 1000,
         }).getObject();
-        await new ShareFactory().save();
-        await monthlyBalance.save();
 
         await request.post('/transaction').send(payload);
 
@@ -188,8 +185,8 @@ describe('transactionAPI', () => {
           await request.post('/transaction').send(payload);
 
           const result = await shareRepository.get(
-            buyTransaction.get().getTicketSymbol(),
             buyTransaction.get().getInstitutionId(),
+            buyTransaction.get().getTicketSymbol(),
           );
 
           expect(expectedShare).toEqual(new ShareFactory({}, result).getObject());
@@ -203,11 +200,11 @@ describe('transactionAPI', () => {
           await request.post('/transaction').send(payload);
 
           const result = await shareRepository.get(
-            buyTransaction.get().getTicketSymbol(),
             buyTransaction.get().getInstitutionId(),
+            buyTransaction.get().getTicketSymbol(),
           );
 
-          expect(result).toBeNull();
+          expect(result).toBeUndefined();
         });
       });
 
@@ -277,10 +274,13 @@ describe('transactionAPI', () => {
 
         describe('when sold more than 20k in the month', () => {
           describe('when do not deduct tax from loss', () => {
-            it('should charge tax', async () => {
-              const buyTransaction = new TransactionFactory({
+            it('should charge tax withholding and tax', async () => {
+              await new TransactionFactory({
                 date: new Date(new Date().setDate(1)),
-              });
+              }).save();
+              await new ShareFactory().save();
+              await new MonthlyBalanceFactory().save();
+
               const payload = new TransactionFactory({
                 type: TRANSACTION_TYPE.SELL,
                 quantity: 100,
@@ -289,21 +289,17 @@ describe('transactionAPI', () => {
                 date: new Date(new Date().setDate(10)),
               }).getPayloadObject();
 
-              await buyTransaction.save();
-              await new ShareFactory().save();
-              await new MonthlyBalanceFactory().save();
-
               const expectedMonthlyBalance = new MonthlyBalanceFactory({
                 tradeEarnings: 29000,
-
-                tax: 4350,
+                taxWithholding: 1.5,
+                tax: 4348.5,
               }).getObject();
 
               await request.post('/transaction').send(payload);
 
               const result = await monthlyBalanceRepository.get(
-                buyTransaction.get().getInstitutionId(),
-                dateToMonthYear(buyTransaction.get().getDate()),
+                payload.institutionId,
+                dateToMonthYear(new Date()),
               );
 
               expect(expectedMonthlyBalance).toEqual(new MonthlyBalanceFactory({}, result).getObject());
@@ -435,10 +431,7 @@ describe('transactionAPI', () => {
             }).getPayloadObject();
             await buyTransaction.save();
             await new ShareFactory({ quantity: 10, totalCost: 10000 }).save();
-            await new MonthlyBalanceFactory({
-              tradeEarnings: 100,
-              tax: 0,
-            }).save();
+            await new MonthlyBalanceFactory().save();
           });
 
           it('should update total balance loss', async () => {
@@ -454,10 +447,9 @@ describe('transactionAPI', () => {
             expect(expectedTotalBalance).toEqual(new TotalBalanceFactory({}, result).getObject());
           });
 
-          it('should update monthly balance', async () => {
+          it('should update monthly balance loss', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              tradeEarnings: 0,
-              tax: 0,
+              loss: 9900,
             }).getObject();
 
             await request.post('/transaction').send(payload);
@@ -472,6 +464,7 @@ describe('transactionAPI', () => {
           });
         });
 
+        // cobrar withoiu
         describe('when have tax on month to pay', () => {
           let buyTransaction: TransactionFactory;
           let payload: Record<string, any>;
@@ -494,14 +487,17 @@ describe('transactionAPI', () => {
             await new ShareFactory({ quantity: 10, totalCost: 110 }).save();
             await new MonthlyBalanceFactory({
               tradeEarnings: 1000,
-              tax: 135,
+              taxWithholding: 0.05, 
+              tax: 149.95,
             }).save();
           });
 
           it('should recalculate tax and update monthly balance', async () => {
             const expectedMonthlyBalance = new MonthlyBalanceFactory({
-              tradeEarnings: 990,
-              tax: 132,
+              tradeEarnings: 1000,
+              loss: 10,
+              taxWithholding: 0.05, 
+              tax: 139.95,
             }).getObject();
 
             await request.post('/transaction').send(payload);
