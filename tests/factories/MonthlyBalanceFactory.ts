@@ -4,6 +4,7 @@ import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
 import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { dateToMonthYear } from '@helpers';
+import institution from '@fixtures/institution';
 
 type Params = {
   id?: string;
@@ -22,7 +23,7 @@ export default class MonthlyBalanceFactory {
 
   constructor({
     id,
-    institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId = institution.id,
     yearMonth = dateToMonthYear(new Date()),
     tradeEarnings,
     dividendEarnings,

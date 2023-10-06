@@ -1,7 +1,9 @@
+import institution from '@fixtures/institution';
+
 export const shares = [
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 20.19,
       ticketSymbol: 'AAPL',
       quantity: 100,
@@ -10,14 +12,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 20.19,
       ticketSymbol: 'AAPL',
       quantity: 100,
       totalCost: 2019.0,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.54,
       ticketSymbol: 'GOOG',
       quantity: 100,
@@ -26,14 +28,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 19.28,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 964,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.54,
       ticketSymbol: 'GOOG',
       quantity: 100,
@@ -42,14 +44,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 19.28,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 964,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.77,
       ticketSymbol: 'GOOG',
       quantity: 200,
@@ -58,14 +60,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 19.28,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 964,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.355294117647059,
       ticketSymbol: 'GOOG',
       quantity: 1700,
@@ -74,14 +76,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.52516129032258,
       ticketSymbol: 'AAPL',
       quantity: 1550,
       totalCost: 19414,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.355294117647059,
       ticketSymbol: 'GOOG',
       quantity: 1700,
@@ -90,14 +92,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.52516129032258,
       ticketSymbol: 'AAPL',
       quantity: 1550,
       totalCost: 19414,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.355294117647059,
       ticketSymbol: 'GOOG',
       quantity: 1700,
@@ -106,14 +108,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.523717948717948,
       ticketSymbol: 'AAPL',
       quantity: 1560,
       totalCost: 19537,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.355294117647059,
       ticketSymbol: 'GOOG',
       quantity: 1700,
@@ -122,14 +124,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.51741935483871,
       ticketSymbol: 'AAPL',
       quantity: 1550,
       totalCost: 19402,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.355294117647059,
       ticketSymbol: 'GOOG',
       quantity: 1700,
@@ -138,14 +140,14 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 88.04,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 4402,
     },
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 12.355294117647059,
       ticketSymbol: 'GOOG',
       quantity: 1700,
@@ -154,7 +156,7 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 88.04,
       ticketSymbol: 'AAPL',
       quantity: 50,
@@ -163,7 +165,7 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 73.36666666666666,
       ticketSymbol: 'AAPL',
       quantity: 60,
@@ -172,7 +174,7 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 27.5125,
       ticketSymbol: 'AAPL',
       quantity: 160,
@@ -182,7 +184,7 @@ export const shares = [
   [],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 10,
       ticketSymbol: 'TSLA',
       quantity: 100,
@@ -191,7 +193,7 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 11.465,
       ticketSymbol: 'TSLA',
       quantity: 200,
@@ -200,7 +202,7 @@ export const shares = [
   ],
   [
     {
-      institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      institutionId: institution.id,
       mediumPrice: 0,
       ticketSymbol: 'TSLA',
       quantity: 199,

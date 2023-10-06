@@ -1,74 +1,76 @@
+import institution from '@fixtures/institution';
+
 export const totalBalances = [
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 3776.1290322580644,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 3760.6847322580643,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 3760.6847322580643,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 3760.6847322580643,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 4962.684732258064,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 4962.684732258064,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 4962.684732258064,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 4962.684732258064,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     loss: 0,
   },
 ];

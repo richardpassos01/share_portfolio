@@ -15,6 +15,7 @@ import GetProfit from '@application/useCases/GetProfit';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
+import institution from '@fixtures/institution';
 
 describe('CreateTransaction', () => {
   let database: Database;
@@ -70,8 +71,7 @@ describe('CreateTransaction', () => {
 
   describe('totalBalance ', () => {
     it('should get profit', async () => {
-      const instituionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2';
-      const profit = await getProfit.execute(instituionId);
+      const profit = await getProfit.execute(institution.id);
 
       const expectedProfit = 1721806.6940386684;
 

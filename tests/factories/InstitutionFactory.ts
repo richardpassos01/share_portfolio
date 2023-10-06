@@ -2,14 +2,15 @@ import Institution from '@domain/institution/Institution';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
+import institution from '@fixtures/institution';
 
 export default class InstitutionFactory {
   private institution: Institution;
 
   constructor({
-    id = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    id = institution.id,
     name = 'INTER DTVM LTDA',
-    userId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    userId = institution.userId,
   } = {}) {
     this.institution = new Institution(name, userId, id);
   }

@@ -2,6 +2,7 @@ import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Share from '@domain/share/Share';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
+import institution from '@fixtures/institution';
 
 type Params = {
   id?: string;
@@ -16,7 +17,7 @@ export default class ShareFactory {
 
   constructor({
     id,
-    institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId = institution.id,
     ticketSymbol = 'TSLA',
     quantity = 100,
     totalCost = 1000,

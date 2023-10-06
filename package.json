@@ -14,15 +14,15 @@
     "test:unit": "jest tests/unit",
     "test:integration": "jest jest tests/integration --runInBand",
     "start": "node -r dotenv/config build/src/api/server.js",
+    "tsnode": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config",
     "predevelopment": "npm run migration:up",
-    "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",
+    "development": "npm run tsnode --respawn src/api/server.ts",
     "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
     "migration:create": "npm run knex migrate:make",
     "migration:up": "npm run knex migrate:latest",
-    "migration:down": "npm run knex migrate:rollback",
     "seed:create": "npm run knex seed:make",
     "seed:run": "npm run knex seed:run",
-    "management": "node -r dotenv/config src/management/commands/${npm_config_command}.js"
+    "management": "npm run tsnode src/management/commands/${npm_config_command}.ts"
   },
   "keywords": [],
   "author": "",

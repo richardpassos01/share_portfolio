@@ -1,8 +1,9 @@
 import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
+import institution from '@fixtures/institution';
 
 export const monthlyBalances = [
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-07',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -12,7 +13,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-07',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -22,7 +23,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-08', // There were earnings in the month and sales with a total value greater than 20k, but there's no need to pay taxes because it can be deducted from the total loss.
     tradeEarnings: 45.499999999999886,
     dividendEarnings: 0.0,
@@ -32,7 +33,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-08',
     tradeEarnings: 45.499999999999886,
     dividendEarnings: 0.0,
@@ -42,7 +43,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-09',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -52,7 +53,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-09',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -62,7 +63,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-09',
     tradeEarnings: 0.0,
     dividendEarnings: 15000.0,
@@ -72,7 +73,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-09',
     tradeEarnings: 0.0,
     dividendEarnings: 15000.0,
@@ -82,7 +83,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-09', // There were earnings in the month and sales with a total value lower than 20k, but need to pay taxes because did day trade.
     tradeEarnings: 9.762820512820525,
     dividendEarnings: 15000.0,
@@ -92,7 +93,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-10',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -102,7 +103,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-11',
     tradeEarnings: 110,
     dividendEarnings: 0.0,
@@ -112,7 +113,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-11',
     tradeEarnings: 110,
     dividendEarnings: 0.0,
@@ -122,7 +123,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2019-12',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -132,7 +133,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2020-01',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -142,7 +143,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2020-02',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -152,7 +153,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2020-03',
     tradeEarnings: 0.0,
     dividendEarnings: 0.0,
@@ -162,7 +163,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2021-02',
     tradeEarnings: 9988.535,
     dividendEarnings: 0.0,
@@ -172,7 +173,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId: institution.id,
     yearMonth: '2021-02',
     tradeEarnings: 2001978.535,
     dividendEarnings: 0.0,

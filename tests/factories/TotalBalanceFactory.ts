@@ -2,6 +2,7 @@ import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import TotalBalance from '@domain/totalBalance/TotalBalance';
 import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import institution from '@fixtures/institution';
 
 type Params = {
   id?: string;
@@ -14,7 +15,7 @@ export default class TotalBalanceFactory {
 
   constructor({
     id,
-    institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId = institution.id,
     loss,
   } = {} as Params,
   totalBalance?: TotalBalance

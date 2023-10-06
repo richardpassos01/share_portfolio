@@ -1,6 +1,5 @@
-/* eslint-disable no-continue */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
+/* eslint-disable no-process-exit */
+import 'reflect-metadata';
 
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
@@ -37,7 +36,7 @@ const createTransaction = container.get<CreateTransaction>(
   TYPES.CreateTransaction,
 );
 
-const fn = async () => {
+const command = async () => {
   for (const fileName of fileList.filter((f) => f.includes('xlsx'))) {
     const filePath = resolve(filesPath, fileName);
     const [{ data }] = parse(filePath);
@@ -63,8 +62,12 @@ const fn = async () => {
   }
 };
 
-fn()
+command()
   .then(() => {
     console.log('Finished');
+    process.exit(0);
   })
-  .catch((error) => console.error(error));
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

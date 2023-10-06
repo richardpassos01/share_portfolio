@@ -7,6 +7,7 @@ import {
   TRANSACTION_CATEGORY,
 } from '@domain/shared/constants';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
+import institution from '@fixtures/institution';
 
 type Params = {
   id?: string;
@@ -25,7 +26,7 @@ export default class TransactionFactory {
 
   constructor({
     id,
-    institutionId = 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+    institutionId = institution.id,
     type = TRANSACTION_TYPE.BUY,
     date = new Date(new Date().setHours(0, 0, 0, 0)),
     category = TRANSACTION_CATEGORY.TRADE,
