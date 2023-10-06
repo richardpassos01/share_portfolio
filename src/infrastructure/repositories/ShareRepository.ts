@@ -20,7 +20,7 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .where({ ticket_symbol: ticketSymbol, institution_id: institutionId })
       .into(Tables.SHARE)
       .first()
-      .then((data) => (data ? ShareMapper.mapToEntity(data) : null));
+      .then((data) => (data ? ShareMapper.mapToEntity(data) : undefined));
   }
 
   async getAll(institutionId: string) {

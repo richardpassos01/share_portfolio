@@ -10,14 +10,14 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 
 type Params = {
   id?: string;
-  institutionId: string;
-  type: TRANSACTION_TYPE;
-  date: Date;
-  category: TRANSACTION_CATEGORY;
-  ticketSymbol: string;
-  quantity: number;
-  unityPrice: number;
-  totalCost: number;
+  institutionId?: string;
+  type?: TRANSACTION_TYPE;
+  date?: Date;
+  category?: TRANSACTION_CATEGORY;
+  ticketSymbol?: string;
+  quantity?: number;
+  unityPrice?: number;
+  totalCost?: number;
 }
 
 export default class TransactionFactory {
@@ -33,8 +33,10 @@ export default class TransactionFactory {
     quantity = 100,
     unityPrice = 10,
     totalCost = 1000,
-  } = {} as Params) {
-    this.transaction = new Transaction(
+  } = {} as Params,
+  transaction?: Transaction
+  ) {
+    this.transaction = transaction || new Transaction(
       institutionId,
       type,
       date,

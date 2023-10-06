@@ -21,7 +21,7 @@ export default class ShareFactory {
     quantity = 100,
     totalCost = 1000,
   } = {} as Params,
-  share: Share
+  share?: Share
   ) {
     this.share = share || new Share(
       institutionId,
