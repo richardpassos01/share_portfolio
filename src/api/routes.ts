@@ -21,7 +21,7 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
-router.get('/institution/:institutionId', (ctx) => {
+router.get('/institution/:institutionId/profit', (ctx) => {
   const institutionController = container.get<InstitutionController>(
     TYPES.InstitutionController,
   );

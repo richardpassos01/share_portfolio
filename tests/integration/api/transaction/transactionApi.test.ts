@@ -59,13 +59,13 @@ describe('transactionAPI', () => {
   });
 
   describe('POST /transaction', () => {
-    it('should return status and reason OK', async () => {
+    it('should return status and reason CREATED', async () => {
       const payload = new TransactionFactory().getPayloadObject();
 
-      const response = await request.post('/transaction').send(payload);
+      const response = await request.post('/transaction').set('Content-Type', 'application/json').send(payload);
 
-      expect(response.status).toBe(StatusCodes.OK);
-      expect(response.text).toBe(ReasonPhrases.OK);
+      expect(response.status).toBe(StatusCodes.CREATED);
+      expect(response.text).toBe(ReasonPhrases.CREATED);
     });
 
     it('should create transaction', async () => {

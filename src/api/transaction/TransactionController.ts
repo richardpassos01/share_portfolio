@@ -36,7 +36,7 @@ export default class TransactionController {
       totalCost,
     });
 
-    ctx.response.status = StatusCodes.NO_CONTENT;
-    ctx.body = ReasonPhrases.NO_CONTENT;
+    ctx.response.status = StatusCodes.CREATED;
+    ctx.response.body = ReasonPhrases.CREATED;
   }
 }

@@ -6,6 +6,7 @@ const errorHandler = async (ctx: Koa.Context, next: Koa.Next) => {
   try {
     await next();
   } catch (err) {
+    console.error('Error caught in errorHandler:', err);
     const error = err instanceof CustomError ? err : new CustomError();
 
     ctx.response.status = error.status;

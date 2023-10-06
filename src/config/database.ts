@@ -8,6 +8,7 @@ export default Object.freeze({
   client: 'pg',
   connection: env.get('DATABASE_CONNECTION_STRING').required(true).asString(),
   migrations: {
+    extension: 'ts',
     directory: path.resolve(
       __dirname,
       '..',
@@ -18,6 +19,7 @@ export default Object.freeze({
     tableName: 'migrations',
   },
   seeds: {
+    extension: 'ts',
     directory: path.resolve(
       __dirname,
       '..',

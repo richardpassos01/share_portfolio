@@ -4,7 +4,7 @@ import Tables from '../Tables';
 import {
   TRANSACTION_TYPE,
   TRANSACTION_CATEGORY,
-} from '@domain/shared/constants';
+} from '../../../domain/shared/constants';
 
 export async function up(knex: Knex): Promise<void> {
   const hasTable = await knex.schema.hasTable(Tables.TRANSACTION);
