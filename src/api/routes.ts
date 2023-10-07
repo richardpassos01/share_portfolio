@@ -9,6 +9,7 @@ import InstitutionController from './institution/InstitutionController';
 
 import schemaValidator from '@middleware/schemaValidator';
 import TransactionSchemas from './transaction/schemas/input/schema';
+import InstitutionSchemas from './institution/schemas/input/schema';
 
 const router = new Router();
 
@@ -17,12 +18,16 @@ router.get('/healthy-check', (ctx) => {
   ctx.body = ReasonPhrases.OK;
 });
 
-router.post('/institution', (ctx) => {
-  const institutionController = container.get<InstitutionController>(
-    TYPES.InstitutionController,
-  );
-  return institutionController.create(ctx);
-});
+router.post(
+  '/institution',
+  schemaValidator(InstitutionSchemas.create),
+  (ctx) => {
+    const institutionController = container.get<InstitutionController>(
+      TYPES.InstitutionController,
+    );
+    return institutionController.create(ctx);
+  },
+);
 
 router.get('/institution/:institutionId', (ctx) => {
   const institutionController = container.get<InstitutionController>(
@@ -40,7 +45,7 @@ router.get('/institution/:institutionId/balance', (ctx) => {
 
 router.post(
   '/transaction',
-  schemaValidator(TransactionSchemas.createTransaction),
+  schemaValidator(TransactionSchemas.create),
   (ctx) => {
     const transactionController = container.get<TransactionController>(
       TYPES.TransactionController,

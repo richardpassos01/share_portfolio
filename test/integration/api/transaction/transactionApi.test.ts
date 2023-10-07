@@ -39,24 +39,17 @@ describe('transactionAPI', () => {
 
   describe('POST /transaction', () => {
     describe('When called the endpoint with valid schema', () => {
-      it('should return status and text CREATED', async () => {
-        const payload = new TransactionFactory().getPayloadObject();
-
-        const response = await request.post('/transaction').send(payload);
-
-        expect(response.status).toBe(StatusCodes.CREATED);
-        expect(response.text).toBe(ReasonPhrases.CREATED);
-      });
-
       it('should create transaction', async () => {
         const transaction = new TransactionFactory();
         const payload = transaction.getPayloadObject();
         const expectedTransaction = transaction.getObject();
 
-        await request.post('/transaction').send(payload);
+        const response = await request.post('/transaction').send(payload);
 
         const [result] = await listTransactions.execute(payload.institutionId);
 
+        expect(response.status).toBe(StatusCodes.CREATED);
+        expect(response.text).toBe(ReasonPhrases.CREATED);
         expect(expectedTransaction).toEqual(
           new TransactionFactory({}, result).getObject(),
         );

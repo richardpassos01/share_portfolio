@@ -2,7 +2,7 @@ import { TYPES } from '@constants/types';
 import { injectable, inject } from 'inversify';
 import GetTotalBalance from './GetTotalBalance';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import InstitutionBalance from '@domain/institution/interfaces/InstitutionBalance';
+import { InstitutionBalance } from '@domain/institution/interfaces/InstitutionResponseInterfaces';
 
 @injectable()
 export default class GetInstitutionBalance {

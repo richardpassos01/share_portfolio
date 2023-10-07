@@ -20,13 +20,13 @@ export default class InstitutionController {
     private readonly getInstitutionBalance: GetInstitutionBalance,
   ) {}
 
-  async create(ctx: Koa.DefaultContext): Promise<void> {
+  async create(ctx: Koa.DefaultContext): Promise<any> {
     const { name, userId } = ctx.request.body;
 
-    await this.createInstitution.execute(name, userId);
+    const institutionId = await this.createInstitution.execute(name, userId);
 
     ctx.response.status = StatusCodes.CREATED;
-    ctx.response.body = ReasonPhrases.CREATED;
+    ctx.response.body = institutionId;
   }
 
   async get(ctx: Koa.DefaultContext): Promise<void> {

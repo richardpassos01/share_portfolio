@@ -1,7 +1,7 @@
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import Joi from 'joi';
 
-const createTransaction = Joi.object({
+const create = Joi.object({
   institutionId: Joi.string().uuid().required(),
   type: Joi.string()
     .valid(...Object.values(TRANSACTION_TYPE))
@@ -16,4 +16,4 @@ const createTransaction = Joi.object({
   totalCost: Joi.number().required(),
 });
 
-export default { createTransaction };
+export default { create };
