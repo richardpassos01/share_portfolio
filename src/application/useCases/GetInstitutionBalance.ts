@@ -1,11 +1,10 @@
 import { TYPES } from '@constants/types';
-import { formatterMoney } from '../../helpers';
 import { injectable, inject } from 'inversify';
 import GetTotalBalance from './GetTotalBalance';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
 @injectable()
-export default class GetProfit {
+export default class GetInstitutionBalance {
   constructor(
     @inject(TYPES.MonthlyBalanceRepository)
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
@@ -20,6 +19,6 @@ export default class GetProfit {
 
     const balance = await this.getTotalBalance.execute(institutionId);
     const profit = Math.max(0, earnings - balance.getLoss());
-    return formatterMoney(profit);
+    return { profit, loss: balance.getLoss() };
   }
 }

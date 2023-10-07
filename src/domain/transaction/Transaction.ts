@@ -3,7 +3,7 @@ import {
   TRANSACTION_TYPE,
 } from '@domain/shared/constants';
 import { AbstractTransaction } from '@domain/shared/interfaces';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 export default class Transaction implements AbstractTransaction {
   constructor(

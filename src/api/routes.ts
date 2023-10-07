@@ -21,11 +21,11 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
-router.get('/institution/:institutionId/profit', (ctx) => {
+router.get('/institution/:institutionId/balance', (ctx) => {
   const institutionController = container.get<InstitutionController>(
     TYPES.InstitutionController,
   );
-  return institutionController.profit(ctx);
+  return institutionController.getBalance(ctx);
 });
 
 router.post('/transaction', (ctx) => {

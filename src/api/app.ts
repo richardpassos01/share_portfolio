@@ -9,6 +9,7 @@ import cors from '@koa/cors';
 import errorHandler from '@middleware/errorHandler';
 import bodyParser from 'koa-bodyparser';
 import routes from './routes';
+import serializer from '@middleware/serializer';
 
 const app = new Koa();
 
@@ -16,10 +17,6 @@ app.use(bodyParser());
 app.use(errorHandler);
 app.use(cors());
 app.use(routes.routes()).use(routes.allowedMethods()).use(routes.middleware());
-app.use((ctx, next) => {
-  ctx.response.set('Content-Type', 'application/xml');
-  return next();
-});
 
 (() => {
   const database = container.get<Database>(TYPES.Database);

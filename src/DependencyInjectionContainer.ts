@@ -17,7 +17,7 @@ import UpdateMonthlyBalance from '@application/useCases/UpdateMonthlyBalance';
 import GetTotalBalance from '@application/useCases/GetTotalBalance';
 import CreateTotalBalance from '@application/useCases/CreateTotalBalance';
 import UpdateTotalBalance from '@application/useCases/UpdateTotalBalance';
-import GetProfit from '@application/useCases/GetProfit';
+import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
@@ -90,7 +90,10 @@ container
   .bind<UpdateTotalBalance>(TYPES.UpdateTotalBalance)
   .to(UpdateTotalBalance)
   .inSingletonScope();
-container.bind<GetProfit>(TYPES.GetProfit).to(GetProfit).inSingletonScope();
+container
+  .bind<GetInstitutionBalance>(TYPES.GetInstitutionBalance)
+  .to(GetInstitutionBalance)
+  .inSingletonScope();
 
 container
   .bind<InstitutionRepositoryInterface>(TYPES.InstitutionRepository)

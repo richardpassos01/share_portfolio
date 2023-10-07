@@ -8,7 +8,7 @@ import CreateTransaction from '@application/useCases/CreateTransaction';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
 import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRepository';
-import GetProfit from '@application/useCases/GetProfit';
+import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
@@ -20,7 +20,7 @@ describe('CreateTransaction', () => {
   let shareRepository: ShareRepository;
   let monthlyBalanceRepository: MonthlyBalanceRepository;
   let totalBalanceRepository: TotalBalanceRepository;
-  let getProfit: GetProfit;
+  let getInstitutionBalance: GetInstitutionBalance;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -34,7 +34,9 @@ describe('CreateTransaction', () => {
     totalBalanceRepository = container.get<TotalBalanceRepository>(
       TYPES.TotalBalanceRepository,
     );
-    getProfit = container.get<GetProfit>(TYPES.GetProfit);
+    getInstitutionBalance = container.get<GetInstitutionBalance>(
+      TYPES.GetInstitutionBalance,
+    );
 
     await database.connection().migrate.latest();
     await database.connection().seed.run();
@@ -52,8 +54,9 @@ describe('CreateTransaction', () => {
       expectedShare,
       expectedMonthlyBalance,
       expectedTotalBalance,
+      description,
     ) => {
-      it(`Should create the transaction and update the monthly and total balance for the ${transaction.ticketSymbol} share `, async () => {
+      it(description, async () => {
         await createTransaction.execute(transaction);
 
         const shares = await shareRepository.getAll(transaction.institutionId);
@@ -80,13 +83,13 @@ describe('CreateTransaction', () => {
     },
   );
 
-  describe('totalBalance ', () => {
-    it('should get profit', async () => {
-      const profit = await getProfit.execute(institution.id);
+  describe('after call use case ', () => {
+    it('Should update the Profit with the sum of all earnings, less taxes and the remaining loss', async () => {
+      const expectedBalance = { loss: 0, profit: 1721806.6940386684 };
 
-      const expectedProfit = 1721806.6940386684;
+      const profit = await getInstitutionBalance.execute(institution.id);
 
-      expect(formatterMoney(expectedProfit)).toBe(profit);
+      expect(expectedBalance).toEqual(profit);
     });
   });
 });

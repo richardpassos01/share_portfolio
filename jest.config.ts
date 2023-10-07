@@ -20,6 +20,7 @@ const jestConfig: JestConfigWithTsJest = {
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   testTimeout: 1500,
   rootDir: '.',
+  verbose: true,
 };
 
 export default jestConfig;

@@ -12,7 +12,7 @@ export const TYPES = {
   CreateTransaction: Symbol.for('CreateTransaction'),
   GetInstitution: Symbol.for('GetInstitution'),
   GetMonthlyBalance: Symbol.for('GetMonthlyBalance'),
-  GetProfit: Symbol.for('GetProfit'),
+  GetInstitutionBalance: Symbol.for('GetInstitutionBalance'),
   GetShare: Symbol.for('GetShare'),
   GetTotalBalance: Symbol.for('GetTotalBalance'),
   UpdateMonthlyBalance: Symbol.for('UpdateMonthlyBalance'),
