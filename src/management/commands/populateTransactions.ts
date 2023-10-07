@@ -6,7 +6,7 @@ import { resolve } from 'path';
 import { parse } from 'node-xlsx';
 import container from '@dependencyInjectionContainer';
 import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
-import { dateStringToDate } from '../../helpers';
+import { dateStringDDMMYYYYToDate } from '../../helpers';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import { TYPES } from '@constants/types';
 
@@ -43,7 +43,7 @@ const command = async () => {
         .execute({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transactionObject[0]],
-          date: dateStringToDate(transactionObject[1]),
+          date: dateStringDDMMYYYYToDate(transactionObject[1]),
           category: institutionEventTypeMapper[transactionObject[2]],
           ticketSymbol: transactionObject[3].split(' - ')[0],
           quantity: transactionObject[5],

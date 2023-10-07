@@ -69,12 +69,7 @@ export default class TransactionFactory {
 
   getPayloadObject() {
     const transaction = this.getObject();
-    const date = dateToString(this.transaction.getDate())
-      .split('-')
-      .reverse()
-      .join('-')
-      .replace(/-/g, '/');
-
+    const date = dateToString(this.transaction.getDate());
     return {
       ...transaction,
       date,

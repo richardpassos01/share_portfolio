@@ -1,9 +1,8 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
-import Joi from 'joi';
 import ErrorCode from './ErrorCode';
 
 export default class CustomError extends Error {
-  error?: Joi.ValidationError;
+  headers?: Record<string, string>;
 
   constructor(
     public message: string = ReasonPhrases.BAD_REQUEST,

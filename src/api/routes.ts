@@ -7,6 +7,9 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import TransactionController from './transaction/TransactionController';
 import InstitutionController from './institution/InstitutionController';
 
+import schemaValidator from '@middleware/schemaValidator';
+import TransactionSchemas from './transaction/schemas/input/schema';
+
 const router = new Router();
 
 router.get('/healthy-check', (ctx) => {
@@ -35,11 +38,15 @@ router.get('/institution/:institutionId/balance', (ctx) => {
   return institutionController.getBalance(ctx);
 });
 
-router.post('/transaction', (ctx) => {
-  const transactionController = container.get<TransactionController>(
-    TYPES.TransactionController,
-  );
-  return transactionController.create(ctx);
-});
+router.post(
+  '/transaction',
+  schemaValidator(TransactionSchemas.createTransaction),
+  (ctx) => {
+    const transactionController = container.get<TransactionController>(
+      TYPES.TransactionController,
+    );
+    return transactionController.create(ctx);
+  },
+);
 
 export default router;
