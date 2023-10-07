@@ -24,7 +24,7 @@ export const monthlyBalances = [
   },
   {
     institutionId: institution.id,
-    yearMonth: '2019-08', // There were earnings in the month and sales with a total value greater than 20k, but there's no need to pay taxes because it can be deducted from the total loss.
+    yearMonth: '2019-08', // There were earnings in the month and sales was lower than 20k, so dont need to pay tax.
     tradeEarnings: 45.499999999999886,
     dividendEarnings: 0.0,
     tax: 0.0,
@@ -103,7 +103,7 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: institution.id,
+    institutionId: institution.id, // There were earnings in the month and sales with a total value greater than 20k, but there's no need to pay taxes because it can be deducted from the total loss
     yearMonth: '2019-11',
     tradeEarnings: 110,
     dividendEarnings: 0.0,

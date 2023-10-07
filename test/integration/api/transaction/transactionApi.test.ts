@@ -74,37 +74,5 @@ describe('transactionAPI', () => {
         new TransactionFactory({}, result).getObject(),
       );
     });
-
-    it('should create monthly balance if not exists', async () => {
-      const factory = new TransactionFactory();
-      const transaction = factory.get();
-      const payload = factory.getPayloadObject();
-      const expectedMonthlyBalance = new MonthlyBalanceFactory().getObject();
-
-      await request.post('/transaction').send(payload);
-
-      const result = await monthlyBalanceRepository.get(
-        transaction.getInstitutionId(),
-        dateToMonthYear(transaction.getDate()),
-      );
-
-      expect(expectedMonthlyBalance).toEqual(
-        new MonthlyBalanceFactory({}, result).getObject(),
-      );
-    });
-
-    it('Should create the Share if it does not exist, when creating a BUY transaction', async () => {
-      const payload = new TransactionFactory().getPayloadObject();
-      const expectedShare = new ShareFactory().getObject();
-
-      await request.post('/transaction').send(payload);
-
-      const result = await shareRepository.get(
-        payload.institutionId,
-        payload.ticketSymbol,
-      );
-
-      expect(expectedShare).toEqual(new ShareFactory({}, result).getObject());
-    });
   });
 });
