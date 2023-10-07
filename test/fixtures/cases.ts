@@ -2,7 +2,7 @@ import { transactions } from './transactions';
 import { shares } from './shares';
 import { monthlyBalances } from './monthlyBalances';
 import { totalBalances } from './totalBalances';
-import { TransactionParams } from '@domain/shared/interfaces';
+import { TransactionParams } from '@domain/shared/types';
 
 type Case = [
   TransactionParams,

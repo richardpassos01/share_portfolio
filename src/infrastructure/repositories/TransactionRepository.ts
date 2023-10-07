@@ -4,7 +4,7 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 import Database, { Tables } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 import Transaction from '@domain/transaction/Transaction';
-import { TRANSACTION_CATEGORY } from '@domain/shared/constants';
+import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 
 @injectable()
 export default class TransactionRepository

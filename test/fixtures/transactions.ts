@@ -1,8 +1,5 @@
-import {
-  TRANSACTION_TYPE,
-  TRANSACTION_CATEGORY,
-} from '@domain/shared/constants';
-import { TransactionParams } from '@domain/shared/interfaces';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
+import { TransactionParams } from '@domain/shared/types';
 import institution from '@fixtures/institution';
 
 export const transactions: TransactionParams[] = [

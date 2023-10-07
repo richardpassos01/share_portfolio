@@ -33,4 +33,9 @@ export default class InstitutionFactory {
       userId: this.institution.getUserId(),
     };
   }
+
+  getPayloadObject() {
+    const { id: _, ...payload } = this.getObject();
+    return payload;
+  }
 }

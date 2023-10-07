@@ -1,7 +1,4 @@
-import {
-  TRANSACTION_TYPE,
-  TRANSACTION_CATEGORY,
-} from '@domain/shared/constants';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import {
   MONTHLY_BALANCE_TYPE,
   MONTHLY_BALANCE_SALES_LIMIT,

@@ -28,6 +28,6 @@ export default class InstitutionRepository
     await this.database
       .connection()
       .insert(InstitutionMapper.mapToDatabaseObject(institution))
-      .into(Tables.MONTHLY_BALANCE);
+      .into(Tables.INSTITUTION);
   }
 }

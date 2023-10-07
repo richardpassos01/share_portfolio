@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { TRANSACTION_TYPE } from '@domain/shared/constants';
+import { TRANSACTION_TYPE } from '@domain/shared/enums';
 
 export default class Share {
   private mediumPrice = 0;

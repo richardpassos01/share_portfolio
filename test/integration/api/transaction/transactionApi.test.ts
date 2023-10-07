@@ -6,12 +6,9 @@ import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import TransactionFactory from '@factories/TransactionFactory';
-import ShareFactory from '@factories/ShareFactory';
-import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
 import TransactionRepository from '@infrastructure/repositories/TransactionRepository';
-import { dateToMonthYear } from '@helpers';
 
 describe('transactionAPI', () => {
   const server = app.listen();
@@ -52,10 +49,7 @@ describe('transactionAPI', () => {
     it('should return status and text CREATED', async () => {
       const payload = new TransactionFactory().getPayloadObject();
 
-      const response = await request
-        .post('/transaction')
-        .set('Content-Type', 'application/json')
-        .send(payload);
+      const response = await request.post('/transaction').send(payload);
 
       expect(response.status).toBe(StatusCodes.CREATED);
       expect(response.text).toBe(ReasonPhrases.CREATED);

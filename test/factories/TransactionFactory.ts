@@ -2,10 +2,7 @@ import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Transaction from '@domain/transaction/Transaction';
 import { dateToString } from '@helpers';
-import {
-  TRANSACTION_TYPE,
-  TRANSACTION_CATEGORY,
-} from '@domain/shared/constants';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import institution from '@fixtures/institution';
 

@@ -3,21 +3,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import UpdatePortfolio from './UpdatePortfolio';
-import {
-  TRANSACTION_CATEGORY,
-  TRANSACTION_TYPE,
-} from '@domain/shared/constants';
-
-export interface TransactionParams {
-  institutionId: string;
-  type: TRANSACTION_TYPE;
-  date: Date;
-  category: TRANSACTION_CATEGORY;
-  ticketSymbol: string;
-  quantity: number;
-  unityPrice: number;
-  totalCost: number;
-}
+import { TransactionParams } from '@domain/shared/types';
 
 @injectable()
 export default class CreateTransaction {

@@ -9,7 +9,6 @@ import cors from '@koa/cors';
 import errorHandler from '@middleware/errorHandler';
 import bodyParser from 'koa-bodyparser';
 import routes from './routes';
-import serializer from '@middleware/serializer';
 
 const app = new Koa();
 

@@ -14,6 +14,13 @@ router.get('/healthy-check', (ctx) => {
   ctx.body = ReasonPhrases.OK;
 });
 
+router.post('/institution', (ctx) => {
+  const institutionController = container.get<InstitutionController>(
+    TYPES.InstitutionController,
+  );
+  return institutionController.create(ctx);
+});
+
 router.get('/institution/:institutionId', (ctx) => {
   const institutionController = container.get<InstitutionController>(
     TYPES.InstitutionController,

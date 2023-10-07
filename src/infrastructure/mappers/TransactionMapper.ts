@@ -1,7 +1,4 @@
-import {
-  TRANSACTION_CATEGORY,
-  TRANSACTION_TYPE,
-} from '@domain/shared/constants';
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import Transaction from '@domain/transaction/Transaction';
 
 type MapToEntityInput = {

@@ -5,10 +5,7 @@ import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { parse } from 'node-xlsx';
 import container from '@dependencyInjectionContainer';
-import {
-  TRANSACTION_TYPE,
-  TRANSACTION_CATEGORY,
-} from '@domain/shared/constants';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import { dateStringToDate } from '../../helpers';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import { TYPES } from '@constants/types';

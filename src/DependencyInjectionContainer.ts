@@ -7,6 +7,7 @@ import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
 
 import GetInstitution from '@application/useCases/GetInstitution';
+import CreateInstitution from '@application/useCases/CreateInstitution';
 import GetShare from '@application/useCases/GetShare';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
@@ -48,6 +49,10 @@ container
 container
   .bind<GetInstitution>(TYPES.GetInstitution)
   .to(GetInstitution)
+  .inSingletonScope();
+container
+  .bind<CreateInstitution>(TYPES.CreateInstitution)
+  .to(CreateInstitution)
   .inSingletonScope();
 container.bind<GetShare>(TYPES.GetShare).to(GetShare).inSingletonScope();
 container

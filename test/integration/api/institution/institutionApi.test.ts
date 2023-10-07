@@ -4,10 +4,9 @@ import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import { StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import InstitutionFactory from '@factories/InstitutionFactory';
 import institution from '@fixtures/institution';
-import { formatterMoney } from '@helpers';
 
 describe('institutionAPI', () => {
   const server = app.listen();
@@ -28,13 +27,24 @@ describe('institutionAPI', () => {
     server.close();
   });
 
+  describe('POST /institution', () => {
+    it('should create institution', async () => {
+      const payload = new InstitutionFactory().getPayloadObject();
+
+      const response = await request.post('/institution').send(payload);
+
+      expect(response.status).toBe(StatusCodes.CREATED);
+      expect(response.text).toBe(ReasonPhrases.CREATED);
+    });
+  });
+
   describe('GET /institution/:institutionId', () => {
     it('should get institution', async () => {
       const institution = new InstitutionFactory().getObject();
 
       const response = await request.get(`/institution/${institution.id}`);
 
-      expect(StatusCodes.OK).toBe(response.status);
+      expect(response.status).toBe(StatusCodes.OK);
       expect(response.body).toEqual(institution);
     });
   });
@@ -47,7 +57,7 @@ describe('institutionAPI', () => {
         `/institution/${institution.id}/balance`,
       );
 
-      expect(StatusCodes.OK).toBe(response.status);
+      expect(response.status).toBe(StatusCodes.OK);
       expect(expectedBalance).toEqual(response.body);
     });
   });
