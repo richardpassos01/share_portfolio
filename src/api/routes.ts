@@ -54,4 +54,11 @@ router.post(
   },
 );
 
+router.delete('/transaction', (ctx) => {
+  const transactionController = container.get<TransactionController>(
+    TYPES.TransactionController,
+  );
+  return transactionController.delete(ctx);
+});
+
 export default router;

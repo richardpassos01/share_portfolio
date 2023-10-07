@@ -150,7 +150,7 @@ export default class UpdatePortfolio {
       transaction.getType(),
     );
 
-    const monthTransactions = await this.transactionRepository.getFromMonth(
+    const monthTransactions = await this.transactionRepository.listFromMonth(
       transaction.getInstitutionId(),
       transaction.getDate(),
     );

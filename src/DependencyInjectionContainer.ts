@@ -34,6 +34,7 @@ import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/Tot
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import UpdateShare from '@application/useCases/UpdateShare';
 import ListTransactions from '@application/useCases/ListTransactions';
+import DeleteTransactions from '@application/useCases/DeleteTransactions';
 
 const container = new Container();
 
@@ -73,6 +74,10 @@ container
 container
   .bind<CreateTransaction>(TYPES.CreateTransaction)
   .to(CreateTransaction)
+  .inSingletonScope();
+container
+  .bind<DeleteTransactions>(TYPES.DeleteTransactions)
+  .to(DeleteTransactions)
   .inSingletonScope();
 container
   .bind<ListTransactions>(TYPES.ListTransactions)

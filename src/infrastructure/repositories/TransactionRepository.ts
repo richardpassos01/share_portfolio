@@ -22,7 +22,24 @@ export default class TransactionRepository
       .into(Tables.TRANSACTION);
   }
 
-  async getFromMonth(institutionId: string, date: Date) {
+  async delete(ids: string[]) {
+    await this.database
+      .connection()
+      .whereIn('id', ids)
+      .del()
+      .into(Tables.TRANSACTION);
+  }
+
+  async list(institutionId: string) {
+    return this.database
+      .connection()
+      .select()
+      .where('institution_id', institutionId)
+      .into(Tables.TRANSACTION)
+      .then((data) => (data ? data.map(TransactionMapper.mapToEntity) : []));
+  }
+
+  async listFromMonth(institutionId: string, date: Date) {
     return this.database
       .connection()
       .select()
@@ -43,14 +60,5 @@ export default class TransactionRepository
             )
           : [],
       );
-  }
-
-  async list(institutionId: string) {
-    return this.database
-      .connection()
-      .select()
-      .where('institution_id', institutionId)
-      .into(Tables.TRANSACTION)
-      .then((data) => (data ? data.map(TransactionMapper.mapToEntity) : []));
   }
 }
