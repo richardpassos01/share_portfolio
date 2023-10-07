@@ -3,23 +3,22 @@ import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { createTransactionCases } from '@fixtures/cases';
-import { dateToMonthYear, formatterMoney } from '@helpers';
 import CreateTransaction from '@application/useCases/CreateTransaction';
-import ShareRepository from '@infrastructure/repositories/ShareRepository';
-import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
-import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRepository';
 import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
 import institution from '@fixtures/institution';
+import ListShares from '@application/useCases/ListShares';
+import GetMonthlyBalance from '@application/useCases/GetMonthlyBalance';
+import GetTotalBalance from '@application/useCases/GetTotalBalance';
 
 describe('CreateTransaction', () => {
   let database: Database;
   let createTransaction: CreateTransaction;
-  let shareRepository: ShareRepository;
-  let monthlyBalanceRepository: MonthlyBalanceRepository;
-  let totalBalanceRepository: TotalBalanceRepository;
+  let listShares: ListShares;
+  let getMonthlyBalance: GetMonthlyBalance;
+  let getTotalBalance: GetTotalBalance;
   let getInstitutionBalance: GetInstitutionBalance;
 
   beforeAll(async () => {
@@ -27,13 +26,11 @@ describe('CreateTransaction', () => {
     createTransaction = container.get<CreateTransaction>(
       TYPES.CreateTransaction,
     );
-    shareRepository = container.get<ShareRepository>(TYPES.ShareRepository);
-    monthlyBalanceRepository = container.get<MonthlyBalanceRepository>(
-      TYPES.MonthlyBalanceRepository,
+    listShares = container.get<ListShares>(TYPES.ListShares);
+    getMonthlyBalance = container.get<GetMonthlyBalance>(
+      TYPES.GetMonthlyBalance,
     );
-    totalBalanceRepository = container.get<TotalBalanceRepository>(
-      TYPES.TotalBalanceRepository,
-    );
+    getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
     getInstitutionBalance = container.get<GetInstitutionBalance>(
       TYPES.GetInstitutionBalance,
     );
@@ -50,24 +47,21 @@ describe('CreateTransaction', () => {
   describe.each(createTransactionCases)(
     'when call use case',
     (
-      transaction,
+      transactionParams,
       expectedShare,
       expectedMonthlyBalance,
       expectedTotalBalance,
       description,
     ) => {
       it(description, async () => {
-        await createTransaction.execute(transaction);
+        const transaction = await createTransaction.execute(transactionParams);
 
-        const shares = await shareRepository.getAll(transaction.institutionId);
+        const shares = await listShares.execute(transaction.getInstitutionId());
 
-        const monthlyBalance = await monthlyBalanceRepository.get(
-          transaction.institutionId,
-          dateToMonthYear(transaction.date),
-        );
+        const monthlyBalance = await getMonthlyBalance.execute(transaction);
 
-        const totalBalance = await totalBalanceRepository.get(
-          transaction.institutionId,
+        const totalBalance = await getTotalBalance.execute(
+          transaction.getInstitutionId(),
         );
 
         expect(expectedShare).toEqual(

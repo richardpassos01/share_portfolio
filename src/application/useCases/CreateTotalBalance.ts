@@ -11,7 +11,7 @@ export default class CreateTotalBalance {
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
   ) {}
 
-  async execute(transaction: AbstractTransaction) {
+  async execute(transaction: AbstractTransaction): Promise<void> {
     const totalBalance = new TotalBalance(transaction.getInstitutionId());
 
     return this.totalBalanceRepository.create(totalBalance);

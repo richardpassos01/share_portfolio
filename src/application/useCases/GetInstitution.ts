@@ -1,4 +1,5 @@
 import { TYPES } from '@constants/types';
+import Institution from '@domain/institution/Institution';
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import { injectable, inject } from 'inversify';
 
@@ -9,7 +10,7 @@ export default class GetInstitution {
     private readonly institutionRepository: InstitutionRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string) {
+  async execute(institutionId: string): Promise<Institution> {
     return this.institutionRepository.get(institutionId);
   }
 }

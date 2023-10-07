@@ -10,7 +10,7 @@ export default class CreateInstitution {
     private readonly institutionRepository: InstitutionRepositoryInterface,
   ) {}
 
-  async execute(name: string, userId: string) {
+  async execute(name: string, userId: string): Promise<void> {
     const institution = new Institution(name, userId);
 
     return this.institutionRepository.create(institution);

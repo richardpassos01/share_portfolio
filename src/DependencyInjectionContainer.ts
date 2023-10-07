@@ -9,6 +9,7 @@ import TransactionController from '@api/transaction/TransactionController';
 import GetInstitution from '@application/useCases/GetInstitution';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import GetShare from '@application/useCases/GetShare';
+import ListShares from '@application/useCases/ListShares';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransaction from '@application/useCases/CreateTransaction';
@@ -32,6 +33,7 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import UpdateShare from '@application/useCases/UpdateShare';
+import ListTransactions from '@application/useCases/ListTransactions';
 
 const container = new Container();
 
@@ -55,6 +57,7 @@ container
   .to(CreateInstitution)
   .inSingletonScope();
 container.bind<GetShare>(TYPES.GetShare).to(GetShare).inSingletonScope();
+container.bind<ListShares>(TYPES.ListShares).to(ListShares).inSingletonScope();
 container
   .bind<CreateShare>(TYPES.CreateShare)
   .to(CreateShare)
@@ -70,6 +73,10 @@ container
 container
   .bind<CreateTransaction>(TYPES.CreateTransaction)
   .to(CreateTransaction)
+  .inSingletonScope();
+container
+  .bind<ListTransactions>(TYPES.ListTransactions)
+  .to(ListTransactions)
   .inSingletonScope();
 container
   .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)

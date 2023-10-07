@@ -12,7 +12,7 @@ export default class CreateMonthlyBalance {
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
   ) {}
 
-  async execute(transaction: AbstractTransaction) {
+  async execute(transaction: AbstractTransaction): Promise<MonthlyBalance> {
     const yearMonth = dateToMonthYear(transaction.getDate());
 
     const monthlyBalance = new MonthlyBalance(

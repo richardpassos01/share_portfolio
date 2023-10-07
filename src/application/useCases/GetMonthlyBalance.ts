@@ -3,6 +3,7 @@ import { dateToMonthYear } from '../../helpers';
 import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { injectable, inject } from 'inversify';
 import { AbstractTransaction } from '@domain/shared/interfaces';
+import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
 
 @injectable()
 export default class GetMonthlyBalance {
@@ -11,7 +12,9 @@ export default class GetMonthlyBalance {
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
   ) {}
 
-  async execute(transaction: AbstractTransaction) {
+  async execute(
+    transaction: AbstractTransaction,
+  ): Promise<MonthlyBalance | undefined> {
     const yearMonth = dateToMonthYear(transaction.getDate());
 
     return this.monthlyBalanceRepository.get(

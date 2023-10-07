@@ -1,4 +1,5 @@
 import { TYPES } from '@constants/types';
+import TotalBalance from '@domain/totalBalance/TotalBalance';
 import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import { injectable, inject } from 'inversify';
 
@@ -9,7 +10,7 @@ export default class GetTotalBalance {
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string) {
+  async execute(institutionId: string): Promise<TotalBalance> {
     return this.totalBalanceRepository.get(institutionId);
   }
 }

@@ -15,7 +15,7 @@ export default class CreateTransaction {
     private readonly updatePortfolio: UpdatePortfolio,
   ) {}
 
-  async execute(params: TransactionParams) {
+  async execute(params: TransactionParams): Promise<Transaction> {
     const transaction = new Transaction(
       params.institutionId,
       params.type,
@@ -28,6 +28,7 @@ export default class CreateTransaction {
     );
 
     await this.transactionRepository.create(transaction);
-    return this.updatePortfolio.execute(transaction);
+    await this.updatePortfolio.execute(transaction);
+    return transaction;
   }
 }

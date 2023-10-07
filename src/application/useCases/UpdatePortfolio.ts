@@ -59,7 +59,7 @@ export default class UpdatePortfolio {
     private readonly updateTotalBalance: UpdateTotalBalance,
   ) {}
 
-  async execute(transaction: AbstractTransaction) {
+  async execute(transaction: AbstractTransaction): Promise<void> {
     try {
       const monthlyBalance = await this.getOrCreateMonthlyBalance(transaction);
 

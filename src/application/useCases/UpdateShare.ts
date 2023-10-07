@@ -10,7 +10,7 @@ export default class UpdateShare {
     private readonly shareRepository: ShareRepositoryInterface,
   ) {}
 
-  async execute(share: Share) {
+  async execute(share: Share): Promise<void> {
     return this.shareRepository.update(share);
   }
 }

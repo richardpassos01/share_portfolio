@@ -23,15 +23,6 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .then((data) => (data ? ShareMapper.mapToEntity(data) : undefined));
   }
 
-  async getAll(institutionId: string) {
-    return this.database
-      .connection()
-      .select()
-      .where({ institution_id: institutionId })
-      .into(Tables.SHARE)
-      .then((data) => data.map(ShareMapper.mapToEntity));
-  }
-
   async create(share: Share) {
     await this.database
       .connection()
@@ -53,5 +44,14 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .where('id', share.getId())
       .del()
       .into(Tables.SHARE);
+  }
+
+  async list(institutionId: string) {
+    return this.database
+      .connection()
+      .select()
+      .where({ institution_id: institutionId })
+      .into(Tables.SHARE)
+      .then((data) => data.map(ShareMapper.mapToEntity));
   }
 }

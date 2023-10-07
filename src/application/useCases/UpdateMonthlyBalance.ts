@@ -10,7 +10,7 @@ export default class UpdateMonthlyBalance {
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
   ) {}
 
-  async execute(monthlyBalance: MonthlyBalance) {
+  async execute(monthlyBalance: MonthlyBalance): Promise<void> {
     return this.monthlyBalanceRepository.update(monthlyBalance);
   }
 }

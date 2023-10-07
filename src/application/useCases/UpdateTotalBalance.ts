@@ -10,7 +10,7 @@ export default class UpdateTotalBalance {
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
   ) {}
 
-  async execute(totalBalance: TotalBalance) {
+  async execute(totalBalance: TotalBalance): Promise<void> {
     return this.totalBalanceRepository.update(totalBalance);
   }
 }

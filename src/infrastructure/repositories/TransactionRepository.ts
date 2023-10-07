@@ -15,15 +15,6 @@ export default class TransactionRepository
     private readonly database: Database,
   ) {}
 
-  async get(institutionId: string) {
-    return this.database
-      .connection()
-      .select()
-      .where('institution_id', institutionId)
-      .into(Tables.TRANSACTION)
-      .then((data) => (data ? data.map(TransactionMapper.mapToEntity) : []));
-  }
-
   async create(transaction: Transaction) {
     await this.database
       .connection()
@@ -52,5 +43,14 @@ export default class TransactionRepository
             )
           : [],
       );
+  }
+
+  async list(institutionId: string) {
+    return this.database
+      .connection()
+      .select()
+      .where('institution_id', institutionId)
+      .into(Tables.TRANSACTION)
+      .then((data) => (data ? data.map(TransactionMapper.mapToEntity) : []));
   }
 }

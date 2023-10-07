@@ -6,27 +6,17 @@ import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import TransactionFactory from '@factories/TransactionFactory';
-import ShareRepository from '@infrastructure/repositories/ShareRepository';
-import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
-import TransactionRepository from '@infrastructure/repositories/TransactionRepository';
+import ListTransactions from '@application/useCases/ListTransactions';
 
 describe('transactionAPI', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
-  let shareRepository: ShareRepository;
-  let monthlyBalanceRepository: MonthlyBalanceRepository;
-  let transactionRepository: TransactionRepository;
+  let listTransactions: ListTransactions;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
-    shareRepository = container.get<ShareRepository>(TYPES.ShareRepository);
-    monthlyBalanceRepository = container.get<MonthlyBalanceRepository>(
-      TYPES.MonthlyBalanceRepository,
-    );
-    transactionRepository = container.get<TransactionRepository>(
-      TYPES.TransactionRepository,
-    );
+    listTransactions = container.get<ListTransactions>(TYPES.ListTransactions);
   });
 
   beforeEach(async () => {
@@ -62,7 +52,7 @@ describe('transactionAPI', () => {
 
       await request.post('/transaction').send(payload);
 
-      const [result] = await transactionRepository.get(payload.institutionId);
+      const [result] = await listTransactions.execute(payload.institutionId);
 
       expect(expectedTransaction).toEqual(
         new TransactionFactory({}, result).getObject(),
