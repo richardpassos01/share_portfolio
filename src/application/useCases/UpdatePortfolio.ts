@@ -4,8 +4,7 @@ import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import ProcessDividendTransaction from './ProcessDividendTransaction';
 import ProcessSpecialEventsOnShare from './ProcessSpecialEventsOnShare';
-import ProcessBuyTransaction from './ProcessBuyTransaction';
-import ProcessSellTransaction from './ProcessSellTransaction';
+import ProcessTradeTransaction from './ProcessTradeTransaction';
 
 @injectable()
 export default class UpdatePortfolio {
@@ -16,34 +15,31 @@ export default class UpdatePortfolio {
     @inject(TYPES.ProcessSpecialEventsOnShare)
     private readonly processSpecialEventsOnShare: ProcessSpecialEventsOnShare,
 
-    @inject(TYPES.ProcessBuyTransaction)
-    private readonly processBuyTransaction: ProcessBuyTransaction,
-
-    @inject(TYPES.ProcessSellTransaction)
-    private readonly processSellTransaction: ProcessSellTransaction,
+    @inject(TYPES.ProcessTradeTransaction)
+    private readonly processTradeTransaction: ProcessTradeTransaction,
   ) {}
 
   async execute(transaction: AbstractTransaction): Promise<void> {
     try {
-      if (transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS) {
+      const isDividend =
+        transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS;
+
+      const isSpecialEvent =
+        transaction.getCategory() === TRANSACTION_CATEGORY.SPLIT ||
+        transaction.getCategory() === TRANSACTION_CATEGORY.BONUS_SHARE;
+
+      const isTrade = transaction.getCategory() === TRANSACTION_CATEGORY.TRADE;
+
+      if (isDividend) {
         return this.processDividendTransaction.execute(transaction);
       }
 
-      if (
-        transaction.getCategory() === TRANSACTION_CATEGORY.SPLIT ||
-        transaction.getCategory() === TRANSACTION_CATEGORY.BONUS_SHARE
-      ) {
+      if (isSpecialEvent) {
         return this.processSpecialEventsOnShare.execute(transaction);
       }
 
-      if (transaction.getCategory() === TRANSACTION_CATEGORY.TRADE) {
-        if (transaction.getType() === TRANSACTION_TYPE.BUY) {
-          return this.processBuyTransaction.execute(transaction);
-        }
-
-        if (transaction.getType() === TRANSACTION_TYPE.SELL) {
-          return this.processSellTransaction.execute(transaction);
-        }
+      if (isTrade) {
+        return this.processTradeTransaction.execute(transaction);
       }
     } catch (error) {
       console.error(error);

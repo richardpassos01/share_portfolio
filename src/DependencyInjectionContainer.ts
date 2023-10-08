@@ -39,6 +39,7 @@ import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEve
 import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
 import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
 import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
+import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -120,6 +121,10 @@ container
 container
   .bind<ProcessSpecialEventsOnShare>(TYPES.ProcessSpecialEventsOnShare)
   .to(ProcessSpecialEventsOnShare)
+  .inSingletonScope();
+container
+  .bind<ProcessTradeTransaction>(TYPES.ProcessTradeTransaction)
+  .to(ProcessTradeTransaction)
   .inSingletonScope();
 container
   .bind<ProcessBuyTransaction>(TYPES.ProcessBuyTransaction)

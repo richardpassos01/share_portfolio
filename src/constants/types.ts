@@ -25,6 +25,7 @@ export const TYPES = {
   UpdateTotalBalance: Symbol.for('UpdateTotalBalance'),
   ProcessDividendTransaction: Symbol.for('ProcessDividendTransaction'),
   ProcessSpecialEventsOnShare: Symbol.for('ProcessSpecialEventsOnShare'),
+  ProcessTradeTransaction: Symbol.for('ProcessTradeTransaction'),
   ProcessBuyTransaction: Symbol.for('ProcessBuyTransaction'),
   ProcessSellTransaction: Symbol.for('ProcessSellTransaction'),
   ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
