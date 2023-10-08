@@ -4,7 +4,7 @@ import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { createTransactionCases } from '@fixtures/cases';
 import CreateTransaction from '@application/useCases/CreateTransaction';
-import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
+import CalculateInstitutionBalance from '@application/useCases/CalculateInstitutionBalance';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
@@ -19,7 +19,7 @@ describe('CreateTransaction', () => {
   let listShares: ListShares;
   let getOrCreateMonthlyBalance: GetOrCreateMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
-  let getInstitutionBalance: GetInstitutionBalance;
+  let calculateInstitutionBalance: CalculateInstitutionBalance;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -31,8 +31,8 @@ describe('CreateTransaction', () => {
       TYPES.GetOrCreateMonthlyBalance,
     );
     getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
-    getInstitutionBalance = container.get<GetInstitutionBalance>(
-      TYPES.GetInstitutionBalance,
+    calculateInstitutionBalance = container.get<CalculateInstitutionBalance>(
+      TYPES.CalculateInstitutionBalance,
     );
 
     await database.connection().migrate.latest();
@@ -82,7 +82,7 @@ describe('CreateTransaction', () => {
     it('Should update the Profit with the sum of all earnings, less taxes and the remaining loss', async () => {
       const expectedBalance = { loss: 0, profit: 1721806.6940386684 };
 
-      const profit = await getInstitutionBalance.execute(institution.id);
+      const profit = await calculateInstitutionBalance.execute(institution.id);
 
       expect(expectedBalance).toEqual(profit);
     });

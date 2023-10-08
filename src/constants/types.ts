@@ -15,7 +15,7 @@ export const TYPES = {
   GetInstitution: Symbol.for('GetInstitution'),
   CreateInstitution: Symbol.for('CreateInstitution'),
   GetOrCreateMonthlyBalance: Symbol.for('GetOrCreateMonthlyBalance'),
-  GetInstitutionBalance: Symbol.for('GetInstitutionBalance'),
+  CalculateInstitutionBalance: Symbol.for('CalculateInstitutionBalance'),
   GetShare: Symbol.for('GetShare'),
   ListShares: Symbol.for('ListShares'),
   GetTotalBalance: Symbol.for('GetTotalBalance'),

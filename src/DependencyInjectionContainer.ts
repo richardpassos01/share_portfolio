@@ -12,7 +12,7 @@ import GetShare from '@application/queries/GetShare';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import ListTransactions from '@application/queries/ListTransactions';
 
-import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
+import CalculateInstitutionBalance from '@application/useCases/CalculateInstitutionBalance';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
@@ -113,8 +113,8 @@ container
   .to(UpdateTotalBalance)
   .inSingletonScope();
 container
-  .bind<GetInstitutionBalance>(TYPES.GetInstitutionBalance)
-  .to(GetInstitutionBalance)
+  .bind<CalculateInstitutionBalance>(TYPES.CalculateInstitutionBalance)
+  .to(CalculateInstitutionBalance)
   .inSingletonScope();
 container
   .bind<ProcessDividendTransaction>(TYPES.ProcessDividendTransaction)

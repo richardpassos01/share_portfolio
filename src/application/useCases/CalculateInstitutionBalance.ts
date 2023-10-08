@@ -5,7 +5,7 @@ import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces
 import { InstitutionBalance } from '@domain/institution/interfaces/InstitutionResponseInterfaces';
 
 @injectable()
-export default class GetInstitutionBalance {
+export default class CalculateInstitutionBalance {
   constructor(
     @inject(TYPES.MonthlyBalanceRepository)
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
