@@ -1,4 +1,5 @@
 export const TYPES = {
+  Database: Symbol.for('Database'),
   InstitutionRepository: Symbol.for('InstitutionRepositoryInterface'),
   MonthlyBalanceRepository: Symbol.for('MonthlyBalanceRepositoryInterface'),
   ShareRepository: Symbol.for('ShareRepositoryInterface'),
@@ -23,5 +24,9 @@ export const TYPES = {
   UpdatePortfolio: Symbol.for('UpdatePortfolio'),
   UpdateShare: Symbol.for('UpdateShare'),
   UpdateTotalBalance: Symbol.for('UpdateTotalBalance'),
-  Database: Symbol.for('Database'),
+  ProcessDividendTransaction: Symbol.for('ProcessDividendTransaction'),
+  ProcessSpecialEventsOnShare: Symbol.for('ProcessSpecialEventsOnShare'),
+  ProcessBuyTransaction: Symbol.for('ProcessBuyTransaction'),
+  ProcessSellTransaction: Symbol.for('ProcessSellTransaction'),
+  ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
 };

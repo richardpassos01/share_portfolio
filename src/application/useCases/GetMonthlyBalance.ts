@@ -12,14 +12,25 @@ export default class GetMonthlyBalance {
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
   ) {}
 
-  async execute(
-    transaction: AbstractTransaction,
-  ): Promise<MonthlyBalance | undefined> {
+  async execute(transaction: AbstractTransaction): Promise<MonthlyBalance> {
     const yearMonth = dateToMonthYear(transaction.getDate());
 
-    return this.monthlyBalanceRepository.get(
+    let monthlyBalance = await this.monthlyBalanceRepository.get(
       transaction.getInstitutionId(),
       yearMonth,
     );
+
+    if (monthlyBalance) {
+      return monthlyBalance;
+    }
+
+    monthlyBalance = new MonthlyBalance(
+      transaction.getInstitutionId(),
+      yearMonth,
+    );
+
+    await this.monthlyBalanceRepository.create(monthlyBalance);
+
+    return monthlyBalance;
   }
 }

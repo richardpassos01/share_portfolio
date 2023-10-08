@@ -38,12 +38,8 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .into(Tables.SHARE);
   }
 
-  async delete(share: Share) {
-    await this.database
-      .connection()
-      .where('id', share.getId())
-      .del()
-      .into(Tables.SHARE);
+  async delete(id: string) {
+    await this.database.connection().where('id', id).del().into(Tables.SHARE);
   }
 
   async list(institutionId: string) {

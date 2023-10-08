@@ -11,6 +11,10 @@ export default class UpdateShare {
   ) {}
 
   async execute(share: Share): Promise<void> {
+    if (share.getQuantity() === 0) {
+      return this.shareRepository.delete(share.getId());
+    }
+
     return this.shareRepository.update(share);
   }
 }

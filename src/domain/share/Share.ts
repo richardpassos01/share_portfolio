@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { TRANSACTION_TYPE } from '@domain/shared/enums';
+import { AbstractTransaction } from '@domain/shared/interfaces';
 
 export default class Share {
   private mediumPrice = 0;
@@ -57,5 +58,12 @@ export default class Share {
     this.setQuantity((this.quantity += changeMultiplier * quantity));
     this.setTotalCost((this.totalCost += changeMultiplier * totalCost));
     this.setMediumPrice();
+  }
+
+  getEarningsOrLoss(transaction: AbstractTransaction): number {
+    const sellCost = transaction.getTotalCost();
+    const minIdealSellCost = transaction.getQuantity() * this.mediumPrice;
+    const earning = sellCost - minIdealSellCost;
+    return earning;
   }
 }

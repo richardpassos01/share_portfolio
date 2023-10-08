@@ -20,6 +20,7 @@
     "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
     "migration:create": "npm run knex migrate:make",
     "migration:up": "npm run knex migrate:latest",
+    "migration:down": "npm run knex migrate:rollback",
     "seed:create": "npm run knex seed:make",
     "seed:run": "npm run knex seed:run",
     "management": "npm run tsnode src/management/commands/${npm_config_command}.ts"
