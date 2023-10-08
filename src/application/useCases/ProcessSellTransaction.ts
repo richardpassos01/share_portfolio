@@ -2,7 +2,7 @@ import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
-import UpdateShare from './UpdateShare';
+import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
 import GetOrCreateMonthlyBalance from './GetOrCreateMonthlyBalance';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
@@ -35,8 +35,8 @@ export default class ProcessSellTransaction {
     @inject(TYPES.GetTotalBalance)
     private readonly getTotalBalance: GetTotalBalance,
 
-    @inject(TYPES.UpdateShare)
-    private readonly updateShare: UpdateShare,
+    @inject(TYPES.UpdateOrLiquidateShare)
+    private readonly updateOrLiquidateShare: UpdateOrLiquidateShare,
 
     @inject(TYPES.UpdateMonthlyBalance)
     private readonly updateMonthlyBalance: UpdateMonthlyBalance,
@@ -97,7 +97,7 @@ export default class ProcessSellTransaction {
     }
 
     await Promise.all([
-      this.updateShare.execute(share),
+      this.updateOrLiquidateShare.execute(share),
       this.updateMonthlyBalance.execute(monthlyBalance),
       this.updateTotalBalance.execute(totalBalance),
     ]);

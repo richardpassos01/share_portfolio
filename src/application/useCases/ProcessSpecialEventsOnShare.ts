@@ -2,7 +2,7 @@ import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
-import UpdateShare from './UpdateShare';
+import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 
 @injectable()
 export default class ProcessSpecialEventsOnShare {
@@ -10,8 +10,8 @@ export default class ProcessSpecialEventsOnShare {
     @inject(TYPES.GetShare)
     private readonly getShare: GetShare,
 
-    @inject(TYPES.UpdateShare)
-    private readonly updateShare: UpdateShare,
+    @inject(TYPES.UpdateOrLiquidateShare)
+    private readonly updateOrLiquidateShare: UpdateOrLiquidateShare,
   ) {}
 
   async execute(transaction: AbstractTransaction): Promise<void> {
@@ -24,6 +24,6 @@ export default class ProcessSpecialEventsOnShare {
     const quantity = share.getQuantity() + transaction.getQuantity();
 
     share.setQuantity(quantity);
-    return this.updateShare.execute(share);
+    return this.updateOrLiquidateShare.execute(share);
   }
 }

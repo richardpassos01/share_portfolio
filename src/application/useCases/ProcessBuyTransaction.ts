@@ -3,7 +3,7 @@ import { AbstractTransaction } from '@domain/shared/interfaces';
 import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import CreateShare from './CreateShare';
-import UpdateShare from './UpdateShare';
+import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 
 @injectable()
 export default class ProcessBuyTransaction {
@@ -14,8 +14,8 @@ export default class ProcessBuyTransaction {
     @inject(TYPES.CreateShare)
     private readonly createShare: CreateShare,
 
-    @inject(TYPES.UpdateShare)
-    private readonly updateShare: UpdateShare,
+    @inject(TYPES.UpdateOrLiquidateShare)
+    private readonly updateOrLiquidateShare: UpdateOrLiquidateShare,
   ) {}
 
   async execute(transaction: AbstractTransaction): Promise<void> {
@@ -30,6 +30,6 @@ export default class ProcessBuyTransaction {
       transaction.getTotalCost(),
       transaction.getType(),
     );
-    return this.updateShare.execute(share);
+    return this.updateOrLiquidateShare.execute(share);
   }
 }

@@ -29,7 +29,7 @@ import TransactionRepository from '@infrastructure/repositories/TransactionRepos
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
 import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRepository';
 
-import UpdateShare from '@application/useCases/UpdateShare';
+import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
 import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
@@ -73,8 +73,8 @@ container
   .to(CreateShare)
   .inSingletonScope();
 container
-  .bind<UpdateShare>(TYPES.UpdateShare)
-  .to(UpdateShare)
+  .bind<UpdateOrLiquidateShare>(TYPES.UpdateOrLiquidateShare)
+  .to(UpdateOrLiquidateShare)
   .inSingletonScope();
 container
   .bind<UpdatePortfolio>(TYPES.UpdatePortfolio)

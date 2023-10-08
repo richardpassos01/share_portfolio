@@ -4,14 +4,16 @@ import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryIn
 import { injectable, inject } from 'inversify';
 
 @injectable()
-export default class UpdateShare {
+export default class UpdateOrLiquidateShare {
   constructor(
     @inject(TYPES.ShareRepository)
     private readonly shareRepository: ShareRepositoryInterface,
   ) {}
 
   async execute(share: Share): Promise<void> {
-    if (share.getQuantity() === 0) {
+    const isLiquidation = share.getQuantity() === 0;
+
+    if (isLiquidation) {
       return this.shareRepository.delete(share.getId());
     }
 
