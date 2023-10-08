@@ -10,14 +10,14 @@ import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
 import institution from '@fixtures/institution';
 import ListShares from '@application/useCases/ListShares';
-import GetMonthlyBalance from '@application/useCases/GetMonthlyBalance';
+import GetOrCreateMonthlyBalance from '@application/useCases/GetOrCreateMonthlyBalance';
 import GetTotalBalance from '@application/useCases/GetTotalBalance';
 
 describe('CreateTransaction', () => {
   let database: Database;
   let createTransaction: CreateTransaction;
   let listShares: ListShares;
-  let getMonthlyBalance: GetMonthlyBalance;
+  let getOrCreateMonthlyBalance: GetOrCreateMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
   let getInstitutionBalance: GetInstitutionBalance;
 
@@ -27,8 +27,8 @@ describe('CreateTransaction', () => {
       TYPES.CreateTransaction,
     );
     listShares = container.get<ListShares>(TYPES.ListShares);
-    getMonthlyBalance = container.get<GetMonthlyBalance>(
-      TYPES.GetMonthlyBalance,
+    getOrCreateMonthlyBalance = container.get<GetOrCreateMonthlyBalance>(
+      TYPES.GetOrCreateMonthlyBalance,
     );
     getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
     getInstitutionBalance = container.get<GetInstitutionBalance>(
@@ -58,7 +58,8 @@ describe('CreateTransaction', () => {
 
         const shares = await listShares.execute(transaction.getInstitutionId());
 
-        const monthlyBalance = await getMonthlyBalance.execute(transaction);
+        const monthlyBalance =
+          await getOrCreateMonthlyBalance.execute(transaction);
 
         const totalBalance = await getTotalBalance.execute(
           transaction.getInstitutionId(),

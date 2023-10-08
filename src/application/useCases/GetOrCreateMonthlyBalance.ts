@@ -6,7 +6,7 @@ import { AbstractTransaction } from '@domain/shared/interfaces';
 import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
 
 @injectable()
-export default class GetMonthlyBalance {
+export default class GetOrCreateMonthlyBalance {
   constructor(
     @inject(TYPES.MonthlyBalanceRepository)
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,

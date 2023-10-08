@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import GetShare from './GetShare';
 import UpdateShare from './UpdateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
-import GetMonthlyBalance from './GetMonthlyBalance';
+import GetOrCreateMonthlyBalance from './GetOrCreateMonthlyBalance';
 import GetTotalBalance from './GetTotalBalance';
 import {
   MONTHLY_BALANCE_SALES_LIMIT,
@@ -29,8 +29,8 @@ export default class ProcessSellTransaction {
     @inject(TYPES.ListTradeTransactionsFromMonth)
     private readonly listTradeTransactionsFromMonth: ListTradeTransactionsFromMonth,
 
-    @inject(TYPES.GetMonthlyBalance)
-    private readonly getMonthlyBalance: GetMonthlyBalance,
+    @inject(TYPES.GetOrCreateMonthlyBalance)
+    private readonly getOrCreateMonthlyBalance: GetOrCreateMonthlyBalance,
 
     @inject(TYPES.GetTotalBalance)
     private readonly getTotalBalance: GetTotalBalance,
@@ -46,7 +46,8 @@ export default class ProcessSellTransaction {
   ) {}
 
   async execute(transaction: AbstractTransaction): Promise<void> {
-    const monthlyBalance = await this.getMonthlyBalance.execute(transaction);
+    const monthlyBalance =
+      await this.getOrCreateMonthlyBalance.execute(transaction);
     const share = await this.getShare.execute(transaction);
 
     if (!share) {

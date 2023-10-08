@@ -13,8 +13,7 @@ import ListShares from '@application/useCases/ListShares';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransaction from '@application/useCases/CreateTransaction';
-import GetMonthlyBalance from '@application/useCases/GetMonthlyBalance';
-import CreateMonthlyBalance from '@application/useCases/CreateMonthlyBalance';
+import GetOrCreateMonthlyBalance from '@application/useCases/GetOrCreateMonthlyBalance';
 import UpdateMonthlyBalance from '@application/useCases/UpdateMonthlyBalance';
 import GetTotalBalance from '@application/useCases/GetTotalBalance';
 import CreateTotalBalance from '@application/useCases/CreateTotalBalance';
@@ -91,12 +90,8 @@ container
   .to(ListTransactions)
   .inSingletonScope();
 container
-  .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)
-  .to(GetMonthlyBalance)
-  .inSingletonScope();
-container
-  .bind<CreateMonthlyBalance>(TYPES.CreateMonthlyBalance)
-  .to(CreateMonthlyBalance)
+  .bind<GetOrCreateMonthlyBalance>(TYPES.GetOrCreateMonthlyBalance)
+  .to(GetOrCreateMonthlyBalance)
   .inSingletonScope();
 container
   .bind<UpdateMonthlyBalance>(TYPES.UpdateMonthlyBalance)
