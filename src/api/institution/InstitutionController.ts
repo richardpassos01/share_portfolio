@@ -1,9 +1,9 @@
 import Koa from 'koa';
 
 import { TYPES } from '@constants/types';
-import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { injectable, inject } from 'inversify';
-import GetInstitution from '@application/useCases/GetInstitution';
+import GetInstitution from '@application/queries/GetInstitution';
 import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 

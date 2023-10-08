@@ -1,7 +1,7 @@
 import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import { inject, injectable } from 'inversify';
-import GetShare from './GetShare';
+import GetShare from '@application/queries/GetShare';
 import UpdateShare from './UpdateShare';
 
 @injectable()

@@ -6,7 +6,7 @@ import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import TransactionFactory from '@factories/TransactionFactory';
-import ListTransactions from '@application/useCases/ListTransactions';
+import ListTransactions from '@application/queries/ListTransactions';
 import ErrorCode from '@domain/shared/error/ErrorCode';
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 

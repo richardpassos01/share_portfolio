@@ -9,9 +9,9 @@ import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
 import institution from '@fixtures/institution';
-import ListShares from '@application/useCases/ListShares';
+import ListShares from '@application/queries/ListShares';
 import GetOrCreateMonthlyBalance from '@application/useCases/GetOrCreateMonthlyBalance';
-import GetTotalBalance from '@application/useCases/GetTotalBalance';
+import GetTotalBalance from '@application/queries/GetTotalBalance';
 
 describe('CreateTransaction', () => {
   let database: Database;

@@ -4,10 +4,10 @@ import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import InstitutionFactory from '@factories/InstitutionFactory';
 import institution from '@fixtures/institution';
-import GetInstitution from '@application/useCases/GetInstitution';
+import GetInstitution from '@application/queries/GetInstitution';
 
 describe('institutionAPI', () => {
   const server = app.listen();

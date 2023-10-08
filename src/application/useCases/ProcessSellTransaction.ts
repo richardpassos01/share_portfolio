@@ -1,11 +1,11 @@
 import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import { inject, injectable } from 'inversify';
-import GetShare from './GetShare';
+import GetShare from '@application/queries/GetShare';
 import UpdateShare from './UpdateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
 import GetOrCreateMonthlyBalance from './GetOrCreateMonthlyBalance';
-import GetTotalBalance from './GetTotalBalance';
+import GetTotalBalance from '@application/queries/GetTotalBalance';
 import {
   MONTHLY_BALANCE_SALES_LIMIT,
   MONTHLY_BALANCE_TYPE,

@@ -6,19 +6,21 @@ import Database from '@infrastructure/database/Database';
 import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
 
-import GetInstitution from '@application/useCases/GetInstitution';
+import GetInstitution from '@application/queries/GetInstitution';
+import ListShares from '@application/queries/ListShares';
+import GetShare from '@application/queries/GetShare';
+import GetTotalBalance from '@application/queries/GetTotalBalance';
+import ListTransactions from '@application/queries/ListTransactions';
+
+import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
 import CreateInstitution from '@application/useCases/CreateInstitution';
-import GetShare from '@application/useCases/GetShare';
-import ListShares from '@application/useCases/ListShares';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import GetOrCreateMonthlyBalance from '@application/useCases/GetOrCreateMonthlyBalance';
 import UpdateMonthlyBalance from '@application/useCases/UpdateMonthlyBalance';
-import GetTotalBalance from '@application/useCases/GetTotalBalance';
 import CreateTotalBalance from '@application/useCases/CreateTotalBalance';
 import UpdateTotalBalance from '@application/useCases/UpdateTotalBalance';
-import GetInstitutionBalance from '@application/useCases/GetInstitutionBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
@@ -27,19 +29,19 @@ import TransactionRepository from '@infrastructure/repositories/TransactionRepos
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
 import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRepository';
 
-import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
-import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
-import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import UpdateShare from '@application/useCases/UpdateShare';
-import ListTransactions from '@application/useCases/ListTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
 import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
 import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
 import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
 import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
+
+import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
+import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
+import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
 const container = new Container({
   skipBaseClassChecks: true,
