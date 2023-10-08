@@ -12,16 +12,17 @@ import GetShare from '@application/queries/GetShare';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import ListTransactions from '@application/queries/ListTransactions';
 
-import CalculateInstitutionBalance from '@application/useCases/CalculateInstitutionBalance';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransaction from '@application/useCases/CreateTransaction';
-import GetOrCreateMonthlyBalance from '@application/useCases/GetOrCreateMonthlyBalance';
+import CreateMonthlyBalance from '@application/useCases/CreateMonthlyBalance';
 import UpdateMonthlyBalance from '@application/useCases/UpdateMonthlyBalance';
 import CreateTotalBalance from '@application/useCases/CreateTotalBalance';
 import UpdateTotalBalance from '@application/useCases/UpdateTotalBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
+import CreateFinancialReportFromBalances from '@application/useCases/CreateFinancialReportFromBalances';
+import UpdateBalancesFromFinancialReport from '@application/useCases/UpdateBalancesFromFinancialReport';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
@@ -40,8 +41,9 @@ import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransacti
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -93,8 +95,8 @@ container
   .to(ListTransactions)
   .inSingletonScope();
 container
-  .bind<GetOrCreateMonthlyBalance>(TYPES.GetOrCreateMonthlyBalance)
-  .to(GetOrCreateMonthlyBalance)
+  .bind<CreateMonthlyBalance>(TYPES.CreateMonthlyBalance)
+  .to(CreateMonthlyBalance)
   .inSingletonScope();
 container
   .bind<UpdateMonthlyBalance>(TYPES.UpdateMonthlyBalance)
@@ -105,16 +107,16 @@ container
   .to(GetTotalBalance)
   .inSingletonScope();
 container
+  .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)
+  .to(GetMonthlyBalance)
+  .inSingletonScope();
+container
   .bind<CreateTotalBalance>(TYPES.CreateTotalBalance)
   .to(CreateTotalBalance)
   .inSingletonScope();
 container
   .bind<UpdateTotalBalance>(TYPES.UpdateTotalBalance)
   .to(UpdateTotalBalance)
-  .inSingletonScope();
-container
-  .bind<CalculateInstitutionBalance>(TYPES.CalculateInstitutionBalance)
-  .to(CalculateInstitutionBalance)
   .inSingletonScope();
 container
   .bind<ProcessDividendTransaction>(TYPES.ProcessDividendTransaction)
@@ -139,6 +141,18 @@ container
 container
   .bind<ListTradeTransactionsFromMonth>(TYPES.ListTradeTransactionsFromMonth)
   .to(ListTradeTransactionsFromMonth)
+  .inSingletonScope();
+container
+  .bind<CreateFinancialReportFromBalances>(
+    TYPES.CreateFinancialReportFromBalances,
+  )
+  .to(CreateFinancialReportFromBalances)
+  .inSingletonScope();
+container
+  .bind<UpdateBalancesFromFinancialReport>(
+    TYPES.UpdateBalancesFromFinancialReport,
+  )
+  .to(UpdateBalancesFromFinancialReport)
   .inSingletonScope();
 
 container

@@ -1,7 +1,7 @@
 import TotalBalanceMapper from '../mappers/TotalBalanceMapper';
 import { TYPES } from '@constants/types';
-import TotalBalance from '@domain/totalBalance/TotalBalance';
-import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
+import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import Database, { Tables } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 
@@ -35,7 +35,7 @@ export default class TotalBalanceRepository
     await this.database
       .connection()
       .update(TotalBalanceMapper.mapToDatabaseObject(balance))
-      .where('id', balance.getId())
+      .where('id', balance.id)
       .into(Tables.TOTAL_BALANCE);
   }
 }

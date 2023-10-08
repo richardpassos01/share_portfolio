@@ -4,15 +4,15 @@ import { v4 as uuid } from 'uuid';
 
 export default class Transaction implements AbstractTransaction {
   constructor(
-    private readonly institutionId: string,
-    private readonly type: TRANSACTION_TYPE,
-    private readonly date: Date,
-    private readonly category: TRANSACTION_CATEGORY,
-    private readonly ticketSymbol: string,
-    private readonly quantity: number,
-    private readonly unityPrice: number,
-    private readonly totalCost: number,
-    private readonly id: string = uuid(),
+    public readonly institutionId: string,
+    public readonly type: TRANSACTION_TYPE,
+    public readonly date: Date,
+    public readonly category: TRANSACTION_CATEGORY,
+    public readonly ticketSymbol: string,
+    public readonly quantity: number,
+    public readonly unityPrice: number,
+    public readonly totalCost: number,
+    public readonly id: string = uuid(),
   ) {}
 
   getId() {

@@ -19,7 +19,7 @@ export default class UpdatePortfolio {
     private readonly processTradeTransaction: ProcessTradeTransaction,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<void> {
+  async execute(transaction: AbstractTransaction): Promise<any> {
     try {
       const isDividend =
         transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS;

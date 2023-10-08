@@ -1,5 +1,5 @@
-import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
-import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
+import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
+import { MONTHLY_BALANCE_TYPE } from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
 
 type MapToEntityInput = {
   id: string;
@@ -16,15 +16,15 @@ type MapToEntityInput = {
 export default class MonthlyBalanceMapper {
   static mapToDatabaseObject(entity: MonthlyBalance): MapToEntityInput {
     return {
-      id: entity.getId(),
-      institution_id: entity.getInstitutionId(),
-      year_month: entity.getYearMonth(),
-      trade_earnings: entity.getTradeEarnings(),
-      dividend_earnings: entity.getDividendEarnings(),
-      tax: entity.getTax(),
-      tax_withholding: entity.getTaxWithholding(),
-      loss: entity.getLoss(),
-      type: entity.getType(),
+      id: entity.id,
+      institution_id: entity.institutionId,
+      year_month: entity.yearMonth,
+      trade_earnings: entity.tradeEarnings,
+      dividend_earnings: entity.dividendEarnings,
+      tax: entity.tax,
+      tax_withholding: entity.taxWithholding,
+      loss: entity.loss,
+      type: entity.type,
     };
   }
 

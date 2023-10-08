@@ -14,8 +14,7 @@ export const TYPES = {
   ListTransactions: Symbol.for('ListTransactions'),
   GetInstitution: Symbol.for('GetInstitution'),
   CreateInstitution: Symbol.for('CreateInstitution'),
-  GetOrCreateMonthlyBalance: Symbol.for('GetOrCreateMonthlyBalance'),
-  CalculateInstitutionBalance: Symbol.for('CalculateInstitutionBalance'),
+  CreateMonthlyBalance: Symbol.for('CreateMonthlyBalance'),
   GetShare: Symbol.for('GetShare'),
   ListShares: Symbol.for('ListShares'),
   GetTotalBalance: Symbol.for('GetTotalBalance'),
@@ -29,4 +28,12 @@ export const TYPES = {
   ProcessBuyTransaction: Symbol.for('ProcessBuyTransaction'),
   ProcessSellTransaction: Symbol.for('ProcessSellTransaction'),
   ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
+  FinancialReport: Symbol.for('FinancialReport'),
+  GetMonthlyBalance: Symbol.for('GetMonthlyBalance'),
+  CreateFinancialReportFromBalances: Symbol.for(
+    'CreateFinancialReportFromBalances',
+  ),
+  UpdateBalancesFromFinancialReport: Symbol.for(
+    'UpdateBalancesFromFinancialReport',
+  ),
 };

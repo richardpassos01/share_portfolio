@@ -1,8 +1,8 @@
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
-import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
-import { MONTHLY_BALANCE_TYPE } from '@domain/monthlyBalance/MonthlyBalanceEnums';
-import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
+import { MONTHLY_BALANCE_TYPE } from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
+import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { dateToMonthYear } from '@helpers';
 import institution from '@fixtures/institution';
 
@@ -56,14 +56,14 @@ export default class MonthlyBalanceFactory {
 
   getObject() {
     return {
-      institutionId: this.monthlyBalance.getInstitutionId(),
-      yearMonth: this.monthlyBalance.getYearMonth(),
-      tradeEarnings: this.monthlyBalance.getTradeEarnings(),
-      dividendEarnings: this.monthlyBalance.getDividendEarnings(),
-      tax: this.monthlyBalance.getTax(),
-      taxWithholding: this.monthlyBalance.getTaxWithholding(),
-      loss: this.monthlyBalance.getLoss(),
-      type: this.monthlyBalance.getType(),
+      institutionId: this.monthlyBalance.institutionId,
+      yearMonth: this.monthlyBalance.yearMonth,
+      tradeEarnings: this.monthlyBalance.tradeEarnings,
+      dividendEarnings: this.monthlyBalance.dividendEarnings,
+      tax: this.monthlyBalance.tax,
+      taxWithholding: this.monthlyBalance.taxWithholding,
+      loss: this.monthlyBalance.loss,
+      type: this.monthlyBalance.type,
     };
   }
 

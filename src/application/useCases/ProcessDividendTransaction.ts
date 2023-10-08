@@ -1,24 +1,28 @@
 import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import { inject, injectable } from 'inversify';
-import GetOrCreateMonthlyBalance from './GetOrCreateMonthlyBalance';
-import UpdateMonthlyBalance from './UpdateMonthlyBalance';
+import CreateFinancialReportFromBalances from './CreateFinancialReportFromBalances';
+import UpdateBalancesFromFinancialReport from './UpdateBalancesFromFinancialReport';
 
 @injectable()
 export default class ProcessDividendTransaction {
   constructor(
-    @inject(TYPES.GetOrCreateMonthlyBalance)
-    private readonly getOrCreateMonthlyBalance: GetOrCreateMonthlyBalance,
+    @inject(TYPES.CreateFinancialReportFromBalances)
+    private readonly createFinancialReportFromBalances: CreateFinancialReportFromBalances,
 
-    @inject(TYPES.UpdateMonthlyBalance)
-    private readonly updateMonthlyBalance: UpdateMonthlyBalance,
+    @inject(TYPES.UpdateBalancesFromFinancialReport)
+    private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<void> {
-    const monthlyBalance =
-      await this.getOrCreateMonthlyBalance.execute(transaction);
+  async execute(transaction: AbstractTransaction): Promise<[void, void]> {
+    const financialReport =
+      await this.createFinancialReportFromBalances.execute(transaction);
 
-    monthlyBalance.setDividendEarnings(transaction.getTotalCost());
-    return this.updateMonthlyBalance.execute(monthlyBalance);
+    financialReport.setDividendEarnings(transaction.totalCost);
+
+    return this.updateBalancesFromFinancialReport.execute(
+      financialReport,
+      transaction,
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
-import TotalBalance from '@domain/totalBalance/TotalBalance';
-import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
+import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import institution from '@fixtures/institution';
 
 type Params = {
@@ -18,7 +18,7 @@ export default class TotalBalanceFactory {
     totalBalance?: TotalBalance,
   ) {
     this.totalBalance =
-      totalBalance || new TotalBalance(institutionId, loss, id);
+      totalBalance || new TotalBalance(institutionId, 0, loss, id);
   }
 
   get() {
@@ -27,8 +27,8 @@ export default class TotalBalanceFactory {
 
   getObject() {
     return {
-      institutionId: this.totalBalance.getInstitutionId(),
-      loss: this.totalBalance.getLoss(),
+      institutionId: this.totalBalance.institutionId,
+      loss: this.totalBalance.loss,
     };
   }
 

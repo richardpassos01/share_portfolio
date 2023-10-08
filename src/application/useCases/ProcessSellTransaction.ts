@@ -4,21 +4,13 @@ import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
-import GetOrCreateMonthlyBalance from './GetOrCreateMonthlyBalance';
-import GetTotalBalance from '@application/queries/GetTotalBalance';
 import {
   MONTHLY_BALANCE_SALES_LIMIT,
   MONTHLY_BALANCE_TYPE,
-} from '@domain/monthlyBalance/MonthlyBalanceEnums';
-import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
-import TotalBalance from '@domain/totalBalance/TotalBalance';
-import UpdateMonthlyBalance from './UpdateMonthlyBalance';
-import UpdateTotalBalance from './UpdateTotalBalance';
-
-const TAX_PERCENTAGE = {
-  SWING_TRADE: 0.15,
-  DAY_TRADE: 0.2,
-};
+} from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
+import FinancialReport from '@domain/financialReport/FinancialReport';
+import CreateFinancialReportFromBalances from './CreateFinancialReportFromBalances';
+import UpdateBalancesFromFinancialReport from './UpdateBalancesFromFinancialReport';
 
 @injectable()
 export default class ProcessSellTransaction {
@@ -29,34 +21,25 @@ export default class ProcessSellTransaction {
     @inject(TYPES.ListTradeTransactionsFromMonth)
     private readonly listTradeTransactionsFromMonth: ListTradeTransactionsFromMonth,
 
-    @inject(TYPES.GetOrCreateMonthlyBalance)
-    private readonly getOrCreateMonthlyBalance: GetOrCreateMonthlyBalance,
-
-    @inject(TYPES.GetTotalBalance)
-    private readonly getTotalBalance: GetTotalBalance,
-
     @inject(TYPES.UpdateOrLiquidateShare)
     private readonly updateOrLiquidateShare: UpdateOrLiquidateShare,
 
-    @inject(TYPES.UpdateMonthlyBalance)
-    private readonly updateMonthlyBalance: UpdateMonthlyBalance,
+    @inject(TYPES.CreateFinancialReportFromBalances)
+    private readonly createFinancialReportFromBalances: CreateFinancialReportFromBalances,
 
-    @inject(TYPES.UpdateTotalBalance)
-    private readonly updateTotalBalance: UpdateTotalBalance,
+    @inject(TYPES.UpdateBalancesFromFinancialReport)
+    private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
   async execute(transaction: AbstractTransaction): Promise<void> {
-    const monthlyBalance =
-      await this.getOrCreateMonthlyBalance.execute(transaction);
+    const financialReport =
+      await this.createFinancialReportFromBalances.execute(transaction);
+
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
       throw new Error();
     }
-
-    const totalBalance = await this.getTotalBalance.execute(
-      transaction.getInstitutionId(),
-    );
 
     const earningOrLoss = share.getEarningsOrLoss(transaction);
 
@@ -74,89 +57,52 @@ export default class ProcessSellTransaction {
       0,
     );
 
-    monthlyBalance.setType(buyTransactions, sellTransactions);
-
-    if (
-      transaction.getTotalCost() > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX
-    ) {
-      monthlyBalance.setTaxWithholding(transaction.getTotalCost());
-    }
+    financialReport.setType(buyTransactions, sellTransactions);
+    financialReport.setTaxWithholding(monthlySales);
 
     if (earningOrLoss < 0) {
       const totalLoss = Math.abs(earningOrLoss);
-      this.handleLoss(monthlyBalance, totalBalance, totalLoss);
+      this.handleLoss(financialReport, totalLoss);
     }
 
     if (earningOrLoss > 0) {
-      this.handleEarnings(
-        monthlySales,
-        earningOrLoss,
-        monthlyBalance,
-        totalBalance,
-      );
+      this.handleEarnings(monthlySales, earningOrLoss, financialReport);
     }
 
     await Promise.all([
       this.updateOrLiquidateShare.execute(share),
-      this.updateMonthlyBalance.execute(monthlyBalance),
-      this.updateTotalBalance.execute(totalBalance),
+      this.updateBalancesFromFinancialReport.execute(
+        financialReport,
+        transaction,
+      ),
     ]);
   }
 
   handleEarnings(
     monthlySales: number,
     earning: number,
-    monthlyBalance: MonthlyBalance,
-    totalBalance: TotalBalance,
+    financialReport: FinancialReport,
   ) {
-    monthlyBalance.setTradeEarnings(
-      monthlyBalance.getTradeEarnings() + earning,
-    );
+    financialReport.setTradeEarnings(earning);
 
-    if (
-      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX ||
-      monthlyBalance.getType() === MONTHLY_BALANCE_TYPE.DAY_TRADE
-    ) {
-      this.calculateTax(monthlyBalance, totalBalance);
+    const sellMoreThanLimit =
+      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
+
+    const didDayTrade =
+      financialReport.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
+
+    if (sellMoreThanLimit || didDayTrade) {
+      financialReport.calculateTax();
     }
   }
 
-  handleLoss(
-    monthlyBalance: MonthlyBalance,
-    totalBalance: TotalBalance,
-    totalLoss: number,
-  ) {
-    monthlyBalance.setLoss(totalLoss);
-    totalBalance.setLoss(totalBalance.getLoss() + totalLoss);
+  handleLoss(financialReport: FinancialReport, totalLoss: number) {
+    financialReport.setFinancialLosses(totalLoss);
 
-    if (monthlyBalance.getTax() <= 0) {
+    if (financialReport.monthlyTax <= 0) {
       return;
     }
 
-    this.calculateTax(monthlyBalance, totalBalance);
-  }
-
-  calculateTax(monthlyBalance: MonthlyBalance, totalBalance: TotalBalance) {
-    const tradetEarning = monthlyBalance.getTradeEarnings();
-
-    let tax =
-      tradetEarning * TAX_PERCENTAGE[monthlyBalance.getType()] -
-      monthlyBalance.getTaxWithholding();
-
-    if (totalBalance.getLoss() > 0 && tax > 0) {
-      const taxDeductedFromLoss = tax - totalBalance.getLoss();
-
-      const isRemainingTotalLoss = taxDeductedFromLoss < 0;
-
-      if (isRemainingTotalLoss) {
-        tax = 0;
-        totalBalance.setLoss(Math.abs(taxDeductedFromLoss));
-      } else {
-        totalBalance.setLoss(0);
-        tax = taxDeductedFromLoss;
-      }
-    }
-
-    monthlyBalance.setTax(tax);
+    financialReport.calculateTax();
   }
 }

@@ -4,7 +4,6 @@ import { TYPES } from '@constants/types';
 import { StatusCodes } from 'http-status-codes';
 import { injectable, inject } from 'inversify';
 import GetInstitution from '@application/queries/GetInstitution';
-import CalculateInstitutionBalance from '@application/useCases/CalculateInstitutionBalance';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 
 @injectable()
@@ -15,9 +14,6 @@ export default class InstitutionController {
 
     @inject(TYPES.GetInstitution)
     private readonly getInstitution: GetInstitution,
-
-    @inject(TYPES.CalculateInstitutionBalance)
-    private readonly calculateInstitutionBalance: CalculateInstitutionBalance,
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<any> {
@@ -41,8 +37,7 @@ export default class InstitutionController {
   async getBalance(ctx: Koa.DefaultContext): Promise<void> {
     const { institutionId } = ctx.params;
 
-    const balance =
-      await this.calculateInstitutionBalance.execute(institutionId);
+    const balance = 1;
 
     ctx.response.status = StatusCodes.OK;
     ctx.body = balance;

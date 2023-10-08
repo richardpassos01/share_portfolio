@@ -2,8 +2,8 @@ import { TYPES } from '@constants/types';
 import MonthlyBalanceMapper from '@infrastructure/mappers/MonthlyBalanceMapper';
 import Database, { Tables } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
-import MonthlyBalanceRepositoryInterface from '@domain/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import MonthlyBalance from '@domain/monthlyBalance/MonthlyBalance';
+import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
 
 @injectable()
 export default class MonthlyBalanceRepository
@@ -40,7 +40,7 @@ export default class MonthlyBalanceRepository
     await this.database
       .connection()
       .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .where('id', balance.getId())
+      .where('id', balance.id)
       .into(Tables.MONTHLY_BALANCE);
   }
 

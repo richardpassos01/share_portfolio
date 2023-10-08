@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
-import TotalBalance from '../../domain/totalBalance/TotalBalance';
+import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
 import { TYPES } from '@constants/types';
-import TotalBalanceRepositoryInterface from '@domain/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 
 @injectable()
