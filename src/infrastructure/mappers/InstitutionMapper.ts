@@ -9,9 +9,9 @@ type MapToEntityInput = {
 export default class InstitutionMapper {
   static mapToDatabaseObject(entity: Institution): MapToEntityInput {
     return {
-      id: entity.getId(),
-      name: entity.getName(),
-      user_id: entity.getUserId(),
+      id: entity.id,
+      name: entity.name,
+      user_id: entity.userId,
     };
   }
 

@@ -33,13 +33,13 @@ export default class UpdatePortfolio {
         await this.createFinancialReportFromBalances.execute(transaction);
 
       const isDividend =
-        transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS;
+        transaction.category === TRANSACTION_CATEGORY.DIVIDENDS;
 
       const isSpecialEvent =
-        transaction.getCategory() === TRANSACTION_CATEGORY.SPLIT ||
-        transaction.getCategory() === TRANSACTION_CATEGORY.BONUS_SHARE;
+        transaction.category === TRANSACTION_CATEGORY.SPLIT ||
+        transaction.category === TRANSACTION_CATEGORY.BONUS_SHARE;
 
-      const isTrade = transaction.getCategory() === TRANSACTION_CATEGORY.TRADE;
+      const isTrade = transaction.category === TRANSACTION_CATEGORY.TRADE;
 
       if (isDividend) {
         await this.processDividendTransaction.execute(

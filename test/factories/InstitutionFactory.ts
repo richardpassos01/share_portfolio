@@ -28,9 +28,9 @@ export default class InstitutionFactory {
 
   getObject() {
     return {
-      id: this.institution.getId(),
-      name: this.institution.getName(),
-      userId: this.institution.getUserId(),
+      id: this.institution.id,
+      name: this.institution.name,
+      userId: this.institution.userId,
     };
   }
 

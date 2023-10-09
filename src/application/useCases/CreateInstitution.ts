@@ -17,7 +17,7 @@ export default class CreateInstitution {
     await this.institutionRepository.create(institution);
 
     const institutionId: InstitutionId = {
-      id: institution.getId(),
+      id: institution.id,
     };
 
     return institutionId;

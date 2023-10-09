@@ -26,9 +26,9 @@ export default class ProcessBuyTransaction {
     }
 
     share.updatePosition(
-      transaction.getQuantity(),
-      transaction.getTotalCost(),
-      transaction.getType(),
+      transaction.quantity,
+      transaction.totalCost,
+      transaction.type,
     );
     return this.updateOrLiquidateShare.execute(share);
   }

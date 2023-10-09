@@ -11,11 +11,11 @@ type MapToEntityInput = {
 export default class ShareMapper {
   static mapToDatabaseObject(entity: Share): MapToEntityInput {
     return {
-      id: entity.getId(),
-      institution_id: entity.getInstitutionId(),
-      ticket_symbol: entity.getTicketSymbol(),
-      quantity: entity.getQuantity(),
-      total_cost: entity.getTotalCost(),
+      id: entity.id,
+      institution_id: entity.institutionId,
+      ticket_symbol: entity.ticketSymbol,
+      quantity: entity.quantity,
+      total_cost: entity.totalCost,
     };
   }
 

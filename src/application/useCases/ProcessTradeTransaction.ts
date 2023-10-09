@@ -20,7 +20,7 @@ export default class ProcessTradeTransaction {
     transaction: AbstractTransaction,
     financialReport: FinancialReport,
   ): Promise<void> {
-    const isBuyTransaction = transaction.getType() === TRANSACTION_TYPE.BUY;
+    const isBuyTransaction = transaction.type === TRANSACTION_TYPE.BUY;
 
     if (isBuyTransaction) {
       return this.processBuyTransaction.execute(transaction);

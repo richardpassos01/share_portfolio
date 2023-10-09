@@ -11,13 +11,13 @@ export default class CreateShare {
     private readonly shareRepository: ShareRepositoryInterface,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<void> {
-    const share = new Share(
-      transaction.getInstitutionId(),
-      transaction.getTicketSymbol(),
-      transaction.getQuantity(),
-      transaction.getTotalCost(),
-    );
+  async execute({
+    institutionId,
+    ticketSymbol,
+    quantity,
+    totalCost,
+  }: AbstractTransaction): Promise<void> {
+    const share = new Share(institutionId, ticketSymbol, quantity, totalCost);
 
     return this.shareRepository.create(share);
   }

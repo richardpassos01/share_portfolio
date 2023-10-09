@@ -14,40 +14,4 @@ export default class Transaction implements AbstractTransaction {
     public readonly totalCost: number,
     public readonly id: string = uuid(),
   ) {}
-
-  getId() {
-    return this.id;
-  }
-
-  getInstitutionId() {
-    return this.institutionId;
-  }
-
-  getType() {
-    return this.type;
-  }
-
-  getDate() {
-    return this.date;
-  }
-
-  getCategory() {
-    return this.category;
-  }
-
-  getTicketSymbol() {
-    return this.ticketSymbol;
-  }
-
-  getQuantity() {
-    return this.quantity;
-  }
-
-  getUnityPrice() {
-    return this.unityPrice;
-  }
-
-  getTotalCost() {
-    return this.totalCost;
-  }
 }

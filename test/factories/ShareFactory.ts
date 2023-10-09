@@ -35,11 +35,11 @@ export default class ShareFactory {
 
   getObject() {
     return {
-      institutionId: this.share.getInstitutionId(),
-      ticketSymbol: this.share.getTicketSymbol(),
-      quantity: this.share.getQuantity(),
-      totalCost: this.share.getTotalCost(),
-      mediumPrice: this.share.getMediumPrice(),
+      institutionId: this.share.institutionId,
+      ticketSymbol: this.share.ticketSymbol,
+      quantity: this.share.quantity,
+      totalCost: this.share.totalCost,
+      mediumPrice: this.share.mediumPrice,
     };
   }
 

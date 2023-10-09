@@ -56,20 +56,20 @@ export default class TransactionFactory {
 
   getObject() {
     return {
-      institutionId: this.transaction.getInstitutionId(),
-      type: this.transaction.getType(),
-      date: this.transaction.getDate(),
-      category: this.transaction.getCategory(),
-      ticketSymbol: this.transaction.getTicketSymbol(),
-      quantity: this.transaction.getQuantity(),
-      unityPrice: this.transaction.getUnityPrice(),
-      totalCost: this.transaction.getTotalCost(),
+      institutionId: this.transaction.institutionId,
+      type: this.transaction.type,
+      date: this.transaction.date,
+      category: this.transaction.category,
+      ticketSymbol: this.transaction.ticketSymbol,
+      quantity: this.transaction.quantity,
+      unityPrice: this.transaction.unityPrice,
+      totalCost: this.transaction.totalCost,
     };
   }
 
   getPayloadObject() {
     const transaction = this.getObject();
-    const date = dateToString(this.transaction.getDate());
+    const date = dateToString(this.transaction.date);
     return {
       ...transaction,
       date,

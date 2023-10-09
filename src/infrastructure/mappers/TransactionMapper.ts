@@ -16,15 +16,15 @@ type MapToEntityInput = {
 export default class TransactionMapper {
   static mapToDatabaseObject(entity: Transaction): MapToEntityInput {
     return {
-      id: entity.getId(),
-      institution_id: entity.getInstitutionId(),
-      type: entity.getType(),
-      date: entity.getDate(),
-      category: entity.getCategory(),
-      ticket_symbol: entity.getTicketSymbol(),
-      quantity: entity.getQuantity(),
-      unity_price: entity.getUnityPrice(),
-      total_cost: entity.getTotalCost(),
+      id: entity.id,
+      institution_id: entity.institutionId,
+      type: entity.type,
+      date: entity.date,
+      category: entity.category,
+      ticket_symbol: entity.ticketSymbol,
+      quantity: entity.quantity,
+      unity_price: entity.unityPrice,
+      total_cost: entity.totalCost,
     };
   }
 

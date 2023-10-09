@@ -11,10 +11,10 @@ export default class GetShare {
     private readonly shareRepository: ShareRepositoryInterface,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<Share | undefined> {
-    return this.shareRepository.get(
-      transaction.getInstitutionId(),
-      transaction.getTicketSymbol(),
-    );
+  async execute({
+    institutionId,
+    ticketSymbol,
+  }: AbstractTransaction): Promise<Share | undefined> {
+    return this.shareRepository.get(institutionId, ticketSymbol);
   }
 }

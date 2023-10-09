@@ -13,10 +13,13 @@ export default class ListTradeTransactionsFromMonth {
     private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<TradeTransactions> {
+  async execute({
+    institutionId,
+    date,
+  }: AbstractTransaction): Promise<TradeTransactions> {
     const monthTransactions = await this.transactionRepository.listFromMonth(
-      transaction.getInstitutionId(),
-      transaction.getDate(),
+      institutionId,
+      date,
     );
 
     const buyTransactions = this.filterTransactionByType(
@@ -35,6 +38,6 @@ export default class ListTradeTransactionsFromMonth {
     transactions: AbstractTransaction[],
     type: TRANSACTION_TYPE,
   ) {
-    return transactions.filter((transaction) => transaction.getType() === type);
+    return transactions.filter((transaction) => transaction.type === type);
   }
 }

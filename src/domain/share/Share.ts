@@ -3,40 +3,16 @@ import { TRANSACTION_TYPE } from '@domain/shared/enums';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 
 export default class Share {
-  private mediumPrice = 0;
+  public mediumPrice = 0;
 
   constructor(
-    private readonly institutionId: string,
-    private readonly ticketSymbol: string,
-    private quantity: number,
-    private totalCost: number,
-    private readonly id: string = uuid(),
+    public readonly institutionId: string,
+    public readonly ticketSymbol: string,
+    public quantity: number,
+    public totalCost: number,
+    public readonly id: string = uuid(),
   ) {
     this.setMediumPrice();
-  }
-
-  getId() {
-    return this.id;
-  }
-
-  getInstitutionId() {
-    return this.institutionId;
-  }
-
-  getTicketSymbol() {
-    return this.ticketSymbol;
-  }
-
-  getQuantity() {
-    return this.quantity;
-  }
-
-  getTotalCost() {
-    return this.totalCost;
-  }
-
-  getMediumPrice() {
-    return this.mediumPrice;
   }
 
   setQuantity(quantity: number) {
@@ -61,8 +37,8 @@ export default class Share {
   }
 
   getEarningOrLoss(transaction: AbstractTransaction): number {
-    const sellCost = transaction.getTotalCost();
-    const minIdealSellCost = transaction.getQuantity() * this.mediumPrice;
+    const sellCost = transaction.totalCost;
+    const minIdealSellCost = transaction.quantity * this.mediumPrice;
     const earning = sellCost - minIdealSellCost;
     return earning;
   }

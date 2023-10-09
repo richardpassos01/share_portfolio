@@ -34,7 +34,7 @@ export default class ShareRepository implements ShareRepositoryInterface {
     await this.database
       .connection()
       .update(ShareMapper.mapToDatabaseObject(share))
-      .where('id', share.getId())
+      .where('id', share.id)
       .into(Tables.SHARE);
   }
 

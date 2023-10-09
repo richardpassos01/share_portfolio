@@ -11,10 +11,10 @@ export default class UpdateOrLiquidateShare {
   ) {}
 
   async execute(share: Share): Promise<void> {
-    const isLiquidation = share.getQuantity() === 0;
+    const isLiquidation = share.quantity === 0;
 
     if (isLiquidation) {
-      return this.shareRepository.delete(share.getId());
+      return this.shareRepository.delete(share.id);
     }
 
     return this.shareRepository.update(share);

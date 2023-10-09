@@ -9,8 +9,6 @@ import {
   MONTHLY_BALANCE_TYPE,
 } from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
 import FinancialReport from '@domain/financialReport/FinancialReport';
-import CreateFinancialReportFromBalances from './CreateFinancialReportFromBalances';
-import UpdateBalancesFromFinancialReport from './UpdateBalancesFromFinancialReport';
 
 @injectable()
 export default class ProcessSellTransaction {
@@ -38,16 +36,16 @@ export default class ProcessSellTransaction {
     const earningOrLoss = share.getEarningOrLoss(transaction);
 
     share.updatePosition(
-      transaction.getQuantity(),
-      transaction.getTotalCost(),
-      transaction.getType(),
+      transaction.quantity,
+      transaction.totalCost,
+      transaction.type,
     );
 
     const [buyTransactions, sellTransactions] =
       await this.listTradeTransactionsFromMonth.execute(transaction);
 
     const monthlySales = sellTransactions.reduce(
-      (acc, sellTransaction) => acc + sellTransaction.getTotalCost(),
+      (acc, sellTransaction) => acc + sellTransaction.totalCost,
       0,
     );
 
