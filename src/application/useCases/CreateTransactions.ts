@@ -32,7 +32,7 @@ export default class CreateTransactions {
             param.totalCost,
           ),
       )
-      .sort((a, b) => b.date.getTime() - a.date.getTime());
+      .sort((a, b) => b.date.getTime() + a.date.getTime());
 
     await this.transactionRepository.createMany(transactions);
 
