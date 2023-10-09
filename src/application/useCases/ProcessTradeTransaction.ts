@@ -4,6 +4,7 @@ import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import ProcessBuyTransaction from './ProcessBuyTransaction';
 import ProcessSellTransaction from './ProcessSellTransaction';
+import FinancialReport from '@domain/financialReport/FinancialReport';
 
 @injectable()
 export default class ProcessTradeTransaction {
@@ -15,13 +16,16 @@ export default class ProcessTradeTransaction {
     private readonly processSellTransaction: ProcessSellTransaction,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<void> {
+  async execute(
+    transaction: AbstractTransaction,
+    financialReport: FinancialReport,
+  ): Promise<void> {
     const isBuyTransaction = transaction.getType() === TRANSACTION_TYPE.BUY;
 
     if (isBuyTransaction) {
       return this.processBuyTransaction.execute(transaction);
     }
 
-    return this.processSellTransaction.execute(transaction);
+    return this.processSellTransaction.execute(transaction, financialReport);
   }
 }

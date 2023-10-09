@@ -7,7 +7,6 @@ import CreateTransaction from '@application/useCases/CreateTransaction';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
-import institution from '@fixtures/institution';
 import ListShares from '@application/queries/ListShares';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import GetTotalBalance from '@application/queries/GetTotalBalance';

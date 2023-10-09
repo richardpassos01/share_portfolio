@@ -4,13 +4,13 @@ import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalanc
 import { injectable, inject } from 'inversify';
 
 @injectable()
-export default class UpdateTotalBalance {
+export default class CreateOrUpdateTotalBalance {
   constructor(
     @inject(TYPES.TotalBalanceRepository)
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
   ) {}
 
   async execute(totalBalance: TotalBalance): Promise<void> {
-    return this.totalBalanceRepository.update(totalBalance);
+    return this.totalBalanceRepository.createOrUpdate(totalBalance);
   }
 }

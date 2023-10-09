@@ -2,7 +2,6 @@ import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalanc
 import { MONTHLY_BALANCE_TYPE } from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
 
 type MapToEntityInput = {
-  id: string;
   institution_id: string;
   year_month: string;
   trade_earnings: number;
@@ -16,7 +15,6 @@ type MapToEntityInput = {
 export default class MonthlyBalanceMapper {
   static mapToDatabaseObject(entity: MonthlyBalance): MapToEntityInput {
     return {
-      id: entity.id,
       institution_id: entity.institutionId,
       year_month: entity.yearMonth,
       trade_earnings: entity.tradeEarnings,
@@ -38,7 +36,6 @@ export default class MonthlyBalanceMapper {
       object.tax_withholding,
       object.loss,
       object.type,
-      object.id,
     );
   }
 }

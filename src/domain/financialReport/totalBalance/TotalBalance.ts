@@ -5,7 +5,6 @@ export default class TotalBalance {
     public readonly institutionId: string,
     public earnings: number = 0,
     public loss: number = 0,
-    public readonly id: string = uuid(),
   ) {}
 
   setLoss(loss: number) {

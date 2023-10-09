@@ -29,19 +29,13 @@ export default class MonthlyBalanceRepository
       );
   }
 
-  async create(balance: MonthlyBalance) {
+  async createOrUpdate(balance: MonthlyBalance) {
     await this.database
       .connection()
       .insert(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .into(Tables.MONTHLY_BALANCE);
-  }
-
-  async update(balance: MonthlyBalance) {
-    await this.database
-      .connection()
-      .update(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .where('id', balance.id)
-      .into(Tables.MONTHLY_BALANCE);
+      .into(Tables.MONTHLY_BALANCE)
+      .onConflict(['institution_id', 'year_month'])
+      .merge();
   }
 
   async sumEarnings(institutionId: string) {

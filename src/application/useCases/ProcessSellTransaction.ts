@@ -23,18 +23,12 @@ export default class ProcessSellTransaction {
 
     @inject(TYPES.UpdateOrLiquidateShare)
     private readonly updateOrLiquidateShare: UpdateOrLiquidateShare,
-
-    @inject(TYPES.CreateFinancialReportFromBalances)
-    private readonly createFinancialReportFromBalances: CreateFinancialReportFromBalances,
-
-    @inject(TYPES.UpdateBalancesFromFinancialReport)
-    private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<void> {
-    const financialReport =
-      await this.createFinancialReportFromBalances.execute(transaction);
-
+  async execute(
+    transaction: AbstractTransaction,
+    financialReport: FinancialReport,
+  ): Promise<void> {
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
@@ -69,13 +63,7 @@ export default class ProcessSellTransaction {
       this.handleEarnings(monthlySales, earningOrLoss, financialReport);
     }
 
-    await Promise.all([
-      this.updateOrLiquidateShare.execute(share),
-      this.updateBalancesFromFinancialReport.execute(
-        financialReport,
-        transaction,
-      ),
-    ]);
+    return this.updateOrLiquidateShare.execute(share);
   }
 
   handleEarnings(

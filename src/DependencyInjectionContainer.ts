@@ -16,10 +16,8 @@ import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransaction from '@application/useCases/CreateTransaction';
-import CreateMonthlyBalance from '@application/useCases/CreateMonthlyBalance';
-import UpdateMonthlyBalance from '@application/useCases/UpdateMonthlyBalance';
-import CreateTotalBalance from '@application/useCases/CreateTotalBalance';
-import UpdateTotalBalance from '@application/useCases/UpdateTotalBalance';
+import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
+import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
 import CreateFinancialReportFromBalances from '@application/useCases/CreateFinancialReportFromBalances';
 import UpdateBalancesFromFinancialReport from '@application/useCases/UpdateBalancesFromFinancialReport';
@@ -95,12 +93,8 @@ container
   .to(ListTransactions)
   .inSingletonScope();
 container
-  .bind<CreateMonthlyBalance>(TYPES.CreateMonthlyBalance)
-  .to(CreateMonthlyBalance)
-  .inSingletonScope();
-container
-  .bind<UpdateMonthlyBalance>(TYPES.UpdateMonthlyBalance)
-  .to(UpdateMonthlyBalance)
+  .bind<CreateOrUpdateMonthlyBalance>(TYPES.CreateOrUpdateMonthlyBalance)
+  .to(CreateOrUpdateMonthlyBalance)
   .inSingletonScope();
 container
   .bind<GetTotalBalance>(TYPES.GetTotalBalance)
@@ -111,12 +105,8 @@ container
   .to(GetMonthlyBalance)
   .inSingletonScope();
 container
-  .bind<CreateTotalBalance>(TYPES.CreateTotalBalance)
-  .to(CreateTotalBalance)
-  .inSingletonScope();
-container
-  .bind<UpdateTotalBalance>(TYPES.UpdateTotalBalance)
-  .to(UpdateTotalBalance)
+  .bind<CreateOrUpdateTotalBalance>(TYPES.CreateOrUpdateTotalBalance)
+  .to(CreateOrUpdateTotalBalance)
   .inSingletonScope();
 container
   .bind<ProcessDividendTransaction>(TYPES.ProcessDividendTransaction)

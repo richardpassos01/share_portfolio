@@ -6,7 +6,6 @@ export async function up(knex: Knex): Promise<void> {
   const hasTable = await knex.schema.hasTable(Tables.MONTHLY_BALANCE);
   if (!hasTable) {
     return knex.schema.createTable(Tables.MONTHLY_BALANCE, (table) => {
-      table.uuid('id').primary();
       table.uuid('institution_id').notNullable();
       table.string('year_month', 7).notNullable();
       table.decimal('trade_earnings', null);

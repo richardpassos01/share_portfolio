@@ -1,10 +1,12 @@
-import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
+import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import { AbstractTransaction } from '@domain/shared/interfaces';
 import ProcessDividendTransaction from './ProcessDividendTransaction';
 import ProcessSpecialEventsOnShare from './ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from './ProcessTradeTransaction';
+import CreateFinancialReportFromBalances from './CreateFinancialReportFromBalances';
+import UpdateBalancesFromFinancialReport from './UpdateBalancesFromFinancialReport';
 
 @injectable()
 export default class UpdatePortfolio {
@@ -17,10 +19,19 @@ export default class UpdatePortfolio {
 
     @inject(TYPES.ProcessTradeTransaction)
     private readonly processTradeTransaction: ProcessTradeTransaction,
+
+    @inject(TYPES.CreateFinancialReportFromBalances)
+    private readonly createFinancialReportFromBalances: CreateFinancialReportFromBalances,
+
+    @inject(TYPES.UpdateBalancesFromFinancialReport)
+    private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
   async execute(transaction: AbstractTransaction): Promise<any> {
     try {
+      const financialReport =
+        await this.createFinancialReportFromBalances.execute(transaction);
+
       const isDividend =
         transaction.getCategory() === TRANSACTION_CATEGORY.DIVIDENDS;
 
@@ -31,16 +42,27 @@ export default class UpdatePortfolio {
       const isTrade = transaction.getCategory() === TRANSACTION_CATEGORY.TRADE;
 
       if (isDividend) {
-        return this.processDividendTransaction.execute(transaction);
+        await this.processDividendTransaction.execute(
+          transaction,
+          financialReport,
+        );
       }
 
       if (isSpecialEvent) {
-        return this.processSpecialEventsOnShare.execute(transaction);
+        await this.processSpecialEventsOnShare.execute(transaction);
       }
 
       if (isTrade) {
-        return this.processTradeTransaction.execute(transaction);
+        await this.processTradeTransaction.execute(
+          transaction,
+          financialReport,
+        );
       }
+
+      return this.updateBalancesFromFinancialReport.execute(
+        financialReport,
+        transaction,
+      );
     } catch (error) {
       console.error(error);
     }

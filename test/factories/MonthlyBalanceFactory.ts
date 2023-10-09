@@ -7,7 +7,6 @@ import { dateToMonthYear } from '@helpers';
 import institution from '@fixtures/institution';
 
 type Params = {
-  id?: string;
   institutionId?: string;
   yearMonth?: string;
   tradeEarnings?: number;
@@ -23,7 +22,6 @@ export default class MonthlyBalanceFactory {
 
   constructor(
     {
-      id,
       institutionId = institution.id,
       yearMonth = dateToMonthYear(new Date()),
       tradeEarnings,
@@ -46,7 +44,6 @@ export default class MonthlyBalanceFactory {
         taxWithholding,
         loss,
         type,
-        id,
       );
   }
 
@@ -72,6 +69,6 @@ export default class MonthlyBalanceFactory {
       container.get<MonthlyBalanceRepositoryInterface>(
         TYPES.MonthlyBalanceRepository,
       );
-    return monthlyBalanceRepository.create(this.monthlyBalance);
+    return monthlyBalanceRepository.createOrUpdate(this.monthlyBalance);
   }
 }

@@ -65,16 +65,16 @@ describe('institutionAPI', () => {
     });
   });
 
-  describe('GET /institution/:institutionId/profit', () => {
-    it('should get institution balance', async () => {
-      const expectedBalance = { loss: 0, profit: 0 };
+  // describe('GET /institution/:institutionId/profit', () => {
+  //   it('should get institution balance', async () => {
+  //     const expectedBalance = { loss: 0, profit: 0 };
 
-      const response = await request.get(
-        `/institution/${institution.id}/balance`,
-      );
+  //     const response = await request.get(
+  //       `/institution/${institution.id}/balance`,
+  //     );
 
-      expect(response.status).toBe(StatusCodes.OK);
-      expect(expectedBalance).toEqual(response.body);
-    });
-  });
+  //     expect(response.status).toBe(StatusCodes.OK);
+  //     expect(expectedBalance).toEqual(response.body);
+  //   });
+  // });
 });

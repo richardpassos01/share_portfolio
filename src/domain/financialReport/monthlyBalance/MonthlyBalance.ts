@@ -12,7 +12,6 @@ export default class MonthlyBalance {
     public taxWithholding = 0,
     public loss = 0,
     public type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
-    public readonly id: string = uuid(),
   ) {}
 
   setTradeEarnings(value: number) {

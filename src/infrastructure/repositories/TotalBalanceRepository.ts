@@ -21,21 +21,17 @@ export default class TotalBalanceRepository
       .where('institution_id', institutionId)
       .into(Tables.TOTAL_BALANCE)
       .first()
-      .then((data) => TotalBalanceMapper.mapToEntity(data));
+      .then((data) =>
+        data ? TotalBalanceMapper.mapToEntity(data) : undefined,
+      );
   }
 
-  async create(balance: TotalBalance) {
+  async createOrUpdate(balance: TotalBalance) {
     await this.database
       .connection()
       .insert(TotalBalanceMapper.mapToDatabaseObject(balance))
-      .into(Tables.TOTAL_BALANCE);
-  }
-
-  async update(balance: TotalBalance) {
-    await this.database
-      .connection()
-      .update(TotalBalanceMapper.mapToDatabaseObject(balance))
-      .where('id', balance.id)
-      .into(Tables.TOTAL_BALANCE);
+      .into(Tables.TOTAL_BALANCE)
+      .onConflict('institution_id')
+      .merge();
   }
 }

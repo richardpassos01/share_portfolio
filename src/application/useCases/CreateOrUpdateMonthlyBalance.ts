@@ -4,13 +4,13 @@ import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBa
 import { injectable, inject } from 'inversify';
 
 @injectable()
-export default class UpdateMonthlyBalance {
+export default class CreateOrUpdateMonthlyBalance {
   constructor(
     @inject(TYPES.MonthlyBalanceRepository)
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
   ) {}
 
   async execute(monthlyBalance: MonthlyBalance): Promise<void> {
-    return this.monthlyBalanceRepository.update(monthlyBalance);
+    return this.monthlyBalanceRepository.createOrUpdate(monthlyBalance);
   }
 }

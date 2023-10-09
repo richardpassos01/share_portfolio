@@ -5,7 +5,6 @@ import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalanc
 import institution from '@fixtures/institution';
 
 type Params = {
-  id?: string;
   institutionId?: string;
   loss?: number;
 };
@@ -14,11 +13,11 @@ export default class TotalBalanceFactory {
   private totalBalance: TotalBalance;
 
   constructor(
-    { id, institutionId = institution.id, loss } = {} as Params,
+    { institutionId = institution.id, loss } = {} as Params,
     totalBalance?: TotalBalance,
   ) {
     this.totalBalance =
-      totalBalance || new TotalBalance(institutionId, 0, loss, id);
+      totalBalance || new TotalBalance(institutionId, 0, loss);
   }
 
   get() {
@@ -37,6 +36,6 @@ export default class TotalBalanceFactory {
       container.get<TotalBalanceRepositoryInterface>(
         TYPES.TotalBalanceRepository,
       );
-    return totalBalanceRepository.create(this.totalBalance);
+    return totalBalanceRepository.createOrUpdate(this.totalBalance);
   }
 }
