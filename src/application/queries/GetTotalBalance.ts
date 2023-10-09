@@ -10,7 +10,7 @@ export default class GetTotalBalance {
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string): Promise<TotalBalance> {
+  async execute(institutionId: string): Promise<TotalBalance | undefined> {
     return this.totalBalanceRepository.get(institutionId);
   }
 }

@@ -60,13 +60,14 @@ export default class FinancialReport {
     this.monthlyTax = tax;
   }
 
-  setTaxWithholding(monthlySales: number) {
+  setTaxWithholding(monthlySales: number, transactionTotalCost: number) {
     if (monthlySales < MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX) {
       return;
     }
 
     const taxWithholding =
-      monthlySales * TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
+      transactionTotalCost *
+      TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
 
     this.monthlyTaxWithholding += taxWithholding;
   }

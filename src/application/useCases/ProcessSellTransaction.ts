@@ -52,7 +52,9 @@ export default class ProcessSellTransaction {
     );
 
     financialReport.setType(buyTransactions, sellTransactions);
-    financialReport.setTaxWithholding(monthlySales);
+
+    // WAITING CONFIRMATION FROM BANK ABOUT LOGIC
+    financialReport.setTaxWithholding(monthlySales, transaction.totalCost);
 
     if (earningOrLoss < 0) {
       const totalLoss = Math.abs(earningOrLoss);
