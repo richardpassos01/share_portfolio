@@ -8,7 +8,7 @@ import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import { dateStringToDate } from '@helpers';
 
 @injectable()
-export default class CreateTransaction {
+export default class CreateTransactions {
   constructor(
     @inject(TYPES.TransactionRepository)
     private readonly transactionRepository: TransactionRepositoryInterface,

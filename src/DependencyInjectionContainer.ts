@@ -15,7 +15,7 @@ import ListTransactions from '@application/queries/ListTransactions';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
-import CreateTransaction from '@application/useCases/CreateTransaction';
+import CreateTransactions from '@application/useCases/CreateTransactions';
 import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
 import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
@@ -87,8 +87,8 @@ container
   .to(UpdatePortfolio)
   .inSingletonScope();
 container
-  .bind<CreateTransaction>(TYPES.CreateTransaction)
-  .to(CreateTransaction)
+  .bind<CreateTransactions>(TYPES.CreateTransactions)
+  .to(CreateTransactions)
   .inSingletonScope();
 container
   .bind<DeleteTransactions>(TYPES.DeleteTransactions)

@@ -9,7 +9,7 @@ export const TYPES = {
   TransactionController: Symbol.for('TransactionController'),
   FinancialReportController: Symbol.for('FinancialReportController'),
   CreateShare: Symbol.for('CreateShare'),
-  CreateTransaction: Symbol.for('CreateTransaction'),
+  CreateTransactions: Symbol.for('CreateTransactions'),
   DeleteTransactions: Symbol.for('DeleteTransactions'),
   ListTransactions: Symbol.for('ListTransactions'),
   GetInstitution: Symbol.for('GetInstitution'),

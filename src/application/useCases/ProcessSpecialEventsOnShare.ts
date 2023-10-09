@@ -18,7 +18,7 @@ export default class ProcessSpecialEventsOnShare {
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
-      throw new Error();
+      return;
     }
 
     const quantity = share.quantity + transaction.quantity;

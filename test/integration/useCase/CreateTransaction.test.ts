@@ -3,7 +3,7 @@ import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { createTransactionCases } from '@fixtures/cases';
-import CreateTransaction from '@application/useCases/CreateTransaction';
+import CreateTransactions from '@application/useCases/CreateTransactions';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
@@ -13,9 +13,9 @@ import GetTotalBalance from '@application/queries/GetTotalBalance';
 import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
 import institution from '@fixtures/institution';
 
-describe('CreateTransaction', () => {
+describe('CreateTransactions', () => {
   let database: Database;
-  let createTransaction: CreateTransaction;
+  let createTransactions: CreateTransactions;
   let listShares: ListShares;
   let getMonthlyBalance: GetMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
@@ -23,8 +23,8 @@ describe('CreateTransaction', () => {
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
-    createTransaction = container.get<CreateTransaction>(
-      TYPES.CreateTransaction,
+    createTransactions = container.get<CreateTransactions>(
+      TYPES.CreateTransactions,
     );
     listShares = container.get<ListShares>(TYPES.ListShares);
     getMonthlyBalance = container.get<GetMonthlyBalance>(
@@ -53,7 +53,7 @@ describe('CreateTransaction', () => {
       description,
     ) => {
       it(description, async () => {
-        await createTransaction.execute([transactionParams]);
+        await createTransactions.execute([transactionParams]);
 
         const shares = await listShares.execute(institution.id);
 

@@ -30,7 +30,7 @@ export default class ProcessSellTransaction {
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
-      throw new Error();
+      return;
     }
 
     const earningOrLoss = share.getEarningOrLoss(transaction);
