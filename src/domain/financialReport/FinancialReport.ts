@@ -17,7 +17,6 @@ const TAX_WITHHOLDING_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {
 
 export default class FinancialReport {
   constructor(
-    public totalEarning = 0,
     public totalLoss = 0,
     public monthlyTradeEarning = 0,
     public monthlyDividendEarning = 0,
@@ -79,17 +78,6 @@ export default class FinancialReport {
 
   updateTotalLoss(loss: number) {
     this.totalLoss = loss;
-  }
-
-  setTotalEarning() {
-    const monthlyEarning =
-      this.monthlyTradeEarning +
-      +this.monthlyDividendEarning -
-      this.monthlyTax -
-      this.monthlyTaxWithholding;
-
-    const totalEarning = monthlyEarning + this.totalEarning - this.totalLoss;
-    this.totalEarning = Math.max(0, totalEarning);
   }
 
   checkIfDidDayTradeAtMonth(

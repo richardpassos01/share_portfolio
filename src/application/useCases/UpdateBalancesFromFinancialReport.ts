@@ -24,7 +24,6 @@ export default class UpdateBalancesFromFinancialReport {
   ): Promise<[void, void]> {
     const totalBalance = new TotalBalance(
       transaction.institutionId,
-      financialReport.totalEarning,
       financialReport.totalLoss,
     );
     const monthlyBalance = new MonthlyBalance(

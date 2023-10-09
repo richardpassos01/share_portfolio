@@ -14,11 +14,10 @@ export default class TotalBalanceFactory {
   private totalBalance: TotalBalance;
 
   constructor(
-    { institutionId = institution.id, earning = 0, loss } = {} as Params,
+    { institutionId = institution.id, loss } = {} as Params,
     totalBalance?: TotalBalance,
   ) {
-    this.totalBalance =
-      totalBalance || new TotalBalance(institutionId, earning, loss);
+    this.totalBalance = totalBalance || new TotalBalance(institutionId, loss);
   }
 
   get() {

@@ -37,8 +37,8 @@ describe('financialReportAPI', () => {
     it('should get institution balance', async () => {
       const expectedResponse = {
         institutionId: institution.id,
-        earning: 0,
         loss: 0,
+        earning: 0,
       };
 
       const response = await request.get(

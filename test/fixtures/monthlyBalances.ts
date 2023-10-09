@@ -88,7 +88,7 @@ export const monthlyBalances = [
     tradeEarning: 9.762820512820525,
     dividendEarning: 15000.0,
     tax: 1.9525641025641052,
-    taxWithholding: 0,
+    taxWithholding: 0, // should charge 1%, it'swrong
     loss: 0,
     type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
   },

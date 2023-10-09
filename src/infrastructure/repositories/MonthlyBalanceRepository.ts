@@ -38,15 +38,13 @@ export default class MonthlyBalanceRepository
       .merge();
   }
 
-  async sumEarning(institutionId: string) {
+  async sumEarnings(institutionId: string) {
     return this.database
       .connection()
       .select(
         this.database
           .connection()
-          .raw(
-            'SUM(trade_earning + dividend_earning - tax - tax_withholding) as earning',
-          ),
+          .raw('SUM(trade_earning + dividend_earning - tax - tax_withholding)'),
       )
       .from(Tables.MONTHLY_BALANCE)
       .where('institution_id', institutionId)

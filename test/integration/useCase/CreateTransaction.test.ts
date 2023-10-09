@@ -10,6 +10,8 @@ import ShareFactory from '@factories/ShareFactory';
 import ListShares from '@application/queries/ListShares';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
+import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
+import institution from '@fixtures/institution';
 
 describe('CreateTransaction', () => {
   let database: Database;
@@ -17,6 +19,7 @@ describe('CreateTransaction', () => {
   let listShares: ListShares;
   let getMonthlyBalance: GetMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
+  let calculateTotalBalanceEarning: CalculateTotalBalanceEarning;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -28,7 +31,9 @@ describe('CreateTransaction', () => {
       TYPES.GetMonthlyBalance,
     );
     getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
-
+    calculateTotalBalanceEarning = container.get<CalculateTotalBalanceEarning>(
+      TYPES.CalculateTotalBalanceEarning,
+    );
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });
@@ -79,4 +84,16 @@ describe('CreateTransaction', () => {
       });
     },
   );
+
+  describe('after call use case ', () => {
+    it('Should update total balance loss and leave it prepared to return total earning', async () => {
+      const expectedBalanceEarning = 1721806.6940386684;
+
+      const balance = await calculateTotalBalanceEarning.execute(
+        institution.id,
+      );
+
+      expect(expectedBalanceEarning).toEqual(balance.earning);
+    });
+  });
 });

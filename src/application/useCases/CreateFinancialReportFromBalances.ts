@@ -26,7 +26,6 @@ export default class CreateFinancialReportFromBalances {
     );
 
     const financialReport = new FinancialReport(
-      totalBalance?.earning,
       totalBalance?.loss,
       monthlyBalance?.tradeEarning,
       monthlyBalance?.dividendEarning,

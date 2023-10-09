@@ -43,6 +43,7 @@ import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalanc
 import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import FinancialReportController from '@api/financialReport/FinancialReportController';
+import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -148,6 +149,10 @@ container
     TYPES.UpdateBalancesFromFinancialReport,
   )
   .to(UpdateBalancesFromFinancialReport)
+  .inSingletonScope();
+container
+  .bind<CalculateTotalBalanceEarning>(TYPES.CalculateTotalBalanceEarning)
+  .to(CalculateTotalBalanceEarning)
   .inSingletonScope();
 
 container
