@@ -1,10 +1,10 @@
 import { TYPES } from '@constants/types';
 import { TRANSACTION_TYPE } from '@domain/shared/enums';
-import { AbstractTransaction } from '@domain/shared/interfaces';
+import { TransactionDTO } from '@domain/shared/types';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import { injectable, inject } from 'inversify';
 
-type TradeTransactions = [AbstractTransaction[], AbstractTransaction[]];
+type TradeTransactions = [TransactionDTO[], TransactionDTO[]];
 
 @injectable()
 export default class ListTradeTransactionsFromMonth {
@@ -16,7 +16,7 @@ export default class ListTradeTransactionsFromMonth {
   async execute({
     institutionId,
     date,
-  }: AbstractTransaction): Promise<TradeTransactions> {
+  }: TransactionDTO): Promise<TradeTransactions> {
     const monthTransactions = await this.transactionRepository.listFromMonth(
       institutionId,
       date,
@@ -35,7 +35,7 @@ export default class ListTradeTransactionsFromMonth {
   }
 
   filterTransactionByType(
-    transactions: AbstractTransaction[],
+    transactions: TransactionDTO[],
     type: TRANSACTION_TYPE,
   ) {
     return transactions.filter((transaction) => transaction.type === type);

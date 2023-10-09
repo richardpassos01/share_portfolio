@@ -1,4 +1,4 @@
-import { AbstractTransaction } from '@domain/shared/interfaces';
+import { TransactionDTO } from '@domain/shared/types';
 import {
   MONTHLY_BALANCE_SALES_LIMIT,
   MONTHLY_BALANCE_TYPE,
@@ -35,8 +35,8 @@ export default class FinancialReport {
   }
 
   setType(
-    buyTransactions: AbstractTransaction[],
-    sellTransactions: AbstractTransaction[],
+    buyTransactions: TransactionDTO[],
+    sellTransactions: TransactionDTO[],
   ) {
     const alreadyDidDayTradeAtMonth =
       this.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
@@ -81,8 +81,8 @@ export default class FinancialReport {
   }
 
   checkIfDidDayTradeAtMonth(
-    sellTransactions: AbstractTransaction[],
-    buyTransactions: AbstractTransaction[],
+    sellTransactions: TransactionDTO[],
+    buyTransactions: TransactionDTO[],
   ) {
     return buyTransactions.find(({ ticketSymbol: buyTicket, date: BuyDate }) =>
       sellTransactions.find(({ ticketSymbol: sellTicket, date: sellDate }) => {

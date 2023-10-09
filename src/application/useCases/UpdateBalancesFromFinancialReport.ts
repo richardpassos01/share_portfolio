@@ -5,8 +5,8 @@ import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTota
 import FinancialReport from '@domain/financialReport/FinancialReport';
 import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
 import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
-import { AbstractTransaction } from '@domain/shared/interfaces';
 import { dateToMonthYear } from '@helpers';
+import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class UpdateBalancesFromFinancialReport {
@@ -20,7 +20,7 @@ export default class UpdateBalancesFromFinancialReport {
 
   async execute(
     financialReport: FinancialReport,
-    transaction: AbstractTransaction,
+    transaction: TransactionDTO,
   ): Promise<[void, void]> {
     const totalBalance = new TotalBalance(
       transaction.institutionId,

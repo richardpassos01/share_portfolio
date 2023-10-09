@@ -1,12 +1,12 @@
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
-import { AbstractTransaction } from '@domain/shared/interfaces';
 import ProcessDividendTransaction from './ProcessDividendTransaction';
 import ProcessSpecialEventsOnShare from './ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from './ProcessTradeTransaction';
 import CreateFinancialReportFromBalances from './CreateFinancialReportFromBalances';
 import UpdateBalancesFromFinancialReport from './UpdateBalancesFromFinancialReport';
+import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class UpdatePortfolio {
@@ -27,7 +27,7 @@ export default class UpdatePortfolio {
     private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<any> {
+  async execute(transaction: TransactionDTO): Promise<any> {
     try {
       const financialReport =
         await this.createFinancialReportFromBalances.execute(transaction);

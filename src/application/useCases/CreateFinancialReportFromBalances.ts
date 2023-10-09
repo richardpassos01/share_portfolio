@@ -1,9 +1,9 @@
 import { TYPES } from '@constants/types';
 import { injectable, inject } from 'inversify';
-import { AbstractTransaction } from '@domain/shared/interfaces';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import FinancialReport from '@domain/financialReport/FinancialReport';
+import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class CreateFinancialReportFromBalances {
@@ -18,7 +18,7 @@ export default class CreateFinancialReportFromBalances {
   async execute({
     institutionId,
     date,
-  }: AbstractTransaction): Promise<FinancialReport> {
+  }: TransactionDTO): Promise<FinancialReport> {
     const totalBalance = await this.getTotalBalance.execute(institutionId);
     const monthlyBalance = await this.getMonthlyBalance.execute(
       institutionId,

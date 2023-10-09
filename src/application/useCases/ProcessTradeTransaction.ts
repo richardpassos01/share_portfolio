@@ -1,10 +1,10 @@
 import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
-import { AbstractTransaction } from '@domain/shared/interfaces';
 import ProcessBuyTransaction from './ProcessBuyTransaction';
 import ProcessSellTransaction from './ProcessSellTransaction';
 import FinancialReport from '@domain/financialReport/FinancialReport';
+import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class ProcessTradeTransaction {
@@ -17,7 +17,7 @@ export default class ProcessTradeTransaction {
   ) {}
 
   async execute(
-    transaction: AbstractTransaction,
+    transaction: TransactionDTO,
     financialReport: FinancialReport,
   ): Promise<void> {
     const isBuyTransaction = transaction.type === TRANSACTION_TYPE.BUY;

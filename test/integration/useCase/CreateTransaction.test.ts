@@ -53,13 +53,6 @@ describe('CreateTransaction', () => {
       description,
     ) => {
       it(description, async () => {
-        if (
-          description ===
-          'Should charge tax when selling more than 20k on month'
-        ) {
-          console.log(1);
-        }
-
         await createTransaction.execute([transactionParams]);
 
         const shares = await listShares.execute(institution.id);
