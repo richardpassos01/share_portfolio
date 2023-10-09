@@ -15,10 +15,10 @@ export default class TransactionRepository
     private readonly database: Database,
   ) {}
 
-  async create(transaction: Transaction) {
+  async createMany(transactions: Transaction[]) {
     await this.database
       .connection()
-      .insert(TransactionMapper.mapToDatabaseObject(transaction))
+      .insert(transactions.map(TransactionMapper.mapToDatabaseObject))
       .into(Tables.TRANSACTION);
   }
 

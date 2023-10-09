@@ -1,5 +1,5 @@
-import { TransactionParams } from './types';
+import { TransactionDTO } from './types';
 
-export interface AbstractTransaction extends TransactionParams {
+export interface AbstractTransaction extends TransactionDTO {
   id?: string;
 }

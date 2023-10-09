@@ -80,6 +80,6 @@ export default class TransactionFactory {
     const transactionRepository = container.get<TransactionRepositoryInterface>(
       TYPES.TransactionRepository,
     );
-    return transactionRepository.create(this.transaction);
+    return transactionRepository.createMany([this.transaction]);
   }
 }

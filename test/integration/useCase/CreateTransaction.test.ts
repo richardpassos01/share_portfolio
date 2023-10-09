@@ -60,17 +60,16 @@ describe('CreateTransaction', () => {
           console.log(1);
         }
 
-        const { institutionId, date } =
-          await createTransaction.execute(transactionParams);
+        await createTransaction.execute([transactionParams]);
 
-        const shares = await listShares.execute(institutionId);
+        const shares = await listShares.execute(institution.id);
 
         const monthlyBalance = await getMonthlyBalance.execute(
-          institutionId,
-          date,
+          institution.id,
+          new Date(`${transactionParams.date}T00:00:00`),
         );
 
-        const totalBalance = await getTotalBalance.execute(institutionId);
+        const totalBalance = await getTotalBalance.execute(institution.id);
 
         expect(expectedShare).toEqual(
           shares.map((share) => new ShareFactory({}, share).getObject()),

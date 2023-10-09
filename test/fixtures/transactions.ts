@@ -6,7 +6,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-07-31T00:00:00'),
+    date: '2019-07-31',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 100,
@@ -16,7 +16,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-07-31T00:00:00'),
+    date: '2019-07-31',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 100,
@@ -26,7 +26,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2019-08-01T00:00:00'),
+    date: '2019-08-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 50,
@@ -36,7 +36,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-08-01T00:00:00'),
+    date: '2019-08-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 100,
@@ -46,7 +46,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-09-01T00:00:00'),
+    date: '2019-09-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 1500,
@@ -56,7 +56,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-09-01T00:00:00'),
+    date: '2019-09-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 1500,
@@ -66,7 +66,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-09-10T00:00:00'),
+    date: '2019-09-10',
     category: TRANSACTION_CATEGORY.DIVIDENDS,
     ticketSymbol: 'AAPL',
     quantity: 1500,
@@ -76,7 +76,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-09-11T00:00:00'),
+    date: '2019-09-11',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 10,
@@ -86,7 +86,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2019-09-11T00:00:00'),
+    date: '2019-09-11',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 10,
@@ -96,7 +96,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2019-10-05T00:00:00'),
+    date: '2019-10-05',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 1500,
@@ -106,7 +106,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2019-11-15T00:00:00'),
+    date: '2019-11-15',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 1700,
@@ -116,7 +116,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-11-16T00:00:00'),
+    date: '2019-11-16',
     category: TRANSACTION_CATEGORY.BONUS_SHARE,
     ticketSymbol: 'AAPL',
     quantity: 10,
@@ -126,7 +126,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2019-12-01T00:00:00'),
+    date: '2019-12-01',
     category: TRANSACTION_CATEGORY.SPLIT,
     ticketSymbol: 'AAPL',
     quantity: 100,
@@ -136,7 +136,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2020-01-02T00:00:00'),
+    date: '2020-01-02',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 160,
@@ -146,7 +146,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2020-02-01T00:00:00'),
+    date: '2020-02-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 100,
@@ -156,7 +156,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
-    date: new Date('2020-03-01T00:00:00'),
+    date: '2020-03-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 100,
@@ -166,7 +166,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2021-02-01T00:00:00'),
+    date: '2021-02-01',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 1,
@@ -176,7 +176,7 @@ export const transactions: TransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
-    date: new Date('2021-02-02T00:00:00'),
+    date: '2021-02-02',
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 199,

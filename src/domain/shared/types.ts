@@ -1,12 +1,19 @@
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from './enums';
 
-export type TransactionParams = {
+type Transaction = {
   institutionId: string;
-  type: TRANSACTION_TYPE;
-  date: Date;
-  category: TRANSACTION_CATEGORY;
   ticketSymbol: string;
   quantity: number;
   unityPrice: number;
   totalCost: number;
+  type: TRANSACTION_TYPE;
+  category: TRANSACTION_CATEGORY;
+};
+
+export type TransactionParams = Transaction & {
+  date: string;
+};
+
+export type TransactionDTO = Transaction & {
+  date: Date;
 };

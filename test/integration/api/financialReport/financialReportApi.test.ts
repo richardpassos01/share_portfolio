@@ -42,7 +42,7 @@ describe('financialReportAPI', () => {
       };
 
       const response = await request.get(
-        `/financial_report/${institution.id}/total_balance`,
+        `/financial_report/${institution.id}/total-balance`,
       );
 
       expect(response.status).toBe(StatusCodes.OK);

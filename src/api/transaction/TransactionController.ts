@@ -1,11 +1,11 @@
 import Koa from 'koa';
 
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
-import { dateStringToDate } from '../../helpers';
 import { TYPES } from '@constants/types';
 import { inject, injectable } from 'inversify';
 import CreateTransaction from '@application/useCases/CreateTransaction';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
+import { TransactionParams } from '@domain/shared/types';
 
 @injectable()
 export default class TransactionController {
@@ -18,27 +18,9 @@ export default class TransactionController {
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<void> {
-    const {
-      institutionId,
-      type,
-      date,
-      category,
-      ticketSymbol,
-      quantity,
-      unityPrice,
-      totalCost,
-    } = ctx.request.body;
+    const payload: TransactionParams[] = ctx.request.body;
 
-    await this.createTransaction.execute({
-      institutionId,
-      type,
-      date: dateStringToDate(date),
-      category,
-      ticketSymbol,
-      quantity,
-      unityPrice,
-      totalCost,
-    });
+    await this.createTransaction.execute(payload);
 
     ctx.response.status = StatusCodes.CREATED;
     ctx.response.body = ReasonPhrases.CREATED;

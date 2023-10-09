@@ -1,11 +1,11 @@
 import CustomError from '@domain/shared/error/CustomError';
 import ErrorCode from '@domain/shared/error/ErrorCode';
 import { StatusCodes } from 'http-status-codes';
-import { ObjectSchema } from 'joi';
+import { Schema } from 'joi';
 
 import Koa from 'koa';
 
-const schemaValidator = (schema: ObjectSchema) => {
+const schemaValidator = (schema: Schema) => {
   return async function validationMiddleware(ctx: Koa.Context, next: Koa.Next) {
     try {
       await schema.validateAsync(ctx.request.body, { abortEarly: false });

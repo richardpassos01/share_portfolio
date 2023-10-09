@@ -37,7 +37,7 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
-router.get('/financial_report/:institutionId/total_balance', (ctx) => {
+router.get('/financial_report/:institutionId/total-balance', (ctx) => {
   const financialReportController = container.get<FinancialReportController>(
     TYPES.FinancialReportController,
   );
@@ -51,8 +51,19 @@ router.post(
     const transactionController = container.get<TransactionController>(
       TYPES.TransactionController,
     );
+
+    // will call SYNC in the end
+
     return transactionController.create(ctx);
   },
+);
+
+router.post(
+  '/transaction/re-sync',
+
+  // "removed_transactions": posso pegar a ultima data apagada, e apagar dados a partir desse momento.
+  // Mas para isso, preciso criar varios registros de total balance
+  // will delete  account items and recreate, get ordered transactions and do it
 );
 
 router.delete('/transaction', (ctx) => {

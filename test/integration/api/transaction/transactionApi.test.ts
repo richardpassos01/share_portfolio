@@ -44,7 +44,7 @@ describe('transactionAPI', () => {
         const payload = transaction.getPayloadObject();
         const expectedTransaction = transaction.getObject();
 
-        const response = await request.post('/transaction').send(payload);
+        const response = await request.post('/transaction').send([payload]);
 
         const [result] = await listTransactions.execute(payload.institutionId);
 
@@ -57,10 +57,21 @@ describe('transactionAPI', () => {
     });
 
     describe('When called the endpoint with invalid schema', () => {
-      it('should throw shema validation error when is missing param', async () => {
+      it('should throw bad request error when the query is empty', async () => {
         const expectedError = {
-          message:
-            'institutionId is required, type is required, date is required, category is required, ticketSymbol is required, quantity is required, unityPrice is required, totalCost is required',
+          message: 'The query is empty',
+          customCode: ErrorCode.BAD_REQUEST,
+          status: StatusCodes.BAD_REQUEST,
+        };
+
+        const response = await request.post('/transaction').send([]);
+
+        expect(response.body).toEqual(expectedError);
+      });
+
+      it('should throw shema validation error when is empty payload', async () => {
+        const expectedError = {
+          message: 'value must be an array',
           customCode: ErrorCode.SCHEMA_VALIDATOR,
           status: StatusCodes.UNPROCESSABLE_ENTITY,
         };
@@ -70,25 +81,40 @@ describe('transactionAPI', () => {
         expect(response.body).toEqual(expectedError);
       });
 
+      it('should throw shema validation error when payload has item with missing param', async () => {
+        const expectedError = {
+          message:
+            '[0].institutionId is required, [0].type is required, [0].date is required, [0].category is required, [0].ticketSymbol is required, [0].quantity is required, [0].unityPrice is required, [0].totalCost is required',
+          customCode: ErrorCode.SCHEMA_VALIDATOR,
+          status: StatusCodes.UNPROCESSABLE_ENTITY,
+        };
+
+        const response = await request.post('/transaction').send([{}]);
+
+        expect(response.body).toEqual(expectedError);
+      });
+
       it('should throw shema validation error when send wrong param', async () => {
-        const expectedMessage = `institutionId must be a valid GUID, type must be one of [${Object.values(
+        const expectedMessage = `[0].institutionId must be a valid GUID, [0].type must be one of [${Object.values(
           TRANSACTION_TYPE,
         ).join(
           ', ',
-        )}], date must be in iso format, category must be one of [${Object.values(
+        )}], [0].date must be in iso format, [0].category must be one of [${Object.values(
           TRANSACTION_CATEGORY,
-        ).join(', ')}], quantity must be a number`;
+        ).join(', ')}], [0].quantity must be a number`;
 
-        const response = await request.post('/transaction').send({
-          institutionId: 'INVALID_UUID',
-          type: 'INVALID_TYPE',
-          date: '2022/01/01',
-          category: 'INVALID_CATEGORY',
-          ticketSymbol: 'TSLA',
-          quantity: 'INVALID_NUMBER',
-          unityPrice: 0,
-          totalCost: 0,
-        });
+        const response = await request.post('/transaction').send([
+          {
+            institutionId: 'INVALID_UUID',
+            type: 'INVALID_TYPE',
+            date: '2022/01/01',
+            category: 'INVALID_CATEGORY',
+            ticketSymbol: 'TSLA',
+            quantity: 'INVALID_NUMBER',
+            unityPrice: 0,
+            totalCost: 0,
+          },
+        ]);
 
         expect(response.body.message).toEqual(expectedMessage);
       });
