@@ -8,6 +8,6 @@ export default class ProcessDividendTransaction {
     transaction: AbstractTransaction,
     financialReport: FinancialReport,
   ): Promise<void> {
-    financialReport.setDividendEarnings(transaction.totalCost);
+    financialReport.setDividendEarning(transaction.totalCost);
   }
 }

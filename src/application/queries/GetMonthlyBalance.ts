@@ -13,13 +13,11 @@ export default class GetMonthlyBalance {
   ) {}
 
   async execute(
-    transaction: AbstractTransaction,
+    institutionId: string,
+    date: Date,
   ): Promise<MonthlyBalance | undefined> {
-    const yearMonth = dateToMonthYear(transaction.date);
+    const yearMonth = dateToMonthYear(date);
 
-    return this.monthlyBalanceRepository.get(
-      transaction.institutionId,
-      yearMonth,
-    );
+    return this.monthlyBalanceRepository.get(institutionId, yearMonth);
   }
 }

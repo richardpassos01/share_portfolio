@@ -6,5 +6,5 @@ export default interface MonthlyBalanceRepositoryInterface {
     yearMonth: string,
   ): Promise<MonthlyBalance | undefined>;
   createOrUpdate(balance: MonthlyBalance): Promise<void>;
-  sumEarnings(institutionId: string): Promise<Record<string, number>>;
+  sumEarning(institutionId: string): Promise<Record<string, number>>;
 }

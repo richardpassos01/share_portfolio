@@ -1,25 +1,23 @@
-import { v4 as uuid } from 'uuid';
-
 import { MONTHLY_BALANCE_TYPE } from './MonthlyBalanceEnums';
 
 export default class MonthlyBalance {
   constructor(
     public readonly institutionId: string,
     public readonly yearMonth: string,
-    public tradeEarnings = 0,
-    public dividendEarnings = 0,
+    public tradeEarning = 0,
+    public dividendEarning = 0,
     public tax = 0,
     public taxWithholding = 0,
     public loss = 0,
     public type = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   ) {}
 
-  setTradeEarnings(value: number) {
-    this.tradeEarnings = value;
+  setTradeEarning(value: number) {
+    this.tradeEarning = value;
   }
 
-  setDividendEarnings(value: number) {
-    this.dividendEarnings = value;
+  setDividendEarning(value: number) {
+    this.dividendEarning = value;
   }
 
   setTax(value: number) {

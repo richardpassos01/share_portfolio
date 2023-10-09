@@ -9,8 +9,8 @@ import institution from '@fixtures/institution';
 type Params = {
   institutionId?: string;
   yearMonth?: string;
-  tradeEarnings?: number;
-  dividendEarnings?: number;
+  tradeEarning?: number;
+  dividendEarning?: number;
   tax?: number;
   taxWithholding?: number;
   loss?: number;
@@ -24,8 +24,8 @@ export default class MonthlyBalanceFactory {
     {
       institutionId = institution.id,
       yearMonth = dateToMonthYear(new Date()),
-      tradeEarnings,
-      dividendEarnings,
+      tradeEarning,
+      dividendEarning,
       tax,
       taxWithholding,
       loss,
@@ -38,8 +38,8 @@ export default class MonthlyBalanceFactory {
       new MonthlyBalance(
         institutionId,
         yearMonth,
-        tradeEarnings,
-        dividendEarnings,
+        tradeEarning,
+        dividendEarning,
         tax,
         taxWithholding,
         loss,
@@ -55,8 +55,8 @@ export default class MonthlyBalanceFactory {
     return {
       institutionId: this.monthlyBalance.institutionId,
       yearMonth: this.monthlyBalance.yearMonth,
-      tradeEarnings: this.monthlyBalance.tradeEarnings,
-      dividendEarnings: this.monthlyBalance.dividendEarnings,
+      tradeEarning: this.monthlyBalance.tradeEarning,
+      dividendEarning: this.monthlyBalance.dividendEarning,
       tax: this.monthlyBalance.tax,
       taxWithholding: this.monthlyBalance.taxWithholding,
       loss: this.monthlyBalance.loss,

@@ -10,6 +10,7 @@ import InstitutionController from './institution/InstitutionController';
 import schemaValidator from '@middleware/schemaValidator';
 import TransactionSchemas from './transaction/schemas/input/schema';
 import InstitutionSchemas from './institution/schemas/input/schema';
+import FinancialReportController from './financialReport/FinancialReportController';
 
 const router = new Router();
 
@@ -36,11 +37,11 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
-router.get('/institution/:institutionId/balance', (ctx) => {
-  const institutionController = container.get<InstitutionController>(
-    TYPES.InstitutionController,
+router.get('/financial_report/:institutionId/total_balance', (ctx) => {
+  const financialReportController = container.get<FinancialReportController>(
+    TYPES.FinancialReportController,
   );
-  return institutionController.getBalance(ctx);
+  return financialReportController.get(ctx);
 });
 
 router.post(

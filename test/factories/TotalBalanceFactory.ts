@@ -6,6 +6,7 @@ import institution from '@fixtures/institution';
 
 type Params = {
   institutionId?: string;
+  earning?: number;
   loss?: number;
 };
 
@@ -13,11 +14,11 @@ export default class TotalBalanceFactory {
   private totalBalance: TotalBalance;
 
   constructor(
-    { institutionId = institution.id, loss } = {} as Params,
+    { institutionId = institution.id, earning = 0, loss } = {} as Params,
     totalBalance?: TotalBalance,
   ) {
     this.totalBalance =
-      totalBalance || new TotalBalance(institutionId, 0, loss);
+      totalBalance || new TotalBalance(institutionId, earning, loss);
   }
 
   get() {

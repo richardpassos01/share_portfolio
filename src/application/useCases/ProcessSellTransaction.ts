@@ -35,7 +35,7 @@ export default class ProcessSellTransaction {
       throw new Error();
     }
 
-    const earningOrLoss = share.getEarningsOrLoss(transaction);
+    const earningOrLoss = share.getEarningOrLoss(transaction);
 
     share.updatePosition(
       transaction.getQuantity(),
@@ -62,18 +62,18 @@ export default class ProcessSellTransaction {
     }
 
     if (earningOrLoss > 0) {
-      this.handleEarnings(monthlySales, earningOrLoss, financialReport);
+      this.handleEarning(monthlySales, earningOrLoss, financialReport);
     }
 
     return this.updateOrLiquidateShare.execute(share);
   }
 
-  handleEarnings(
+  handleEarning(
     monthlySales: number,
     earning: number,
     financialReport: FinancialReport,
   ) {
-    financialReport.setTradeEarnings(earning);
+    financialReport.setTradeEarning(earning);
 
     const sellMoreThanLimit =
       monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;

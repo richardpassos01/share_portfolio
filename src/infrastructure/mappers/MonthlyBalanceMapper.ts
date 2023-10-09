@@ -4,8 +4,8 @@ import { MONTHLY_BALANCE_TYPE } from '@domain/financialReport/monthlyBalance/Mon
 type MapToEntityInput = {
   institution_id: string;
   year_month: string;
-  trade_earnings: number;
-  dividend_earnings: number;
+  trade_earning: number;
+  dividend_earning: number;
   tax: number;
   tax_withholding: number;
   loss: number;
@@ -17,8 +17,8 @@ export default class MonthlyBalanceMapper {
     return {
       institution_id: entity.institutionId,
       year_month: entity.yearMonth,
-      trade_earnings: entity.tradeEarnings,
-      dividend_earnings: entity.dividendEarnings,
+      trade_earning: entity.tradeEarning,
+      dividend_earning: entity.dividendEarning,
       tax: entity.tax,
       tax_withholding: entity.taxWithholding,
       loss: entity.loss,
@@ -30,8 +30,8 @@ export default class MonthlyBalanceMapper {
     return new MonthlyBalance(
       object.institution_id,
       object.year_month,
-      object.trade_earnings,
-      object.dividend_earnings,
+      object.trade_earning,
+      object.dividend_earning,
       object.tax,
       object.tax_withholding,
       object.loss,

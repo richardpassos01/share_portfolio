@@ -60,7 +60,7 @@ export default class Share {
     this.setMediumPrice();
   }
 
-  getEarningsOrLoss(transaction: AbstractTransaction): number {
+  getEarningOrLoss(transaction: AbstractTransaction): number {
     const sellCost = transaction.getTotalCost();
     const minIdealSellCost = transaction.getQuantity() * this.mediumPrice;
     const earning = sellCost - minIdealSellCost;

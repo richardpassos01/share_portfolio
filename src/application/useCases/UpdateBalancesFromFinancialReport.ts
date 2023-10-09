@@ -24,14 +24,14 @@ export default class UpdateBalancesFromFinancialReport {
   ): Promise<[void, void]> {
     const totalBalance = new TotalBalance(
       transaction.institutionId,
-      financialReport.totalEarnings,
+      financialReport.totalEarning,
       financialReport.totalLoss,
     );
     const monthlyBalance = new MonthlyBalance(
       transaction.institutionId,
       dateToMonthYear(transaction.date),
-      financialReport.monthlyTradeEarnings,
-      financialReport.monthlyDividendEarnings,
+      financialReport.monthlyTradeEarning,
+      financialReport.monthlyDividendEarning,
       financialReport.monthlyTax,
       financialReport.monthlyTaxWithholding,
       financialReport.monthlyLoss,

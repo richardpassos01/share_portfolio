@@ -15,17 +15,21 @@ export default class CreateFinancialReportFromBalances {
     private readonly getTotalBalance: GetTotalBalance,
   ) {}
 
-  async execute(transaction: AbstractTransaction): Promise<FinancialReport> {
-    const totalBalance = await this.getTotalBalance.execute(
-      transaction.institutionId,
+  async execute({
+    institutionId,
+    date,
+  }: AbstractTransaction): Promise<FinancialReport> {
+    const totalBalance = await this.getTotalBalance.execute(institutionId);
+    const monthlyBalance = await this.getMonthlyBalance.execute(
+      institutionId,
+      date,
     );
-    const monthlyBalance = await this.getMonthlyBalance.execute(transaction);
 
     const financialReport = new FinancialReport(
-      totalBalance?.earnings,
+      totalBalance?.earning,
       totalBalance?.loss,
-      monthlyBalance?.tradeEarnings,
-      monthlyBalance?.dividendEarnings,
+      monthlyBalance?.tradeEarning,
+      monthlyBalance?.dividendEarning,
       monthlyBalance?.tax,
       monthlyBalance?.taxWithholding,
       monthlyBalance?.loss,

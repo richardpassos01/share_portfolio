@@ -6,7 +6,6 @@ import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import { StatusCodes } from 'http-status-codes';
 import InstitutionFactory from '@factories/InstitutionFactory';
-import institution from '@fixtures/institution';
 import GetInstitution from '@application/queries/GetInstitution';
 
 describe('institutionAPI', () => {
@@ -64,17 +63,4 @@ describe('institutionAPI', () => {
       expect(response.body).toEqual(institution);
     });
   });
-
-  // describe('GET /institution/:institutionId/profit', () => {
-  //   it('should get institution balance', async () => {
-  //     const expectedBalance = { loss: 0, profit: 0 };
-
-  //     const response = await request.get(
-  //       `/institution/${institution.id}/balance`,
-  //     );
-
-  //     expect(response.status).toBe(StatusCodes.OK);
-  //     expect(expectedBalance).toEqual(response.body);
-  //   });
-  // });
 });

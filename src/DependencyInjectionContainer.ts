@@ -42,6 +42,7 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
+import FinancialReportController from '@api/financialReport/FinancialReportController';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -56,6 +57,10 @@ container
 container
   .bind<TransactionController>(TYPES.TransactionController)
   .to(TransactionController)
+  .inSingletonScope();
+container
+  .bind<FinancialReportController>(TYPES.FinancialReportController)
+  .to(FinancialReportController)
   .inSingletonScope();
 
 container

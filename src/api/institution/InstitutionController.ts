@@ -33,13 +33,4 @@ export default class InstitutionController {
     ctx.response.status = StatusCodes.OK;
     ctx.body = institution;
   }
-
-  async getBalance(ctx: Koa.DefaultContext): Promise<void> {
-    const { institutionId } = ctx.params;
-
-    const balance = 1;
-
-    ctx.response.status = StatusCodes.OK;
-    ctx.body = balance;
-  }
 }

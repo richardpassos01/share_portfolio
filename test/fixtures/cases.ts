@@ -14,11 +14,11 @@ type Case = [
 const casesDescription = [
   'Should create share and Monthly Balance if it does not exist',
   'Should update Monthly Balance with new shares',
-  'Should update tradeEarnings and dont charge tax if it does not meet tax conditions',
+  'Should update tradeEarning and dont charge tax if it does not meet tax conditions',
   'Should update share position when buy share',
   'Should update share position when buy share',
   'Should update share position when buy share',
-  'Should update dividendEarnings when is a DIVIDENDS transaction',
+  'Should update dividendEarning when is a DIVIDENDS transaction',
   'Should update share position when buy share',
   'Should charge daytrade tax when buy and sell shares of the same company in the same day',
   'Should update total loss and recalculate tax by deducting it',

@@ -5,8 +5,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-07',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -15,8 +15,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-07',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -24,9 +24,9 @@ export const monthlyBalances = [
   },
   {
     institutionId: institution.id,
-    yearMonth: '2019-08', // There were earnings in the month and sales was lower than 20k, so dont need to pay tax.
-    tradeEarnings: 45.499999999999886,
-    dividendEarnings: 0.0,
+    yearMonth: '2019-08', // There were Earning in the month and sales was lower than 20k, so dont need to pay tax.
+    tradeEarning: 45.499999999999886,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -35,8 +35,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-08',
-    tradeEarnings: 45.499999999999886,
-    dividendEarnings: 0.0,
+    tradeEarning: 45.499999999999886,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -45,8 +45,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-09',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -55,8 +55,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-09',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -65,8 +65,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-09',
-    tradeEarnings: 0.0,
-    dividendEarnings: 15000.0,
+    tradeEarning: 0.0,
+    dividendEarning: 15000.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -75,8 +75,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-09',
-    tradeEarnings: 0.0,
-    dividendEarnings: 15000.0,
+    tradeEarning: 0.0,
+    dividendEarning: 15000.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -84,9 +84,9 @@ export const monthlyBalances = [
   },
   {
     institutionId: institution.id,
-    yearMonth: '2019-09', // There were earnings in the month and sales with a total value lower than 20k, but need to pay taxes because did day trade.
-    tradeEarnings: 9.762820512820525,
-    dividendEarnings: 15000.0,
+    yearMonth: '2019-09', // There were Earning in the month and sales with a total value lower than 20k, but need to pay taxes because did day trade.
+    tradeEarning: 9.762820512820525,
+    dividendEarning: 15000.0,
     tax: 1.9525641025641052,
     taxWithholding: 0,
     loss: 0,
@@ -95,18 +95,18 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-10',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 3776.1290322580644,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
-    institutionId: institution.id, // There were earnings in the month and sales with a total value greater than 20k, but there's no need to pay taxes because it can be deducted from the total loss
+    institutionId: institution.id, // There were Earning in the month and sales with a total value greater than 20k, but there's no need to pay taxes because it can be deducted from the total loss
     yearMonth: '2019-11',
-    tradeEarnings: 110,
-    dividendEarnings: 0.0,
+    tradeEarning: 110,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 1.0557,
     loss: 0,
@@ -115,8 +115,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-11',
-    tradeEarnings: 110,
-    dividendEarnings: 0.0,
+    tradeEarning: 110,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 1.0557,
     loss: 0,
@@ -125,8 +125,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2019-12',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -135,8 +135,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2020-01',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 1202,
@@ -145,8 +145,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2020-02',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -155,8 +155,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2020-03',
-    tradeEarnings: 0.0,
-    dividendEarnings: 0.0,
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -165,8 +165,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2021-02',
-    tradeEarnings: 9988.535,
-    dividendEarnings: 0.0,
+    tradeEarning: 9988.535,
+    dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
     loss: 0,
@@ -175,8 +175,8 @@ export const monthlyBalances = [
   {
     institutionId: institution.id,
     yearMonth: '2021-02',
-    tradeEarnings: 2001978.535,
-    dividendEarnings: 0.0,
+    tradeEarning: 2001978.535,
+    dividendEarning: 0.0,
     tax: 295234.49601774185,
     taxWithholding: 99.5995,
     loss: 0,

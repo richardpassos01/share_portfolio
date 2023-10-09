@@ -17,22 +17,22 @@ const TAX_WITHHOLDING_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {
 
 export default class FinancialReport {
   constructor(
-    public totalEarnings = 0,
+    public totalEarning = 0,
     public totalLoss = 0,
-    public monthlyTradeEarnings = 0,
-    public monthlyDividendEarnings = 0,
+    public monthlyTradeEarning = 0,
+    public monthlyDividendEarning = 0,
     public monthlyTax = 0,
     public monthlyTaxWithholding = 0,
     public monthlyLoss = 0,
     public monthlyOperationType = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   ) {}
 
-  setTradeEarnings(earning: number) {
-    this.monthlyTradeEarnings += Math.max(0, earning);
+  setTradeEarning(earning: number) {
+    this.monthlyTradeEarning += Math.max(0, earning);
   }
 
-  setDividendEarnings(earning: number) {
-    this.monthlyDividendEarnings += earning;
+  setDividendEarning(earning: number) {
+    this.monthlyDividendEarning += earning;
   }
 
   setType(
@@ -81,15 +81,15 @@ export default class FinancialReport {
     this.totalLoss = loss;
   }
 
-  setTotalEarnings() {
-    const monthlyEarnings =
-      this.monthlyTradeEarnings +
-      +this.monthlyDividendEarnings -
+  setTotalEarning() {
+    const monthlyEarning =
+      this.monthlyTradeEarning +
+      +this.monthlyDividendEarning -
       this.monthlyTax -
       this.monthlyTaxWithholding;
 
-    const totalEarnings = monthlyEarnings + this.totalEarnings - this.totalLoss;
-    this.totalEarnings = Math.max(0, totalEarnings);
+    const totalEarning = monthlyEarning + this.totalEarning - this.totalLoss;
+    this.totalEarning = Math.max(0, totalEarning);
   }
 
   checkIfDidDayTradeAtMonth(
@@ -107,7 +107,7 @@ export default class FinancialReport {
   }
 
   calculateTax() {
-    const tradetEarning = this.monthlyTradeEarnings;
+    const tradetEarning = this.monthlyTradeEarning;
 
     let tax =
       tradetEarning * TAX_PERCENTAGE[this.monthlyOperationType] -

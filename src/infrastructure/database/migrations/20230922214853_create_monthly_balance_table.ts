@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(Tables.MONTHLY_BALANCE, (table) => {
       table.uuid('institution_id').notNullable();
       table.string('year_month', 7).notNullable();
-      table.decimal('trade_earnings', null);
-      table.decimal('dividend_earnings', null);
+      table.decimal('trade_earning', null);
+      table.decimal('dividend_earning', null);
       table.decimal('tax', null);
       table.decimal('tax_withholding', null);
       table.decimal('loss', null);
