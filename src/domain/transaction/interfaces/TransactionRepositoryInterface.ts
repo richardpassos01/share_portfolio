@@ -6,8 +6,8 @@ export default interface TransactionRepositoryInterface {
   delete(ids: string[]): Promise<void>;
   list(
     institutionId: string,
-    limit?: number,
     page?: number,
+    limit?: number,
   ): Promise<Pagination>;
   listFromMonth(institutionId: string, date: Date): Promise<Transaction[]>;
 }

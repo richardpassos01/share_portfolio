@@ -36,4 +36,5 @@ export const TYPES = {
     'UpdateBalancesFromFinancialReport',
   ),
   CalculateTotalBalanceEarning: Symbol.for('CalculateTotalBalanceEarning'),
+  SyncPortfolio: Symbol.for('SyncPortfolio'),
 };

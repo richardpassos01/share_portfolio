@@ -27,8 +27,8 @@ export default class UpdatePortfolio {
     private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
-  async execute(transaction: TransactionDTO): Promise<any> {
-    try {
+  async execute(transactions: TransactionDTO[]): Promise<any> {
+    for (const transaction of transactions) {
       const financialReport =
         await this.createFinancialReportFromBalances.execute(transaction);
 
@@ -63,8 +63,6 @@ export default class UpdatePortfolio {
         financialReport,
         transaction,
       );
-    } catch (error) {
-      console.error(error);
     }
   }
 }

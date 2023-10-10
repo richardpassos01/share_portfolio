@@ -31,7 +31,7 @@ export default class TransactionRepository
       .into(TABLES.TRANSACTION);
   }
 
-  async list(institutionId: string, limit = 100, page = 1) {
+  async list(institutionId: string, page = 1, limit = 100) {
     return this.database
       .connection()
       .select(

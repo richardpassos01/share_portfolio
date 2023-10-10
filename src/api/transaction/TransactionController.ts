@@ -6,6 +6,7 @@ import { inject, injectable } from 'inversify';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import { CreateTransactionParams } from '@domain/shared/types';
+import SyncPortfolio from '@application/useCases/SyncPortfolio';
 
 @injectable()
 export default class TransactionController {
@@ -15,12 +16,20 @@ export default class TransactionController {
 
     @inject(TYPES.DeleteTransactions)
     private readonly deleteTransactions: DeleteTransactions,
+
+    @inject(TYPES.SyncPortfolio)
+    private readonly syncPortfolio: SyncPortfolio,
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<void> {
     const payload: CreateTransactionParams[] = ctx.request.body;
 
     await this.createTransactions.execute(payload);
+
+    //payload need to be
+    //   { institutionID: 1234,
+    //   transactions: []
+    // }
 
     ctx.response.status = StatusCodes.CREATED;
     ctx.response.body = ReasonPhrases.CREATED;

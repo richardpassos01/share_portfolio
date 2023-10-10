@@ -44,6 +44,7 @@ import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBa
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import FinancialReportController from '@api/financialReport/FinancialReportController';
 import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
+import SyncPortfolio from '@application/useCases/SyncPortfolio';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -85,6 +86,10 @@ container
 container
   .bind<UpdatePortfolio>(TYPES.UpdatePortfolio)
   .to(UpdatePortfolio)
+  .inSingletonScope();
+container
+  .bind<SyncPortfolio>(TYPES.SyncPortfolio)
+  .to(SyncPortfolio)
   .inSingletonScope();
 container
   .bind<CreateTransactions>(TYPES.CreateTransactions)

@@ -1,4 +1,5 @@
 import { TYPES } from '@constants/types';
+import Pagination from '@domain/shared/Pagination';
 import Transaction from '@domain/transaction/Transaction';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import { injectable, inject } from 'inversify';
@@ -10,12 +11,7 @@ export default class ListTransactions {
     private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string): Promise<any> {
-    const pagination = await this.transactionRepository.list(
-      institutionId,
-      1,
-      2,
-    );
-    console.log(pagination);
+  async execute(institutionId: string): Promise<Pagination> {
+    return this.transactionRepository.list(institutionId);
   }
 }
