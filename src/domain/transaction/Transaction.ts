@@ -1,8 +1,7 @@
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
-import AbstractTransaction from './interfaces/AbstractTransaction';
 import { v4 as uuid } from 'uuid';
 
-export default class Transaction implements AbstractTransaction {
+export default class Transaction {
   constructor(
     public readonly institutionId: string,
     public readonly type: TRANSACTION_TYPE,

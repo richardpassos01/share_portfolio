@@ -2,10 +2,10 @@ import { transactions } from './transactions';
 import { shares } from './shares';
 import { monthlyBalances } from './monthlyBalances';
 import { totalBalances } from './totalBalances';
-import { TransactionParams } from '@domain/shared/types';
+import { CreateTransactionParams } from '@domain/shared/types';
 
 type Case = [
-  TransactionParams,
+  CreateTransactionParams,
   Record<any, any>,
   Record<any, any>,
   Record<any, any>,

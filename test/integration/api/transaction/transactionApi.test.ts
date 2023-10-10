@@ -9,6 +9,7 @@ import TransactionFactory from '@factories/TransactionFactory';
 import ListTransactions from '@application/queries/ListTransactions';
 import ErrorCode from '@domain/shared/error/ErrorCode';
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
+import institution from '@fixtures/institution';
 
 describe('transactionAPI', () => {
   const server = app.listen();
@@ -37,16 +38,20 @@ describe('transactionAPI', () => {
     server.close();
   });
 
-  describe('POST /transaction', () => {
+  describe('POST /transaction/initial-update', () => {
     describe('When called the endpoint with valid schema', () => {
       it('should create transaction', async () => {
         const transaction = new TransactionFactory();
         const payload = transaction.getPayloadObject();
         const expectedTransaction = transaction.getObject();
 
-        const response = await request.post('/transaction').send([payload]);
+        const response = await request
+          .post('/transaction/initial-update')
+          .send([payload]);
 
         const [result] = await listTransactions.execute(payload.institutionId);
+
+        await listTransactions.execute(institution.id);
 
         expect(response.status).toBe(StatusCodes.CREATED);
         expect(response.text).toBe(ReasonPhrases.CREATED);

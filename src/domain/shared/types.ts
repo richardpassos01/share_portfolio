@@ -10,7 +10,7 @@ type Transaction = {
   category: TRANSACTION_CATEGORY;
 };
 
-export type TransactionParams = Transaction & {
+export type CreateTransactionParams = Transaction & {
   date: string;
 };
 

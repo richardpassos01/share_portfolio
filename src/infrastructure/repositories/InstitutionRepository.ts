@@ -1,6 +1,6 @@
 import InstitutionMapper from '@infrastructure/mappers/InstitutionMapper';
 import { TYPES } from '@constants/types';
-import Database, { Tables } from '@infrastructure/database';
+import Database, { TABLES } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import Institution from '@domain/institution/Institution';
@@ -19,7 +19,7 @@ export default class InstitutionRepository
       .connection()
       .select()
       .where('id', institutionId)
-      .into(Tables.INSTITUTION)
+      .into(TABLES.INSTITUTION)
       .first()
       .then((data) => InstitutionMapper.mapToEntity(data));
   }
@@ -28,6 +28,6 @@ export default class InstitutionRepository
     await this.database
       .connection()
       .insert(InstitutionMapper.mapToDatabaseObject(institution))
-      .into(Tables.INSTITUTION);
+      .into(TABLES.INSTITUTION);
   }
 }

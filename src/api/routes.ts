@@ -45,7 +45,7 @@ router.get('/financial_report/:institutionId/total-balance', (ctx) => {
 });
 
 router.post(
-  '/transaction',
+  '/transaction/create-transactions',
   schemaValidator(TransactionSchemas.create),
   (ctx) => {
     const transactionController = container.get<TransactionController>(
@@ -57,6 +57,30 @@ router.post(
     return transactionController.create(ctx);
   },
 );
+
+router.post(
+  '/transaction/initial-update',
+  schemaValidator(TransactionSchemas.create),
+  (ctx) => {
+    const transactionController = container.get<TransactionController>(
+      TYPES.TransactionController,
+    );
+
+    // will call SYNC in the end
+
+    return transactionController.create(ctx);
+  },
+);
+
+router.post('/transaction/sync', (ctx) => {
+  const transactionController = container.get<TransactionController>(
+    TYPES.TransactionController,
+  );
+  // fazer sincronizar tudo. Ordem alfabetica
+  // will call SYNC in the end
+
+  return transactionController.create(ctx);
+});
 
 router.post(
   '/transaction/re-sync',

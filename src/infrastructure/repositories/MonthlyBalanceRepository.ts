@@ -1,6 +1,6 @@
 import { TYPES } from '@constants/types';
 import MonthlyBalanceMapper from '@infrastructure/mappers/MonthlyBalanceMapper';
-import Database, { Tables } from '@infrastructure/database';
+import Database, { TABLES } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
@@ -22,7 +22,7 @@ export default class MonthlyBalanceRepository
         year_month: yearMonth,
         institution_id: institutionId,
       })
-      .into(Tables.MONTHLY_BALANCE)
+      .into(TABLES.MONTHLY_BALANCE)
       .first()
       .then((data) =>
         data ? MonthlyBalanceMapper.mapToEntity(data) : undefined,
@@ -33,7 +33,7 @@ export default class MonthlyBalanceRepository
     await this.database
       .connection()
       .insert(MonthlyBalanceMapper.mapToDatabaseObject(balance))
-      .into(Tables.MONTHLY_BALANCE)
+      .into(TABLES.MONTHLY_BALANCE)
       .onConflict(['institution_id', 'year_month'])
       .merge();
   }
@@ -46,7 +46,7 @@ export default class MonthlyBalanceRepository
           .connection()
           .raw('SUM(trade_earning + dividend_earning - tax - tax_withholding)'),
       )
-      .from(Tables.MONTHLY_BALANCE)
+      .from(TABLES.MONTHLY_BALANCE)
       .where('institution_id', institutionId)
       .first();
   }

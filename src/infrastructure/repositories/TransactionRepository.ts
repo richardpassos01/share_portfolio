@@ -1,10 +1,11 @@
 import TransactionMapper from '@infrastructure/mappers/TransactionMapper';
 import { TYPES } from '@constants/types';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import Database, { Tables } from '@infrastructure/database';
+import Database, { TABLES } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 import Transaction from '@domain/transaction/Transaction';
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
+import Pagination, { MapperFunction } from '@domain/shared/Pagination';
 
 @injectable()
 export default class TransactionRepository
@@ -19,7 +20,7 @@ export default class TransactionRepository
     await this.database
       .connection()
       .insert(transactions.map(TransactionMapper.mapToDatabaseObject))
-      .into(Tables.TRANSACTION);
+      .into(TABLES.TRANSACTION);
   }
 
   async delete(ids: string[]) {
@@ -27,16 +28,30 @@ export default class TransactionRepository
       .connection()
       .whereIn('id', ids)
       .del()
-      .into(Tables.TRANSACTION);
+      .into(TABLES.TRANSACTION);
   }
 
-  async list(institutionId: string) {
+  async list(institutionId: string, limit = 100, page = 1) {
     return this.database
       .connection()
-      .select()
+      .select(
+        this.database.connection().raw('COUNT(*) OVER() as total_count'),
+        `${TABLES.TRANSACTION}.*`,
+      )
       .where('institution_id', institutionId)
-      .into(Tables.TRANSACTION)
-      .then((data) => (data ? data.map(TransactionMapper.mapToEntity) : []));
+      .into(TABLES.TRANSACTION)
+      .orderBy('date', 'asc')
+      .limit(limit)
+      .offset((page - 1) * limit)
+      .then(
+        (data) =>
+          new Pagination(
+            page,
+            limit,
+            data,
+            TransactionMapper.mapToEntity as MapperFunction,
+          ),
+      );
   }
 
   async listFromMonth(institutionId: string, date: Date) {
@@ -51,7 +66,7 @@ export default class TransactionRepository
         'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
         [date.getFullYear(), date.getMonth() + 1],
       )
-      .into(Tables.TRANSACTION)
+      .into(TABLES.TRANSACTION)
       .orderBy('date', 'asc')
       .then((data) =>
         data

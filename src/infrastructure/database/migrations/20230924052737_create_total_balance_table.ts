@@ -1,11 +1,11 @@
 import { Knex } from 'knex';
-import Tables from '../Tables';
+import TABLES from '../Tables';
 
 export async function up(knex: Knex): Promise<void> {
-  const hasTable = await knex.schema.hasTable(Tables.TOTAL_BALANCE);
+  const hasTable = await knex.schema.hasTable(TABLES.TOTAL_BALANCE);
 
   if (!hasTable) {
-    return knex.schema.createTable(Tables.TOTAL_BALANCE, (table) => {
+    return knex.schema.createTable(TABLES.TOTAL_BALANCE, (table) => {
       table.uuid('institution_id').notNullable().unique();
       table.decimal('loss', null);
       table.timestamps(true, true);
@@ -13,12 +13,12 @@ export async function up(knex: Knex): Promise<void> {
       table
         .foreign('institution_id')
         .references('id')
-        .inTable(Tables.INSTITUTION)
+        .inTable(TABLES.INSTITUTION)
         .onDelete('CASCADE');
     });
   }
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable(Tables.TOTAL_BALANCE);
+  return knex.schema.dropTable(TABLES.TOTAL_BALANCE);
 }

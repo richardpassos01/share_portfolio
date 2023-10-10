@@ -1,5 +1,5 @@
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
-import Tables from '../database/Tables';
+import TABLES from '../database/Tables';
 import ShareMapper from '../mappers/ShareMapper';
 import Database from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
@@ -18,7 +18,7 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .connection()
       .select()
       .where({ ticket_symbol: ticketSymbol, institution_id: institutionId })
-      .into(Tables.SHARE)
+      .into(TABLES.SHARE)
       .first()
       .then((data) => (data ? ShareMapper.mapToEntity(data) : undefined));
   }
@@ -27,7 +27,7 @@ export default class ShareRepository implements ShareRepositoryInterface {
     await this.database
       .connection()
       .insert(ShareMapper.mapToDatabaseObject(share))
-      .into(Tables.SHARE);
+      .into(TABLES.SHARE);
   }
 
   async update(share: Share) {
@@ -35,11 +35,11 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .connection()
       .update(ShareMapper.mapToDatabaseObject(share))
       .where('id', share.id)
-      .into(Tables.SHARE);
+      .into(TABLES.SHARE);
   }
 
   async delete(id: string) {
-    await this.database.connection().where('id', id).del().into(Tables.SHARE);
+    await this.database.connection().where('id', id).del().into(TABLES.SHARE);
   }
 
   async list(institutionId: string) {
@@ -47,7 +47,7 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .connection()
       .select()
       .where({ institution_id: institutionId })
-      .into(Tables.SHARE)
+      .into(TABLES.SHARE)
       .then((data) => data.map(ShareMapper.mapToEntity));
   }
 }

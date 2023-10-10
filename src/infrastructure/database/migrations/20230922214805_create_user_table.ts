@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
-import Tables from '../Tables';
+import TABLES from '../Tables';
 
 export async function up(knex: Knex): Promise<void> {
-  const hasTable = await knex.schema.hasTable(Tables.USER);
+  const hasTable = await knex.schema.hasTable(TABLES.USER);
   if (!hasTable) {
-    return knex.schema.createTable(Tables.USER, (table) => {
+    return knex.schema.createTable(TABLES.USER, (table) => {
       table.uuid('id').primary();
       table.specificType('document', 'NUMERIC(11)').notNullable();
       table.timestamps(true, true);
@@ -13,5 +13,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable(Tables.USER);
+  return knex.schema.dropTable(TABLES.USER);
 }

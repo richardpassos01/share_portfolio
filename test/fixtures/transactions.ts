@@ -1,8 +1,8 @@
 import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
-import { TransactionParams } from '@domain/shared/types';
+import { CreateTransactionParams } from '@domain/shared/types';
 import institution from '@fixtures/institution';
 
-export const transactions: TransactionParams[] = [
+export const transactions: CreateTransactionParams[] = [
   {
     institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,

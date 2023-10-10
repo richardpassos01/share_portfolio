@@ -10,7 +10,12 @@ export default class ListTransactions {
     private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string): Promise<Transaction[]> {
-    return this.transactionRepository.list(institutionId);
+  async execute(institutionId: string): Promise<any> {
+    const pagination = await this.transactionRepository.list(
+      institutionId,
+      1,
+      2,
+    );
+    console.log(pagination);
   }
 }

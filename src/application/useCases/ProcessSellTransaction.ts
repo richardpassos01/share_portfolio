@@ -1,5 +1,5 @@
 import { TYPES } from '@constants/types';
-import { AbstractTransaction } from '@domain/shared/interfaces';
+import { TransactionDTO } from '@domain/shared/types';
 import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
@@ -24,7 +24,7 @@ export default class ProcessSellTransaction {
   ) {}
 
   async execute(
-    transaction: AbstractTransaction,
+    transaction: TransactionDTO,
     financialReport: FinancialReport,
   ): Promise<void> {
     const share = await this.getShare.execute(transaction);

@@ -9,7 +9,7 @@ import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import { dateStringDDMMYYYYToYYYYMMDD } from '../../helpers';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import { TYPES } from '@constants/types';
-import { TransactionParams } from '@domain/shared/types';
+import { CreateTransactionParams } from '@domain/shared/types';
 
 const filesPath = resolve(__dirname, '..', 'files');
 const fileList = readdirSync(filesPath);
@@ -40,7 +40,7 @@ const command = async () => {
       const filePath = resolve(filesPath, fileName);
       const [{ data }] = parse(filePath);
 
-      const transactions: TransactionParams[] = data
+      const transactions: CreateTransactionParams[] = data
         .slice(1)
         .reverse()
         .map((transaction) => ({

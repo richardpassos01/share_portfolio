@@ -5,7 +5,7 @@ import { TYPES } from '@constants/types';
 import { inject, injectable } from 'inversify';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
-import { TransactionParams } from '@domain/shared/types';
+import { CreateTransactionParams } from '@domain/shared/types';
 
 @injectable()
 export default class TransactionController {
@@ -18,7 +18,7 @@ export default class TransactionController {
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<void> {
-    const payload: TransactionParams[] = ctx.request.body;
+    const payload: CreateTransactionParams[] = ctx.request.body;
 
     await this.createTransactions.execute(payload);
 

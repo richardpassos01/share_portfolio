@@ -1,11 +1,11 @@
 import { Knex } from 'knex';
-import Tables from '../Tables';
+import TABLES from '../Tables';
 import { MONTHLY_BALANCE_TYPE } from '../../../domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
 
 export async function up(knex: Knex): Promise<void> {
-  const hasTable = await knex.schema.hasTable(Tables.MONTHLY_BALANCE);
+  const hasTable = await knex.schema.hasTable(TABLES.MONTHLY_BALANCE);
   if (!hasTable) {
-    return knex.schema.createTable(Tables.MONTHLY_BALANCE, (table) => {
+    return knex.schema.createTable(TABLES.MONTHLY_BALANCE, (table) => {
       table.uuid('institution_id').notNullable();
       table.string('year_month', 7).notNullable();
       table.decimal('trade_earning', null);
@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
       table
         .foreign('institution_id')
         .references('id')
-        .inTable(Tables.INSTITUTION)
+        .inTable(TABLES.INSTITUTION)
         .onDelete('CASCADE');
 
       table.unique(['institution_id', 'year_month']);
@@ -28,5 +28,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable(Tables.MONTHLY_BALANCE);
+  return knex.schema.dropTable(TABLES.MONTHLY_BALANCE);
 }
