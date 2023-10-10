@@ -3,7 +3,7 @@ import Transaction from '../Transaction';
 
 export default interface TransactionRepositoryInterface {
   createMany(transaction: Transaction[]): Promise<void>;
-  delete(ids: string[]): Promise<void>;
+  delete(institutionId: string, ids: string[]): Promise<void>;
   list(
     institutionId: string,
     page?: number,

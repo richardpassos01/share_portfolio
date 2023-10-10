@@ -38,6 +38,14 @@ export default class MonthlyBalanceRepository
       .merge();
   }
 
+  async deleteAll(institutionId: string) {
+    await this.database
+      .connection()
+      .where('institution_id', institutionId)
+      .del()
+      .into(TABLES.MONTHLY_BALANCE);
+  }
+
   async sumEarnings(institutionId: string) {
     return this.database
       .connection()

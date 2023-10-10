@@ -1,10 +1,11 @@
 import Koa from 'koa';
 
 import { TYPES } from '@constants/types';
-import { StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { injectable, inject } from 'inversify';
 import GetInstitution from '@application/queries/GetInstitution';
 import CreateInstitution from '@application/useCases/CreateInstitution';
+import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 
 @injectable()
 export default class InstitutionController {
@@ -14,6 +15,9 @@ export default class InstitutionController {
 
     @inject(TYPES.GetInstitution)
     private readonly getInstitution: GetInstitution,
+
+    @inject(TYPES.ReSyncPortfolio)
+    private readonly reSyncPortfolio: ReSyncPortfolio,
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<any> {
@@ -32,5 +36,14 @@ export default class InstitutionController {
 
     ctx.response.status = StatusCodes.OK;
     ctx.body = institution;
+  }
+
+  async reSync(ctx: Koa.DefaultContext): Promise<void> {
+    const { institutionId } = ctx.params;
+
+    await this.reSyncPortfolio.execute(institutionId);
+
+    ctx.response.status = StatusCodes.NO_CONTENT;
+    ctx.response.body = ReasonPhrases.NO_CONTENT;
   }
 }

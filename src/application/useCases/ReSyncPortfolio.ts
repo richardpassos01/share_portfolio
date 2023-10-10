@@ -2,10 +2,22 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import UpdatePortfolio from './UpdatePortfolio';
+import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 
 @injectable()
-export default class SyncPortfolio {
+export default class ReSyncPortfolio {
   constructor(
+    @inject(TYPES.TotalBalanceRepository)
+    private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
+
+    @inject(TYPES.MonthlyBalanceRepository)
+    private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
+
+    @inject(TYPES.ShareRepository)
+    private readonly shareRepository: ShareRepositoryInterface,
+
     @inject(TYPES.TransactionRepository)
     private readonly transactionRepository: TransactionRepositoryInterface,
 
@@ -14,6 +26,7 @@ export default class SyncPortfolio {
   ) {}
 
   async execute(institutionId: string): Promise<void> {
+    await this.resetPortfolio(institutionId);
     const inititalPageSize = 1;
     const pageSize = 100;
     let page = 1;
@@ -35,5 +48,11 @@ export default class SyncPortfolio {
 
       page++;
     }
+  }
+
+  async resetPortfolio(institutionId: string) {
+    await this.totalBalanceRepository.delete(institutionId);
+    await this.monthlyBalanceRepository.deleteAll(institutionId);
+    await this.shareRepository.deleteAll(institutionId);
   }
 }

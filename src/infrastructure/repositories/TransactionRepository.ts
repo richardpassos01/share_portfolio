@@ -23,9 +23,10 @@ export default class TransactionRepository
       .into(TABLES.TRANSACTION);
   }
 
-  async delete(ids: string[]) {
+  async delete(institutionId: string, ids: string[]) {
     await this.database
       .connection()
+      .where('institution_id', institutionId)
       .whereIn('id', ids)
       .del()
       .into(TABLES.TRANSACTION);

@@ -34,4 +34,12 @@ export default class TotalBalanceRepository
       .onConflict('institution_id')
       .merge();
   }
+
+  async delete(institutionId: string) {
+    await this.database
+      .connection()
+      .where('institution_id', institutionId)
+      .del()
+      .into(TABLES.TOTAL_BALANCE);
+  }
 }

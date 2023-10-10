@@ -50,4 +50,12 @@ export default class ShareRepository implements ShareRepositoryInterface {
       .into(TABLES.SHARE)
       .then((data) => data.map(ShareMapper.mapToEntity));
   }
+
+  async deleteAll(institutionId: string) {
+    await this.database
+      .connection()
+      .where('institution_id', institutionId)
+      .del()
+      .into(TABLES.SHARE);
+  }
 }

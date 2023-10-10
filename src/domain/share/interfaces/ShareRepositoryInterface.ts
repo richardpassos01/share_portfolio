@@ -6,4 +6,5 @@ export default interface ShareRepositoryInterface {
   update(share: Share): Promise<void>;
   delete(id: string): Promise<void>;
   list(institutionId: string): Promise<Share[]>;
+  deleteAll(institutionId: string): Promise<void>;
 }

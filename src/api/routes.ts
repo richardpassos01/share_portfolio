@@ -37,6 +37,14 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
+router.post('/institution/:institutionId/re-sync', (ctx) => {
+  const institutionController = container.get<InstitutionController>(
+    TYPES.InstitutionController,
+  );
+
+  return institutionController.reSync(ctx);
+});
+
 router.get('/financial_report/:institutionId/total-balance', (ctx) => {
   const financialReportController = container.get<FinancialReportController>(
     TYPES.FinancialReportController,
@@ -56,19 +64,15 @@ router.post(
   },
 );
 
-router.post('/transaction/re-sync', (ctx) => {
-  const transactionController = container.get<TransactionController>(
-    TYPES.TransactionController,
-  );
-
-  return transactionController.create(ctx);
-});
-
-router.delete('/transaction', (ctx) => {
-  const transactionController = container.get<TransactionController>(
-    TYPES.TransactionController,
-  );
-  return transactionController.delete(ctx);
-});
+router.delete(
+  '/transaction',
+  schemaValidator(TransactionSchemas.del),
+  (ctx) => {
+    const transactionController = container.get<TransactionController>(
+      TYPES.TransactionController,
+    );
+    return transactionController.delete(ctx);
+  },
+);
 
 export default router;

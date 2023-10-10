@@ -9,7 +9,7 @@ export default class DeleteTransactions {
     private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
-  async execute(ids: string[]): Promise<void> {
-    return this.transactionRepository.delete(ids);
+  async execute(institutionId: string, ids: string[]): Promise<void> {
+    return this.transactionRepository.delete(institutionId, ids);
   }
 }
