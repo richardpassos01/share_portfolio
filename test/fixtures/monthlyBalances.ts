@@ -182,4 +182,14 @@ export const monthlyBalances = [
     loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
+  {
+    institutionId: institution.id,
+    yearMonth: '2022-05',
+    tradeEarning: 0.0,
+    dividendEarning: 0.0,
+    tax: 0.0,
+    taxWithholding: 0.0,
+    loss: 0,
+    type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
+  },
 ];

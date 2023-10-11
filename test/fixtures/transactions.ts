@@ -183,4 +183,14 @@ export const transactions: CreateTransactionParams[] = [
     unityPrice: 10010,
     totalCost: 1991990,
   },
+  {
+    institutionId: institution.id,
+    type: TRANSACTION_TYPE.BUY,
+    date: '2022-05-20',
+    category: TRANSACTION_CATEGORY.TRADE,
+    ticketSymbol: 'AMZN',
+    quantity: 100,
+    unityPrice: 130,
+    totalCost: 13000,
+  },
 ];

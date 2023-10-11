@@ -210,4 +210,13 @@ export const shares = [
     },
   ],
   [],
+  [
+    {
+      institutionId: institution.id,
+      mediumPrice: 130,
+      ticketSymbol: 'AMZN',
+      quantity: 100,
+      totalCost: 13000,
+    },
+  ],
 ];

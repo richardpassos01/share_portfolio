@@ -30,6 +30,7 @@ const casesDescription = [
   'Should update share',
   'Should not charge tax if sell less than 20k on month and dont did day trade',
   'Should charge tax when selling more than 20k on month',
+  'Should not change total balance when buy new shares',
 ];
 
 export const createTransactionCases: Case[] = transactions.map(

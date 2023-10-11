@@ -73,4 +73,8 @@ export const totalBalances = [
     institutionId: institution.id,
     loss: 0,
   },
+  {
+    institutionId: institution.id,
+    loss: 0,
+  },
 ];

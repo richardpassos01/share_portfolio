@@ -16,6 +16,7 @@ import { transactions } from '@fixtures/transactions';
 import { monthlyBalances } from '@fixtures/monthlyBalances';
 import { totalBalances } from '@fixtures/totalBalances';
 import TransactionFactory from '@factories/TransactionFactory';
+import { shares } from '@fixtures/shares';
 
 describe('ReSyncPortfolio', () => {
   let database: Database;
@@ -51,6 +52,8 @@ describe('ReSyncPortfolio', () => {
 
   describe('when call use case', () => {
     it('Should reset portfolio and recreate informations based on transactions', async () => {
+      const expectedShare = shares[shares.length - 1];
+      const expectedTotalBalance = totalBalances[totalBalances.length - 1];
       const expectedMonthlyBalances = monthlyBalances.filter(
         (current, index, array) => {
           if (index === array.length - 1) {
@@ -66,17 +69,22 @@ describe('ReSyncPortfolio', () => {
 
       await reSyncPortfolio.execute(institution.id);
 
+      const sharesList = (await listShares.execute(institution.id)).map(
+        (share) => new ShareFactory({}, share).getObject(),
+      );
       const monthlyBalanceList = (
         await listMonthlyBalance.execute(institution.id)
       ).map((monthlyBalance) =>
         new MonthlyBalanceFactory({}, monthlyBalance).getObject(),
       );
-      const totalBalance = await getTotalBalance.execute(institution.id);
+      const totalBalance = new TotalBalanceFactory(
+        {},
+        await getTotalBalance.execute(institution.id),
+      ).getObject();
 
       expect(expectedMonthlyBalances).toEqual(monthlyBalanceList);
-      expect(totalBalances[totalBalances.length - 1]).toEqual(
-        new TotalBalanceFactory({}, totalBalance).getObject(),
-      );
+      expect(expectedTotalBalance).toEqual(totalBalance);
+      expect(expectedShare).toEqual(sharesList);
     });
   });
 });
