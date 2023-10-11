@@ -42,7 +42,6 @@ const command = async () => {
 
       const transactions: CreateTransactionParams[] = data
         .slice(1)
-        .reverse()
         .map((transaction) => ({
           institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           type: institutionEventTypeMapper[transaction[0]],

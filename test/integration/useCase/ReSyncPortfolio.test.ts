@@ -62,7 +62,6 @@ describe('ReSyncPortfolio', () => {
           return current.yearMonth !== array[index + 1].yearMonth;
         },
       );
-
       for (const transaction of transactions) {
         await new TransactionFactory(transaction).save();
       }
@@ -81,7 +80,6 @@ describe('ReSyncPortfolio', () => {
         {},
         await getTotalBalance.execute(institution.id),
       ).getObject();
-
       expect(expectedMonthlyBalances).toEqual(monthlyBalanceList);
       expect(expectedTotalBalance).toEqual(totalBalance);
       expect(expectedShare).toEqual(sharesList);
