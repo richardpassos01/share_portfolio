@@ -51,7 +51,7 @@ describe('ReSyncPortfolio', () => {
   });
 
   describe('when call use case', () => {
-    it('Should reset portfolio and recreate informations based on transactions', async () => {
+    it('Should reset the portfolio and recreate information based on transactions, no matter the order in which the transactions were created.', async () => {
       const expectedShare = shares[shares.length - 1];
       const expectedTotalBalance = totalBalances[totalBalances.length - 1];
       const expectedMonthlyBalances = monthlyBalances.filter(
@@ -62,7 +62,10 @@ describe('ReSyncPortfolio', () => {
           return current.yearMonth !== array[index + 1].yearMonth;
         },
       );
-      for (const transaction of transactions) {
+      const randomSortedTransactions = transactions.sort(
+        () => Math.random() - 0.5,
+      );
+      for (const transaction of randomSortedTransactions) {
         await new TransactionFactory(transaction).save();
       }
 

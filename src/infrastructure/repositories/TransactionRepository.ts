@@ -42,6 +42,7 @@ export default class TransactionRepository
       .where('institution_id', institutionId)
       .into(TABLES.TRANSACTION)
       .orderBy('date', 'asc')
+      .orderBy('type', 'asc')
       .limit(limit)
       .offset((page - 1) * limit)
       .then(
