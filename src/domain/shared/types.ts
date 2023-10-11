@@ -15,5 +15,6 @@ export type CreateTransactionParams = Transaction & {
 };
 
 export type TransactionDTO = Transaction & {
+  id?: string;
   date: Date;
 };

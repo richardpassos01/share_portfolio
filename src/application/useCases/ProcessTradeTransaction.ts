@@ -19,6 +19,7 @@ export default class ProcessTradeTransaction {
   async execute(
     transaction: TransactionDTO,
     financialReport: FinancialReport,
+    monthlyTransactions?: TransactionDTO[],
   ): Promise<void> {
     const isBuyTransaction = transaction.type === TRANSACTION_TYPE.BUY;
 
@@ -26,6 +27,10 @@ export default class ProcessTradeTransaction {
       return this.processBuyTransaction.execute(transaction);
     }
 
-    return this.processSellTransaction.execute(transaction, financialReport);
+    return this.processSellTransaction.execute(
+      transaction,
+      financialReport,
+      monthlyTransactions,
+    );
   }
 }

@@ -29,6 +29,7 @@ export const TYPES = {
   ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
   FinancialReport: Symbol.for('FinancialReport'),
   GetMonthlyBalance: Symbol.for('GetMonthlyBalance'),
+  ListMonthlyBalance: Symbol.for('ListMonthlyBalance'),
   CreateFinancialReportFromBalances: Symbol.for(
     'CreateFinancialReportFromBalances',
   ),

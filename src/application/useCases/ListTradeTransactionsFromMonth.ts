@@ -13,21 +13,20 @@ export default class ListTradeTransactionsFromMonth {
     private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
-  async execute({
-    institutionId,
-    date,
-  }: TransactionDTO): Promise<TradeTransactions> {
-    const monthTransactions = await this.transactionRepository.listFromMonth(
-      institutionId,
-      date,
-    );
+  async execute(
+    { institutionId, date }: TransactionDTO,
+    monthlyTransactions?: TransactionDTO[],
+  ): Promise<TradeTransactions> {
+    const transactions =
+      monthlyTransactions ??
+      (await this.transactionRepository.listFromMonth(institutionId, date));
 
     const buyTransactions = this.filterTransactionByType(
-      monthTransactions,
+      transactions,
       TRANSACTION_TYPE.BUY,
     );
     const sellTransactions = this.filterTransactionByType(
-      monthTransactions,
+      transactions,
       TRANSACTION_TYPE.SELL,
     );
 

@@ -5,6 +5,8 @@ import UpdatePortfolio from './UpdatePortfolio';
 import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
+import { TransactionDTO } from '@domain/shared/types';
+import { isSameMonthYear } from '@helpers';
 
 @injectable()
 export default class ReSyncPortfolio {
@@ -44,8 +46,7 @@ export default class ReSyncPortfolio {
         pageSize,
       );
 
-      await this.updatePortfolio.execute(paginatedResponse.results);
-
+      await this.handleUpdatePortfolio(paginatedResponse.results);
       page++;
     }
   }
@@ -54,5 +55,31 @@ export default class ReSyncPortfolio {
     await this.totalBalanceRepository.delete(institutionId);
     await this.monthlyBalanceRepository.deleteAll(institutionId);
     await this.shareRepository.deleteAll(institutionId);
+  }
+
+  async handleUpdatePortfolio(transactions: TransactionDTO[]) {
+    for (const transaction of transactions) {
+      const monthlyTransactions = this.filterMonthlyTransactionsBeforeTarget(
+        transaction,
+        transactions,
+      );
+      // set on REDIS
+      await this.updatePortfolio.execute(transaction, monthlyTransactions);
+    }
+  }
+
+  filterMonthlyTransactionsBeforeTarget(
+    targetTransaction: TransactionDTO,
+    transactions: TransactionDTO[],
+  ) {
+    const transactionIndex = transactions.findIndex(
+      (t) => t.id === targetTransaction.id,
+    );
+
+    return transactions.filter(
+      (t, i) =>
+        isSameMonthYear(t.date, targetTransaction.date) &&
+        i <= transactionIndex,
+    );
   }
 }

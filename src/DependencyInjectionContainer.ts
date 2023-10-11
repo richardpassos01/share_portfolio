@@ -45,6 +45,7 @@ import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import FinancialReportController from '@api/financialReport/FinancialReportController';
 import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -114,6 +115,10 @@ container
 container
   .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)
   .to(GetMonthlyBalance)
+  .inSingletonScope();
+container
+  .bind<ListMonthlyBalance>(TYPES.ListMonthlyBalance)
+  .to(ListMonthlyBalance)
   .inSingletonScope();
 container
   .bind<CreateOrUpdateTotalBalance>(TYPES.CreateOrUpdateTotalBalance)

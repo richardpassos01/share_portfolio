@@ -29,6 +29,15 @@ export default class MonthlyBalanceRepository
       );
   }
 
+  async list(institutionId: string) {
+    return this.database
+      .connection()
+      .select()
+      .where('institution_id', institutionId)
+      .into(TABLES.MONTHLY_BALANCE)
+      .then((data) => data.map(MonthlyBalanceMapper.mapToEntity));
+  }
+
   async createOrUpdate(balance: MonthlyBalance) {
     await this.database
       .connection()

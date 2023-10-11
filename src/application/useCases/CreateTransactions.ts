@@ -35,6 +35,9 @@ export default class CreateTransactions {
       .sort((a, b) => b.date.getTime() - a.date.getTime());
 
     await this.transactionRepository.createMany(transactions);
-    await this.updatePortfolio.execute(transactions);
+
+    for (const transaction of transactions) {
+      await this.updatePortfolio.execute(transaction);
+    }
   }
 }

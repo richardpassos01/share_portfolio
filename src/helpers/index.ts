@@ -16,3 +16,6 @@ export const formatterMoney = (
     style: 'currency',
     currency,
   }).format(amount);
+export const isSameMonthYear = (date1: Date, date2: Date): boolean => {
+  return dateToMonthYear(date1) === dateToMonthYear(date2);
+};

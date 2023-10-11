@@ -27,42 +27,43 @@ export default class UpdatePortfolio {
     private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
-  async execute(transactions: TransactionDTO[]): Promise<any> {
-    for (const transaction of transactions) {
-      const financialReport =
-        await this.createFinancialReportFromBalances.execute(transaction);
+  async execute(
+    transaction: TransactionDTO,
+    monthlyTransactions?: TransactionDTO[],
+  ): Promise<any> {
+    const financialReport =
+      await this.createFinancialReportFromBalances.execute(transaction);
 
-      const isDividend =
-        transaction.category === TRANSACTION_CATEGORY.DIVIDENDS;
+    const isDividend = transaction.category === TRANSACTION_CATEGORY.DIVIDENDS;
 
-      const isSpecialEvent =
-        transaction.category === TRANSACTION_CATEGORY.SPLIT ||
-        transaction.category === TRANSACTION_CATEGORY.BONUS_SHARE;
+    const isSpecialEvent =
+      transaction.category === TRANSACTION_CATEGORY.SPLIT ||
+      transaction.category === TRANSACTION_CATEGORY.BONUS_SHARE;
 
-      const isTrade = transaction.category === TRANSACTION_CATEGORY.TRADE;
+    const isTrade = transaction.category === TRANSACTION_CATEGORY.TRADE;
 
-      if (isDividend) {
-        await this.processDividendTransaction.execute(
-          transaction,
-          financialReport,
-        );
-      }
-
-      if (isSpecialEvent) {
-        await this.processSpecialEventsOnShare.execute(transaction);
-      }
-
-      if (isTrade) {
-        await this.processTradeTransaction.execute(
-          transaction,
-          financialReport,
-        );
-      }
-
-      return this.updateBalancesFromFinancialReport.execute(
-        financialReport,
+    if (isDividend) {
+      await this.processDividendTransaction.execute(
         transaction,
+        financialReport,
       );
     }
+
+    if (isSpecialEvent) {
+      await this.processSpecialEventsOnShare.execute(transaction);
+    }
+
+    if (isTrade) {
+      await this.processTradeTransaction.execute(
+        transaction,
+        financialReport,
+        monthlyTransactions,
+      );
+    }
+
+    await this.updateBalancesFromFinancialReport.execute(
+      financialReport,
+      transaction,
+    );
   }
 }
