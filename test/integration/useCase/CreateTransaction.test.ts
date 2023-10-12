@@ -64,14 +64,14 @@ describe('CreateTransactions', () => {
 
         const totalBalance = await getTotalBalance.execute(institution.id);
 
-        expect(expectedShare).toEqual(
+        expect(
           shares.map((share) => new ShareFactory({}, share).getObject()),
-        );
-        expect(expectedMonthlyBalance).toEqual(
+        ).toEqual(expectedShare);
+        expect(
           new MonthlyBalanceFactory({}, monthlyBalance).getObject(),
-        );
-        expect(expectedTotalBalance).toEqual(
-          new TotalBalanceFactory({}, totalBalance).getObject(),
+        ).toEqual(expectedMonthlyBalance);
+        expect(new TotalBalanceFactory({}, totalBalance).getObject()).toEqual(
+          expectedTotalBalance,
         );
       });
     },
@@ -85,7 +85,7 @@ describe('CreateTransactions', () => {
         institution.id,
       );
 
-      expect(expectedBalanceEarning).toEqual(balance.earning);
+      expect(balance.earning).toEqual(expectedBalanceEarning);
     });
   });
 });

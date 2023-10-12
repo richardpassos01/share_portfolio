@@ -29,7 +29,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 19.28,
+      mediumPrice: 20.19,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 964,
@@ -45,7 +45,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 19.28,
+      mediumPrice: 20.19,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 964,
@@ -61,7 +61,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 19.28,
+      mediumPrice: 20.19,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 964,
@@ -125,7 +125,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 12.51741935483871,
+      mediumPrice: 12.523717948717948,
       ticketSymbol: 'AAPL',
       quantity: 1550,
       totalCost: 19402,
@@ -141,7 +141,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 88.04,
+      mediumPrice: 12.523717948717948,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 4402,
@@ -157,7 +157,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 88.04,
+      mediumPrice: 12.523717948717948,
       ticketSymbol: 'AAPL',
       quantity: 50,
       totalCost: 4402,
@@ -175,9 +175,9 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 27.5125,
+      mediumPrice: 27.5125, // se substitui, o pm é 44.02
       ticketSymbol: 'AAPL',
-      quantity: 160,
+      quantity: 160, // validar se split adiciona ou substitui
       totalCost: 4402,
     },
   ],
@@ -203,7 +203,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 0,
+      mediumPrice: 11.465,
       ticketSymbol: 'TSLA',
       quantity: 199,
       totalCost: 0,

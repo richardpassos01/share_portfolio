@@ -21,9 +21,8 @@ export default class ProcessSpecialEventsOnShare {
       throw new Error();
     }
 
-    const quantity = share.quantity + transaction.quantity;
+    share.updatePosition(transaction);
 
-    share.setQuantity(quantity);
     return this.updateOrLiquidateShare.execute(share);
   }
 }

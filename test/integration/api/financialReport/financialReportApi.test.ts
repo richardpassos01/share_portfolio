@@ -46,7 +46,7 @@ describe('financialReportAPI', () => {
       );
 
       expect(response.status).toBe(StatusCodes.OK);
-      expect(expectedResponse).toEqual(response.body);
+      expect(response.body).toEqual(expectedResponse);
     });
   });
 });

@@ -25,11 +25,7 @@ export default class ProcessBuyTransaction {
       return this.createShare.execute(transaction);
     }
 
-    share.updatePosition(
-      transaction.quantity,
-      transaction.totalCost,
-      transaction.type,
-    );
+    share.updatePosition(transaction);
     return this.updateOrLiquidateShare.execute(share);
   }
 }

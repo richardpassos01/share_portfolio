@@ -36,11 +36,7 @@ export default class ProcessSellTransaction {
 
     const earningOrLoss = share.getEarningOrLoss(transaction);
 
-    share.updatePosition(
-      transaction.quantity,
-      transaction.totalCost,
-      transaction.type,
-    );
+    share.updatePosition(transaction);
 
     const [buyTransactions, sellTransactions] =
       await this.listTradeTransactionsFromMonth.execute(

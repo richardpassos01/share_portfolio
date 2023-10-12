@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { TRANSACTION_TYPE } from '@domain/shared/enums';
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import { TransactionDTO } from '@domain/shared/types';
 
 export default class Share {
@@ -24,21 +24,25 @@ export default class Share {
     this.mediumPrice = this.quantity > 0 ? this.totalCost / this.quantity : 0;
   }
 
-  updatePosition(quantity: number, totalCost: number, type: TRANSACTION_TYPE) {
+  updatePosition({ quantity, totalCost, type, category }: TransactionDTO) {
+    const isTradeOperation = category === TRANSACTION_CATEGORY.TRADE;
     const isBuyOperation = type === TRANSACTION_TYPE.BUY;
     const changeMultiplier = isBuyOperation ? 1 : -1;
 
     this.setQuantity((this.quantity += changeMultiplier * quantity));
-    this.setTotalCost((this.totalCost += changeMultiplier * totalCost));
 
-    if (type === TRANSACTION_TYPE.BUY) {
+    if (isTradeOperation) {
+      this.setTotalCost((this.totalCost += changeMultiplier * totalCost));
+    }
+
+    if (isBuyOperation) {
       this.setMediumPrice();
     }
   }
 
-  getEarningOrLoss(transaction: TransactionDTO): number {
-    const sellCost = transaction.totalCost;
-    const minIdealSellCost = transaction.quantity * this.mediumPrice;
+  getEarningOrLoss({ totalCost, quantity }: TransactionDTO): number {
+    const sellCost = totalCost;
+    const minIdealSellCost = quantity * this.mediumPrice;
     const earning = sellCost - minIdealSellCost;
     return earning;
   }

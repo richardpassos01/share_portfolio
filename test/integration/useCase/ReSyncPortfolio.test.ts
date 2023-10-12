@@ -20,7 +20,6 @@ import { shares } from '@fixtures/shares';
 
 describe('ReSyncPortfolio', () => {
   let database: Database;
-  let createTransactions: CreateTransactions;
   let listShares: ListShares;
   let listMonthlyBalance: ListMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
@@ -29,9 +28,6 @@ describe('ReSyncPortfolio', () => {
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
-    createTransactions = container.get<CreateTransactions>(
-      TYPES.CreateTransactions,
-    );
     listShares = container.get<ListShares>(TYPES.ListShares);
     listMonthlyBalance = container.get<ListMonthlyBalance>(
       TYPES.ListMonthlyBalance,
@@ -83,9 +79,9 @@ describe('ReSyncPortfolio', () => {
         {},
         await getTotalBalance.execute(institution.id),
       ).getObject();
-      expect(expectedMonthlyBalances).toEqual(monthlyBalanceList);
-      expect(expectedTotalBalance).toEqual(totalBalance);
-      expect(expectedShare).toEqual(sharesList);
+      expect(monthlyBalanceList).toEqual(expectedMonthlyBalances);
+      expect(totalBalance).toEqual(expectedTotalBalance);
+      expect(sharesList).toEqual(expectedShare);
     });
   });
 });

@@ -52,9 +52,9 @@ describe('transactionAPI', () => {
 
         expect(response.status).toBe(StatusCodes.CREATED);
         expect(response.text).toBe(ReasonPhrases.CREATED);
-        expect(expectedTransaction).toEqual(
+        expect(
           new TransactionFactory({}, paginatedResponse.results[0]).getObject(),
-        );
+        ).toEqual(expectedTransaction);
       });
     });
 
