@@ -5,6 +5,7 @@ type MapToEntityInput = {
   institution_id: string;
   ticket_symbol: string;
   quantity: number;
+  medium_price: number;
   total_cost: number;
 };
 
@@ -16,6 +17,7 @@ export default class ShareMapper {
       ticket_symbol: entity.ticketSymbol,
       quantity: entity.quantity,
       total_cost: entity.totalCost,
+      medium_price: entity.mediumPrice,
     };
   }
 
@@ -25,6 +27,7 @@ export default class ShareMapper {
       object.ticket_symbol,
       object.quantity,
       object.total_cost,
+      object.medium_price,
       object.id,
     );
   }

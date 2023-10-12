@@ -3,17 +3,14 @@ import { TRANSACTION_TYPE } from '@domain/shared/enums';
 import { TransactionDTO } from '@domain/shared/types';
 
 export default class Share {
-  public mediumPrice = 0;
-
   constructor(
     public readonly institutionId: string,
     public readonly ticketSymbol: string,
     public quantity: number,
     public totalCost: number,
+    public mediumPrice: number,
     public readonly id: string = uuid(),
-  ) {
-    this.setMediumPrice();
-  }
+  ) {}
 
   setQuantity(quantity: number) {
     this.quantity = Math.max(0, quantity);
@@ -33,7 +30,10 @@ export default class Share {
 
     this.setQuantity((this.quantity += changeMultiplier * quantity));
     this.setTotalCost((this.totalCost += changeMultiplier * totalCost));
-    this.setMediumPrice();
+
+    if (type === TRANSACTION_TYPE.BUY) {
+      this.setMediumPrice();
+    }
   }
 
   getEarningOrLoss(transaction: TransactionDTO): number {

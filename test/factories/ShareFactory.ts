@@ -25,8 +25,17 @@ export default class ShareFactory {
     } = {} as Params,
     share?: Share,
   ) {
+    const mediumPrice = totalCost / quantity;
     this.share =
-      share || new Share(institutionId, ticketSymbol, quantity, totalCost, id);
+      share ||
+      new Share(
+        institutionId,
+        ticketSymbol,
+        quantity,
+        totalCost,
+        mediumPrice,
+        id,
+      );
   }
 
   get() {

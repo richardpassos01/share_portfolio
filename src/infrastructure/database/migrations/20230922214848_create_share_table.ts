@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid('institution_id').notNullable();
       table.string('ticket_symbol', 10).notNullable();
       table.integer('quantity').notNullable();
+      table.decimal('medium_price', null).notNullable();
       table.decimal('total_cost', null);
       table.timestamps(true, true);
 
