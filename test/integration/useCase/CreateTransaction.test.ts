@@ -79,7 +79,7 @@ describe('CreateTransactions', () => {
 
   describe('after call use case ', () => {
     it('Should update total balance loss and leave it prepared to return total earning', async () => {
-      const expectedBalanceEarning = 1721806.6940386684;
+      const expectedBalanceEarning = 1721816.1419294872;
 
       const balance = await calculateTotalBalanceEarning.execute(
         institution.id,

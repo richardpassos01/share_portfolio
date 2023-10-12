@@ -1,8 +1,9 @@
 export default class TotalBalance {
+  public earning = 0;
+
   constructor(
     public readonly institutionId: string,
     public loss: number = 0,
-    public earning: number = 0,
   ) {}
 
   setLoss(loss: number) {

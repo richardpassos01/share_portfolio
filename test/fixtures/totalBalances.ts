@@ -39,35 +39,35 @@ export const totalBalances = [
   },
   {
     institutionId: institution.id,
-    loss: 3776.1290322580644,
+    loss: 3785.576923076922,
   },
   {
     institutionId: institution.id,
-    loss: 3760.6847322580643,
+    loss: 3770.132623076922, // it SOULD be deduct from earnings, but INTER does wrong. Result should be
   },
   {
     institutionId: institution.id,
-    loss: 3760.6847322580643,
+    loss: 3770.132623076922,
   },
   {
     institutionId: institution.id,
-    loss: 3760.6847322580643,
+    loss: 3770.132623076922,
   },
   {
     institutionId: institution.id,
-    loss: 4962.684732258064,
+    loss: 4972.132623076922,
   },
   {
     institutionId: institution.id,
-    loss: 4962.684732258064,
+    loss: 4972.132623076922,
   },
   {
     institutionId: institution.id,
-    loss: 4962.684732258064,
+    loss: 4972.132623076922,
   },
   {
     institutionId: institution.id,
-    loss: 4962.684732258064,
+    loss: 4972.132623076922,
   },
   {
     institutionId: institution.id,

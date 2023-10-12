@@ -99,7 +99,7 @@ export const monthlyBalances = [
     dividendEarning: 0.0,
     tax: 0.0,
     taxWithholding: 0,
-    loss: 3776.1290322580644,
+    loss: 3785.576923076922,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
   {
@@ -107,8 +107,8 @@ export const monthlyBalances = [
     yearMonth: '2019-11',
     tradeEarning: 110,
     dividendEarning: 0.0,
-    tax: 0.0,
-    taxWithholding: 1.0557,
+    tax: 0.0, // result should be 16.4945, and deduct it from total balance loss
+    taxWithholding: 1.0557, // it sould be charged from EARNINGS, but INTER does it wrong, result should be 0.0055000000000000005
     loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
@@ -177,7 +177,7 @@ export const monthlyBalances = [
     yearMonth: '2021-02',
     tradeEarning: 2001978.535,
     dividendEarning: 0.0,
-    tax: 295234.49601774185,
+    tax: 295225.04812692304,
     taxWithholding: 99.5995,
     loss: 0,
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,

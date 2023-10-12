@@ -203,7 +203,7 @@ export const shares = [
   [
     {
       institutionId: institution.id,
-      mediumPrice: 11.465,
+      mediumPrice: 0,
       ticketSymbol: 'TSLA',
       quantity: 199,
       totalCost: 0,

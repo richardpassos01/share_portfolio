@@ -20,8 +20,17 @@ export default class Share {
     this.totalCost = Math.max(0, totalCost);
   }
 
-  setMediumPrice() {
-    this.mediumPrice = this.quantity > 0 ? this.totalCost / this.quantity : 0;
+  setMediumPrice(isBuyOperation: boolean) {
+    const shareHasNoCost = this.quantity === 0 || this.totalCost === 0;
+
+    if (shareHasNoCost) {
+      this.mediumPrice = 0;
+      return;
+    }
+
+    if (isBuyOperation) {
+      this.mediumPrice = this.totalCost / this.quantity;
+    }
   }
 
   updatePosition({ quantity, totalCost, type, category }: TransactionDTO) {
@@ -29,21 +38,16 @@ export default class Share {
     const isBuyOperation = type === TRANSACTION_TYPE.BUY;
     const changeMultiplier = isBuyOperation ? 1 : -1;
 
-    this.setQuantity((this.quantity += changeMultiplier * quantity));
-
     if (isTradeOperation) {
       this.setTotalCost((this.totalCost += changeMultiplier * totalCost));
     }
 
-    if (isBuyOperation) {
-      this.setMediumPrice();
-    }
+    this.setQuantity((this.quantity += changeMultiplier * quantity));
+    this.setMediumPrice(isBuyOperation);
   }
 
   getEarningOrLoss({ totalCost, quantity }: TransactionDTO): number {
-    const sellCost = totalCost;
-    const minIdealSellCost = quantity * this.mediumPrice;
-    const earning = sellCost - minIdealSellCost;
-    return earning;
+    const targetSellCost = quantity * this.mediumPrice;
+    return totalCost - targetSellCost;
   }
 }
