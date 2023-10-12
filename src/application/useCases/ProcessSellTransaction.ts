@@ -46,38 +46,12 @@ export default class ProcessSellTransaction {
     );
 
     financialReport.setType(buyTransactions, sellTransactions);
-
-    // WAITING CONFIRMATION FROM BANK ABOUT LOGIC
-    financialReport.setTaxWithholding(monthlySales, transaction.totalCost);
-
-    if (earningOrLoss < 0) {
-      const totalLoss = Math.abs(earningOrLoss);
-      this.handleLoss(financialReport, totalLoss);
-    }
-
-    if (earningOrLoss > 0) {
-      this.handleEarning(monthlySales, earningOrLoss, financialReport);
-    }
+    financialReport.handleSellOperation(
+      monthlySales,
+      transaction.totalCost,
+      earningOrLoss,
+    );
 
     return this.updateOrLiquidateShare.execute(share);
-  }
-
-  handleEarning(
-    monthlySales: number,
-    earning: number,
-    financialReport: FinancialReport,
-  ) {
-    financialReport.setTradeEarning(earning);
-    financialReport.calculateTaxIfNecessary(monthlySales);
-  }
-
-  handleLoss(financialReport: FinancialReport, totalLoss: number) {
-    financialReport.setFinancialLosses(totalLoss);
-
-    if (financialReport.monthlyTax <= 0) {
-      return;
-    }
-
-    financialReport.calculateTax();
   }
 }

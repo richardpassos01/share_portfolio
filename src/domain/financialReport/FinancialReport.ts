@@ -59,27 +59,11 @@ export default class FinancialReport {
     this.monthlyTax = tax;
   }
 
-  setTaxWithholding(monthlySales: number, amount: number) {
-    const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
-
-    if (!shouldChargeTax) {
-      return;
-    }
-
+  setTaxWithholding(amount: number) {
     const taxWithholding =
       amount * TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
 
     this.monthlyTaxWithholding += taxWithholding;
-  }
-
-  checkIfShouldChargeTax(monthlySales: number): boolean {
-    const sellMoreThanLimit =
-      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
-
-    const didDayTrade =
-      this.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
-
-    return sellMoreThanLimit || didDayTrade;
   }
 
   setFinancialLosses(loss: number) {
@@ -105,12 +89,44 @@ export default class FinancialReport {
     );
   }
 
-  calculateTaxIfNecessary(monthlySales: number) {
+  handleSellOperation(
+    monthlySales: number,
+    transactionTotalCost: number,
+    earningOrLoss: number,
+  ) {
+    if (earningOrLoss < 0) {
+      const totalLoss = Math.abs(earningOrLoss);
+      this.handleLoss(totalLoss);
+    }
+
+    if (earningOrLoss > 0) {
+      this.handleEarning(monthlySales, earningOrLoss, transactionTotalCost);
+    }
+  }
+
+  handleEarning(
+    monthlySales: number,
+    earning: number,
+    transactionTotalCost: number,
+  ) {
+    this.setTradeEarning(earning);
+
     const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
 
     if (shouldChargeTax) {
+      this.setTaxWithholding(transactionTotalCost); // SHOULD CHARGE IT FROM EARNING, BUT INTER IS HANDLE IT WRONG
       this.calculateTax();
     }
+  }
+
+  handleLoss(totalLoss: number) {
+    this.setFinancialLosses(totalLoss);
+
+    if (this.monthlyTax <= 0) {
+      return;
+    }
+
+    this.calculateTax();
   }
 
   calculateTax() {
@@ -135,5 +151,15 @@ export default class FinancialReport {
     }
 
     this.setTax(tax);
+  }
+
+  checkIfShouldChargeTax(monthlySales: number): boolean {
+    const sellMoreThanLimit =
+      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
+
+    const didDayTrade =
+      this.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
+
+    return sellMoreThanLimit || didDayTrade;
   }
 }
