@@ -59,16 +59,27 @@ export default class FinancialReport {
     this.monthlyTax = tax;
   }
 
-  setTaxWithholding(monthlySales: number, transactionTotalCost: number) {
-    if (monthlySales < MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX) {
+  setTaxWithholding(monthlySales: number, amount: number) {
+    const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
+
+    if (!shouldChargeTax) {
       return;
     }
 
     const taxWithholding =
-      transactionTotalCost *
-      TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
+      amount * TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
 
     this.monthlyTaxWithholding += taxWithholding;
+  }
+
+  checkIfShouldChargeTax(monthlySales: number): boolean {
+    const sellMoreThanLimit =
+      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
+
+    const didDayTrade =
+      this.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
+
+    return sellMoreThanLimit || didDayTrade;
   }
 
   setFinancialLosses(loss: number) {
@@ -92,6 +103,14 @@ export default class FinancialReport {
         return sameShare && tradeInSameDay;
       }),
     );
+  }
+
+  calculateTaxIfNecessary(monthlySales: number) {
+    const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
+
+    if (shouldChargeTax) {
+      this.calculateTax();
+    }
   }
 
   calculateTax() {

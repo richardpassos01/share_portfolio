@@ -87,8 +87,8 @@ export const monthlyBalances = [
     yearMonth: '2019-09', // There were Earning in the month and sales with a total value lower than 20k, but need to pay taxes because did day trade.
     tradeEarning: 9.762820512820525,
     dividendEarning: 15000.0,
-    tax: 1.9525641025641052,
-    taxWithholding: 0, // should charge 1%, it'swrong
+    tax: 0.6025641025641051,
+    taxWithholding: 1.35,
     loss: 0,
     type: MONTHLY_BALANCE_TYPE.DAY_TRADE,
   },

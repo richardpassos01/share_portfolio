@@ -4,10 +4,6 @@ import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
-import {
-  MONTHLY_BALANCE_SALES_LIMIT,
-  MONTHLY_BALANCE_TYPE,
-} from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
 import FinancialReport from '@domain/financialReport/FinancialReport';
 
 @injectable()
@@ -72,16 +68,7 @@ export default class ProcessSellTransaction {
     financialReport: FinancialReport,
   ) {
     financialReport.setTradeEarning(earning);
-
-    const sellMoreThanLimit =
-      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
-
-    const didDayTrade =
-      financialReport.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
-
-    if (sellMoreThanLimit || didDayTrade) {
-      financialReport.calculateTax();
-    }
+    financialReport.calculateTaxIfNecessary(monthlySales);
   }
 
   handleLoss(financialReport: FinancialReport, totalLoss: number) {
