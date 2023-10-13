@@ -41,6 +41,7 @@ export default class TransactionRepository
       )
       .where('institution_id', institutionId)
       .into(TABLES.TRANSACTION)
+      .distinct()
       .orderBy('date', 'asc')
       .orderBy('type', 'asc')
       .limit(limit)
