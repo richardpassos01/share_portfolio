@@ -1,4 +1,4 @@
-import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from '@domain/shared/enums';
+import { TRANSACTION_TYPE } from '@domain/shared/enums';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import ProcessBuyTransaction from './ProcessBuyTransaction';

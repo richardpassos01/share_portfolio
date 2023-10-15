@@ -2,14 +2,12 @@ import 'reflect-metadata';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import CreateTransactions from '@application/useCases/CreateTransactions';
 import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
 import ListShares from '@application/queries/ListShares';
 import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
-import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
 import institution from '@fixtures/institution';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 import { transactions } from '@fixtures/transactions';
@@ -23,7 +21,6 @@ describe('ReSyncPortfolio', () => {
   let listShares: ListShares;
   let listMonthlyBalance: ListMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
-  let calculateTotalBalanceEarning: CalculateTotalBalanceEarning;
   let reSyncPortfolio: ReSyncPortfolio;
 
   beforeAll(async () => {
@@ -33,9 +30,6 @@ describe('ReSyncPortfolio', () => {
       TYPES.ListMonthlyBalance,
     );
     getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
-    calculateTotalBalanceEarning = container.get<CalculateTotalBalanceEarning>(
-      TYPES.CalculateTotalBalanceEarning,
-    );
     reSyncPortfolio = container.get<ReSyncPortfolio>(TYPES.ReSyncPortfolio);
     await database.connection().migrate.latest();
     await database.connection().seed.run();

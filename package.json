@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",

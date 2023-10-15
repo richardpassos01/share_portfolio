@@ -6,7 +6,6 @@ import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalanc
 import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import { TransactionDTO } from '@domain/shared/types';
-import { isSameMonthYear } from '@helpers';
 
 @injectable()
 export default class ReSyncPortfolio {
@@ -30,7 +29,7 @@ export default class ReSyncPortfolio {
   async execute(institutionId: string): Promise<void> {
     await this.resetPortfolio(institutionId);
     const inititalPageSize = 1;
-    const pageSize = 1;
+    const pageSize = 100;
     let page = 1;
 
     const initialResponse = await this.transactionRepository.list(

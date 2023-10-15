@@ -29,12 +29,8 @@ OFFSET 0;
 
 --QUERY USED TO "RESET" DATABASE
 BEGIN;
-
-UPDATE total_balance SET 
-loss = 0;
 DELETE FROM transaction;
+DELETE FROM total_balance;
 DELETE FROM monthly_balance;
 DELETE FROM share;
-
 COMMIT;
-
