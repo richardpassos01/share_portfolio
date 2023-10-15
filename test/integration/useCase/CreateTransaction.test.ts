@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
@@ -78,7 +77,7 @@ describe('CreateTransactions', () => {
   );
 
   describe('after call use case ', () => {
-    it('Should update total balance loss and leave it prepared to return total earning', async () => {
+    it('should update total balance loss and leave it prepared to return total earning', async () => {
       const expectedBalanceEarning = 1721816.1419294872;
 
       const balance = await calculateTotalBalanceEarning.execute(

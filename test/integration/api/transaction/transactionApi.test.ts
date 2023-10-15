@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import supertest from 'supertest';
 import app from '@api/app';
 import { TYPES } from '@constants/types';

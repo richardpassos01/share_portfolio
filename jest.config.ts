@@ -2,11 +2,6 @@ import { pathsToModuleNameMapper } from 'ts-jest';
 import type { JestConfigWithTsJest } from 'ts-jest';
 import { compilerOptions } from './tsconfig.json';
 
-import dotenv from 'dotenv';
-
-const dotenvConfigPath = '.env.test';
-dotenv.config({ path: dotenvConfigPath });
-
 const jestConfig: JestConfigWithTsJest = {
   preset: 'ts-jest',
   transform: {
@@ -21,6 +16,7 @@ const jestConfig: JestConfigWithTsJest = {
   testTimeout: 1500,
   rootDir: '.',
   verbose: true,
+  setupFiles: ['<rootDir>/jest.setup.ts'],
 };
 
 export default jestConfig;

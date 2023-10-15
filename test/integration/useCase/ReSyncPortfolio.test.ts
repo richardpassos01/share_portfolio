@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
@@ -41,7 +40,7 @@ describe('ReSyncPortfolio', () => {
   });
 
   describe('when call use case', () => {
-    it('Should reset the portfolio and recreate information based on transactions, no matter the order in which the transactions were created.', async () => {
+    it('should reset the portfolio and recreate information based on transactions, no matter the order in which the transactions were created.', async () => {
       const expectedShare = shares[shares.length - 1];
       const expectedTotalBalance = totalBalances[totalBalances.length - 1];
       const expectedMonthlyBalances = monthlyBalances.filter(
