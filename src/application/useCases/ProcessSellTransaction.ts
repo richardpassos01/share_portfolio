@@ -22,7 +22,6 @@ export default class ProcessSellTransaction {
   async execute(
     transaction: TransactionDTO,
     financialReport: FinancialReport,
-    monthlyTransactions?: TransactionDTO[],
   ): Promise<void> {
     const share = await this.getShare.execute(transaction);
 
@@ -35,10 +34,7 @@ export default class ProcessSellTransaction {
     share.updatePosition(transaction);
 
     const [buyTransactions, sellTransactions] =
-      await this.listTradeTransactionsFromMonth.execute(
-        transaction,
-        monthlyTransactions,
-      );
+      await this.listTradeTransactionsFromMonth.execute(transaction);
 
     const monthlySales = sellTransactions.reduce(
       (acc, sellTransaction) => acc + sellTransaction.totalCost,
@@ -46,11 +42,7 @@ export default class ProcessSellTransaction {
     );
 
     financialReport.setType(buyTransactions, sellTransactions);
-    financialReport.handleSellOperation(
-      monthlySales,
-      transaction.totalCost,
-      earningOrLoss,
-    );
+    financialReport.handleSellOperation(monthlySales, earningOrLoss);
 
     return this.updateOrLiquidateShare.execute(share);
   }

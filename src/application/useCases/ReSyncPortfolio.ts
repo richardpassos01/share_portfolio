@@ -30,7 +30,7 @@ export default class ReSyncPortfolio {
   async execute(institutionId: string): Promise<void> {
     await this.resetPortfolio(institutionId);
     const inititalPageSize = 1;
-    const pageSize = 100;
+    const pageSize = 1;
     let page = 1;
 
     const initialResponse = await this.transactionRepository.list(
@@ -59,27 +59,7 @@ export default class ReSyncPortfolio {
 
   async handleUpdatePortfolio(transactions: TransactionDTO[]) {
     for (const transaction of transactions) {
-      const monthlyTransactions = this.filterMonthlyTransactionsBeforeTarget(
-        transaction,
-        transactions,
-      );
-      // set on REDIS
-      await this.updatePortfolio.execute(transaction, monthlyTransactions);
+      await this.updatePortfolio.execute(transaction);
     }
-  }
-
-  filterMonthlyTransactionsBeforeTarget(
-    targetTransaction: TransactionDTO,
-    transactions: TransactionDTO[],
-  ) {
-    const transactionIndex = transactions.findIndex(
-      (t) => t.id === targetTransaction.id,
-    );
-
-    return transactions.filter(
-      (t, i) =>
-        isSameMonthYear(t.date, targetTransaction.date) &&
-        i <= transactionIndex,
-    );
   }
 }

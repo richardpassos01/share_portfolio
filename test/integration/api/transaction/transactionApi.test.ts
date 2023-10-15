@@ -59,11 +59,11 @@ describe('transactionAPI', () => {
     });
 
     describe('When called the endpoint with invalid schema', () => {
-      it('should throw bad request error when the query is empty', async () => {
+      it('should throw bad request error when dont send item', async () => {
         const expectedError = {
-          message: 'The query is empty',
-          customCode: ErrorCode.BAD_REQUEST,
-          status: StatusCodes.BAD_REQUEST,
+          message: 'value must contain at least 1 items',
+          customCode: ErrorCode.SCHEMA_VALIDATOR,
+          status: StatusCodes.UNPROCESSABLE_ENTITY,
         };
 
         const response = await request.post('/transaction').send([]);
@@ -101,7 +101,7 @@ describe('transactionAPI', () => {
           TRANSACTION_TYPE,
         ).join(
           ', ',
-        )}], [0].date must be in iso format, [0].category must be one of [${Object.values(
+        )}], [0].date must be in ISO 8601 date format, [0].category must be one of [${Object.values(
           TRANSACTION_CATEGORY,
         ).join(', ')}], [0].quantity must be a number`;
 

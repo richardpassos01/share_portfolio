@@ -63,7 +63,7 @@ export default class FinancialReport {
     const taxWithholding =
       amount * TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
 
-    this.monthlyTaxWithholding += taxWithholding;
+    this.monthlyTaxWithholding = taxWithholding; // IF IT CHARGE FROM EARNINGS, IT SHOULD BE UPDATED TO += tax...
   }
 
   setFinancialLosses(loss: number) {
@@ -89,32 +89,24 @@ export default class FinancialReport {
     );
   }
 
-  handleSellOperation(
-    monthlySales: number,
-    transactionTotalCost: number,
-    earningOrLoss: number,
-  ) {
+  handleSellOperation(monthlySales: number, earningOrLoss: number) {
     if (earningOrLoss < 0) {
       const totalLoss = Math.abs(earningOrLoss);
       this.handleLoss(totalLoss);
     }
 
     if (earningOrLoss > 0) {
-      this.handleEarning(monthlySales, earningOrLoss, transactionTotalCost);
+      this.handleEarning(monthlySales, earningOrLoss);
     }
   }
 
-  handleEarning(
-    monthlySales: number,
-    earning: number,
-    transactionTotalCost: number,
-  ) {
+  handleEarning(monthlySales: number, earning: number) {
     this.setTradeEarning(earning);
 
     const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
 
     if (shouldChargeTax) {
-      this.setTaxWithholding(transactionTotalCost); // SHOULD CHARGE IT FROM EARNING, BUT INTER IS HANDLE IT WRONG
+      this.setTaxWithholding(monthlySales); // SHOULD CHARGE IT FROM EARNING, BUT INTER IS HANDLE IT WRONG
       this.calculateTax();
     }
   }

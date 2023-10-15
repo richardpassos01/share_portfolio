@@ -6,6 +6,7 @@ import { inject, injectable } from 'inversify';
 import Transaction from '@domain/transaction/Transaction';
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import Pagination, { MapperFunction } from '@domain/shared/Pagination';
+import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class TransactionRepository
@@ -42,8 +43,7 @@ export default class TransactionRepository
       .where('institution_id', institutionId)
       .into(TABLES.TRANSACTION)
       .distinct()
-      .orderBy('date', 'asc')
-      .orderBy('type', 'asc')
+      .orderBy(['date', 'type'])
       .limit(limit)
       .offset((page - 1) * limit)
       .then(
@@ -57,10 +57,11 @@ export default class TransactionRepository
       );
   }
 
-  async listFromMonth(institutionId: string, date: Date) {
-    return this.database
+  async listFromMonth({ institutionId, date, id }: TransactionDTO) {
+    const filteredDataQuery = this.database
       .connection()
-      .select()
+      .select('*')
+      .distinct()
       .where({
         category: TRANSACTION_CATEGORY.TRADE,
         institution_id: institutionId,
@@ -69,8 +70,28 @@ export default class TransactionRepository
         'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
         [date.getFullYear(), date.getMonth() + 1],
       )
-      .into(TABLES.TRANSACTION)
-      .orderBy('date', 'asc')
+      .orderBy(['date', 'type'])
+      .from(TABLES.TRANSACTION);
+
+    const rowNumberQuery = this.database
+      .connection()
+      .select('*')
+      .rowNumber('row_number_alias', ['date', 'type'])
+      .from('filtered_data_query');
+
+    const selectRowNumberQuery = this.database
+      .connection()
+      .select('row_number_alias')
+      .from('row_number_query')
+      .where('id', id);
+
+    return await this.database
+      .connection()
+      .with('filtered_data_query', filteredDataQuery)
+      .with('row_number_query', rowNumberQuery)
+      .select('*')
+      .from('row_number_query')
+      .where('row_number_alias', '<=', selectRowNumberQuery)
       .then((data) =>
         data
           ? data.map((transaction) =>

@@ -27,10 +27,7 @@ export default class UpdatePortfolio {
     private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
   ) {}
 
-  async execute(
-    transaction: TransactionDTO,
-    monthlyTransactions?: TransactionDTO[],
-  ): Promise<any> {
+  async execute(transaction: TransactionDTO): Promise<any> {
     const financialReport =
       await this.createFinancialReportFromBalances.execute(transaction);
 
@@ -54,11 +51,7 @@ export default class UpdatePortfolio {
     }
 
     if (isTrade) {
-      await this.processTradeTransaction.execute(
-        transaction,
-        financialReport,
-        monthlyTransactions,
-      );
+      await this.processTradeTransaction.execute(transaction, financialReport);
     }
 
     await this.updateBalancesFromFinancialReport.execute(

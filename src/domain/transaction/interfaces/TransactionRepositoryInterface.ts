@@ -1,5 +1,6 @@
 import Pagination from '@domain/shared/Pagination';
 import Transaction from '../Transaction';
+import { TransactionDTO } from '@domain/shared/types';
 
 export default interface TransactionRepositoryInterface {
   createMany(transaction: Transaction[]): Promise<void>;
@@ -9,5 +10,5 @@ export default interface TransactionRepositoryInterface {
     page?: number,
     limit?: number,
   ): Promise<Pagination>;
-  listFromMonth(institutionId: string, date: Date): Promise<Transaction[]>;
+  listFromMonth(transaction: TransactionDTO): Promise<Transaction[]>;
 }
