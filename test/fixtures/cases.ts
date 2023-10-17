@@ -1,4 +1,4 @@
-import { transactions } from './transactions';
+import { transactionsParams } from './transactions';
 import { shares } from './shares';
 import { monthlyBalances } from './monthlyBalances';
 import { totalBalances } from './totalBalances';
@@ -33,7 +33,7 @@ const casesDescription = [
   'should not change total balance when buy new shares',
 ];
 
-export const createTransactionCases: Case[] = transactions.map(
+export const createTransactionCases: Case[] = transactionsParams.map(
   (transaction, i) => [
     transaction,
     shares[i],

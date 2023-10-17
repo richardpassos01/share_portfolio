@@ -9,7 +9,7 @@ import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import institution from '@fixtures/institution';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
-import { transactions } from '@fixtures/transactions';
+import { transactionsParams } from '@fixtures/transactions';
 import { monthlyBalances } from '@fixtures/monthlyBalances';
 import { totalBalances } from '@fixtures/totalBalances';
 import TransactionFactory from '@factories/TransactionFactory';
@@ -51,7 +51,7 @@ describe('ReSyncPortfolio', () => {
           return current.yearMonth !== array[index + 1].yearMonth;
         },
       );
-      const randomSortedTransactions = transactions.sort(
+      const randomSortedTransactions = transactionsParams.sort(
         () => Math.random() - 0.5,
       );
       for (const transaction of randomSortedTransactions) {

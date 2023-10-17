@@ -42,15 +42,12 @@ export default class CreateTransactions {
   }
 
   sortTransactions(a: TransactionDTO, b: TransactionDTO): number {
-    const dataA = a.date.getTime();
-    const dataB = b.date.getTime();
+    const dataComparison = a.date.getTime() - b.date.getTime();
+    if (dataComparison !== 0) return dataComparison;
 
-    if (dataA < dataB) return -1;
-    if (dataA > dataB) return 1;
+    const typeComparison = a.type.localeCompare(b.type);
+    if (typeComparison !== 0) return typeComparison;
 
-    if (a.type < b.type) return -1;
-    if (a.type > b.type) return 1;
-
-    return 0;
+    return a.ticketSymbol.localeCompare(b.ticketSymbol);
   }
 }

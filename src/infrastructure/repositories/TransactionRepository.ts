@@ -43,7 +43,7 @@ export default class TransactionRepository
       .where('institution_id', institutionId)
       .into(TABLES.TRANSACTION)
       .distinct()
-      .orderBy(['date', 'type'])
+      .orderBy(['date', 'type', 'ticket_symbol'])
       .limit(limit)
       .offset((page - 1) * limit)
       .then(
@@ -70,13 +70,13 @@ export default class TransactionRepository
         'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
         [date.getFullYear(), date.getMonth() + 1],
       )
-      .orderBy(['date', 'type'])
+      .orderBy(['date', 'type', 'ticket_symbol'])
       .from(TABLES.TRANSACTION);
 
     const rowNumberQuery = this.database
       .connection()
       .select('*')
-      .rowNumber('row_number_alias', ['date', 'type'])
+      .rowNumber('row_number_alias', ['date', 'type', 'ticket_symbol'])
       .from('filtered_data_query');
 
     const selectRowNumberQuery = this.database

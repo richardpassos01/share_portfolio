@@ -35,8 +35,9 @@ const createTransactions = container.get<CreateTransactions>(
 );
 
 const command = async () => {
-  for (const fileName of fileList.filter((f) => f.includes('xlsx'))) {
-    try {
+  try {
+    const formattedTransactions = [];
+    for (const fileName of fileList.filter((f) => f.includes('xlsx'))) {
       const filePath = resolve(filesPath, fileName);
       const [{ data }] = parse(filePath);
 
@@ -53,11 +54,14 @@ const command = async () => {
           totalCost: transaction[7] !== '-' ? transaction[7] : 0,
         }));
 
-      await createTransactions.execute(transactions);
-      console.log(`File ${fileName} inserted`);
-    } catch (error) {
-      console.error(`Error creating transaction: ${error}`);
+      formattedTransactions.push(...transactions);
+      console.log(`File ${fileName} processed`);
     }
+
+    await createTransactions.execute(formattedTransactions);
+    console.log('transactions created');
+  } catch (error) {
+    console.error('Error to create transactions', error);
   }
 };
 

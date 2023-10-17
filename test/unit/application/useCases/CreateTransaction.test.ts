@@ -3,8 +3,15 @@ import CreateTransactions from '@application/useCases/CreateTransactions';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import container from '@dependencyInjectionContainer';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
-import { transactions } from '@fixtures/transactions';
+import { transactionsParams, listTransactions } from '@fixtures/transactions';
 import TransactionFactory from '@factories/TransactionFactory';
+import { CreateTransactionParams } from '@domain/shared/types';
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
+import institution from '@fixtures/institution';
+
+jest.mock('uuid', () => ({
+  v4: () => '123456',
+}));
 
 describe('CreateTransactions', () => {
   let createTransactions: CreateTransactions;
@@ -23,24 +30,21 @@ describe('CreateTransactions', () => {
     jest.spyOn(transactionRepository, 'createMany').mockImplementation();
   });
 
+  afterAll(async () => {
+    jest.clearAllMocks();
+  });
+
   it('should call the transaction repository with transactions in the correct order', async () => {
     jest.spyOn(updatePortfolio, 'execute').mockImplementation();
-    const expectedTransactions = transactions.map((transaction) =>
-      new TransactionFactory(transaction).get(),
-    );
 
-    const copyTransactions = [...transactions];
-    copyTransactions.sort(() => Math.random() - 0.5);
+    const expectedTransactions = listTransactions();
 
-    await createTransactions.execute(copyTransactions);
+    transactionsParams.sort(() => Math.random() - 0.5);
+
+    await createTransactions.execute(transactionsParams);
 
     expect(transactionRepository.createMany).toHaveBeenCalledWith(
-      expect.arrayContaining(
-        expectedTransactions.map((transaction) => {
-          const { id: _, ...rest } = transaction;
-          return expect.objectContaining(rest);
-        }),
-      ),
+      expectedTransactions,
     );
   });
 });
