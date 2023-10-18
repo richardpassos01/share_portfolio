@@ -29,13 +29,19 @@ export default class MonthlyBalanceRepository
       );
   }
 
-  async list(institutionId: string) {
-    return this.database
+  async list(institutionId: string, limit: number) {
+    const query = this.database
       .connection()
       .select()
       .where('institution_id', institutionId)
-      .into(TABLES.MONTHLY_BALANCE)
-      .then((data) => data.map(MonthlyBalanceMapper.mapToEntity));
+      .orderBy('year_month', 'desc')
+      .into(TABLES.MONTHLY_BALANCE);
+
+    if (limit) {
+      void query.limit(limit);
+    }
+
+    return query.then((data) => data.map(MonthlyBalanceMapper.mapToEntity));
   }
 
   async createOrUpdate(balance: MonthlyBalance) {

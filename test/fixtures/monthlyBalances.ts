@@ -193,3 +193,18 @@ export const monthlyBalances = [
     type: MONTHLY_BALANCE_TYPE.SWING_TRADE,
   },
 ];
+
+export const listMonthlyBalances = () => {
+  const lastRecordOfEachMonth = monthlyBalances.filter(
+    (current, index, array) => {
+      if (index === array.length - 1) {
+        return true;
+      }
+      return current.yearMonth !== array[index + 1].yearMonth;
+    },
+  );
+
+  return lastRecordOfEachMonth.sort((a, b) =>
+    b.yearMonth.localeCompare(a.yearMonth),
+  );
+};
