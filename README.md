@@ -56,7 +56,7 @@ The application's main objective is to calculate a user's financial summary, inc
 2. Both the endpoint and the command call the `createTransaction` use case. It inserts transactions into the database in the correct order and then calls the `updatePortfolio` use case for each inserted transaction. It is invoked individually using a loop to ensure accurate tax calculations for previous months.
 3. If a user initially inserts transactions for one month and later for a previous month, any errors or discrepancies can be resolved by resynchronizing using the `POST /institution/:institutionId/re-sync` endpoint.
 4. If one or more transactions are deleted, the use case to resynchronize everything will also be invoked.
-5. The user can view gains and losses through the `GET /financial_report/:institutionId/total-balance` endpoint.
+5. The user can view gains and losses through the `GET /portfolio/:institutionId` endpoint.
 
 ### Trade-offs
 - Transactions must be inserted manually, which can lead to errors. To mitigate this, the resync endpoint was created. Ideally, transactions should come directly from B3 (Brazilian Stock Exchange) via webhooks or other available methods, but this API does not implement that functionality due to restrictions for non-corporate users.

@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(TABLES.TOTAL_BALANCE, (table) => {
       table.uuid('institution_id').notNullable().unique();
       table.decimal('loss', null);
+      table.decimal('net_earning', null);
       table.timestamps(true, true);
 
       table

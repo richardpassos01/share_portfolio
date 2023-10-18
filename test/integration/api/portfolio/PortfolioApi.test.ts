@@ -4,25 +4,27 @@ import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import institution from '@fixtures/institution';
-import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import { StatusCodes } from '@domain/shared/enums';
+import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 
 describe('portfolioAPI', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
-  let createOrUpdateTotalBalance: CreateOrUpdateTotalBalance;
+  let totalBalanceRepository: TotalBalanceRepositoryInterface;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
-    createOrUpdateTotalBalance = container.get<CreateOrUpdateTotalBalance>(
-      TYPES.CreateOrUpdateTotalBalance,
+    totalBalanceRepository = container.get<TotalBalanceRepositoryInterface>(
+      TYPES.TotalBalanceRepository,
     );
 
     await database.connection().migrate.latest();
     await database.connection().seed.run();
-    await createOrUpdateTotalBalance.execute(new TotalBalanceFactory().get());
+    await totalBalanceRepository.createOrUpdate(
+      new TotalBalanceFactory().get(),
+    );
   });
 
   afterAll(async () => {

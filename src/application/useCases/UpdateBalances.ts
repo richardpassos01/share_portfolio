@@ -1,31 +1,27 @@
 import { TYPES } from '@constants/types';
 import { injectable, inject } from 'inversify';
-import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
-import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import BalanceManagement from '@domain/portfolio/BalanceManagement';
 import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
 import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
 import { dateToMonthYear } from '@helpers';
 import { TransactionDTO } from '@domain/shared/types';
+import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
 @injectable()
 export default class UpdateBalances {
   constructor(
-    @inject(TYPES.CreateOrUpdateTotalBalance)
-    private readonly createOrUpdateTotalBalance: CreateOrUpdateTotalBalance,
+    @inject(TYPES.MonthlyBalanceRepository)
+    private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
 
-    @inject(TYPES.CreateOrUpdateMonthlyBalance)
-    private readonly createOrUpdateMonthlyBalance: CreateOrUpdateMonthlyBalance,
+    @inject(TYPES.TotalBalanceRepository)
+    private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,
   ) {}
 
   async execute(
     balanceManagement: BalanceManagement,
     transaction: TransactionDTO,
-  ): Promise<[void, void]> {
-    const totalBalance = new TotalBalance(
-      transaction.institutionId,
-      balanceManagement.totalLoss,
-    );
+  ): Promise<void> {
     const monthlyBalance = new MonthlyBalance(
       transaction.institutionId,
       dateToMonthYear(transaction.date),
@@ -36,10 +32,20 @@ export default class UpdateBalances {
       balanceManagement.monthlyLoss,
       balanceManagement.monthlyOperationType,
     );
+    await this.monthlyBalanceRepository.createOrUpdate(monthlyBalance);
 
-    return Promise.all([
-      this.createOrUpdateTotalBalance.execute(totalBalance),
-      this.createOrUpdateMonthlyBalance.execute(monthlyBalance),
-    ]);
+    const { sum: monthlyEarnings } =
+      await this.monthlyBalanceRepository.sumEarnings(
+        transaction.institutionId,
+      );
+
+    const totalBalance = new TotalBalance(
+      transaction.institutionId,
+      balanceManagement.totalLoss,
+    );
+
+    totalBalance.setNetEarning(monthlyEarnings);
+
+    await this.totalBalanceRepository.createOrUpdate(totalBalance);
   }
 }

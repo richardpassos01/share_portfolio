@@ -20,8 +20,6 @@ import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
-import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
-import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
 import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
@@ -115,14 +113,6 @@ container
 container
   .bind<DeleteTransactions>(TYPES.DeleteTransactions)
   .to(DeleteTransactions)
-  .inSingletonScope();
-container
-  .bind<CreateOrUpdateMonthlyBalance>(TYPES.CreateOrUpdateMonthlyBalance)
-  .to(CreateOrUpdateMonthlyBalance)
-  .inSingletonScope();
-container
-  .bind<CreateOrUpdateTotalBalance>(TYPES.CreateOrUpdateTotalBalance)
-  .to(CreateOrUpdateTotalBalance)
   .inSingletonScope();
 container
   .bind<ProcessDividendTransaction>(TYPES.ProcessDividendTransaction)
