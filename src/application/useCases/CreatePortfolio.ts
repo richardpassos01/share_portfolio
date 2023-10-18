@@ -18,14 +18,14 @@ export default class CreatePortfolio {
     const { sum: monthlyEarnings } =
       await this.monthlyBalanceRepository.sumEarnings(institutionId);
 
-    const balance = await this.getTotalBalance.execute(institutionId);
+    const totalBalance = await this.getTotalBalance.execute(institutionId);
 
-    if (!balance) {
+    if (!totalBalance) {
       throw Error();
     }
 
-    const netEarning = Math.max(0, monthlyEarnings - balance.loss);
+    const netEarning = Math.max(0, monthlyEarnings - totalBalance.loss);
 
-    return new Portfolio(netEarning, balance.loss);
+    return new Portfolio(netEarning, totalBalance.loss);
   }
 }

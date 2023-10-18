@@ -5,22 +5,34 @@ import Database from '@infrastructure/database/Database';
 
 import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
+import PortfolioController from '@api/portfolio/PortfolioController';
 
 import GetInstitution from '@application/queries/GetInstitution';
 import ListShares from '@application/queries/ListShares';
 import GetShare from '@application/queries/GetShare';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import ListTransactions from '@application/queries/ListTransactions';
+import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
+import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransactions from '@application/useCases/CreateTransactions';
+import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
 import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
+import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
+import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
+import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
+import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
+import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
 import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
 import UpdateBalances from '@application/useCases/UpdateBalances';
+import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import CreatePortfolio from '@application/useCases/CreatePortfolio';
+import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
@@ -28,24 +40,11 @@ import TransactionRepository from '@infrastructure/repositories/TransactionRepos
 import MonthlyBalanceRepository from '@infrastructure/repositories/MonthlyBalanceRepository';
 import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRepository';
 
-import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
-import DeleteTransactions from '@application/useCases/DeleteTransactions';
-import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
-import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
-import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
-import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
-import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
-
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
-import PortfolioController from '@api/portfolio/PortfolioController';
-import CreatePortfolio from '@application/useCases/CreatePortfolio';
-import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
-import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -70,12 +69,29 @@ container
   .bind<GetInstitution>(TYPES.GetInstitution)
   .to(GetInstitution)
   .inSingletonScope();
+container.bind<GetShare>(TYPES.GetShare).to(GetShare).inSingletonScope();
+container.bind<ListShares>(TYPES.ListShares).to(ListShares).inSingletonScope();
+container
+  .bind<GetTotalBalance>(TYPES.GetTotalBalance)
+  .to(GetTotalBalance)
+  .inSingletonScope();
+container
+  .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)
+  .to(GetMonthlyBalance)
+  .inSingletonScope();
+container
+  .bind<ListMonthlyBalance>(TYPES.ListMonthlyBalance)
+  .to(ListMonthlyBalance)
+  .inSingletonScope();
+container
+  .bind<ListTransactions>(TYPES.ListTransactions)
+  .to(ListTransactions)
+  .inSingletonScope();
+
 container
   .bind<CreateInstitution>(TYPES.CreateInstitution)
   .to(CreateInstitution)
   .inSingletonScope();
-container.bind<GetShare>(TYPES.GetShare).to(GetShare).inSingletonScope();
-container.bind<ListShares>(TYPES.ListShares).to(ListShares).inSingletonScope();
 container
   .bind<CreateShare>(TYPES.CreateShare)
   .to(CreateShare)
@@ -101,24 +117,8 @@ container
   .to(DeleteTransactions)
   .inSingletonScope();
 container
-  .bind<ListTransactions>(TYPES.ListTransactions)
-  .to(ListTransactions)
-  .inSingletonScope();
-container
   .bind<CreateOrUpdateMonthlyBalance>(TYPES.CreateOrUpdateMonthlyBalance)
   .to(CreateOrUpdateMonthlyBalance)
-  .inSingletonScope();
-container
-  .bind<GetTotalBalance>(TYPES.GetTotalBalance)
-  .to(GetTotalBalance)
-  .inSingletonScope();
-container
-  .bind<GetMonthlyBalance>(TYPES.GetMonthlyBalance)
-  .to(GetMonthlyBalance)
-  .inSingletonScope();
-container
-  .bind<ListMonthlyBalance>(TYPES.ListMonthlyBalance)
-  .to(ListMonthlyBalance)
   .inSingletonScope();
 container
   .bind<CreateOrUpdateTotalBalance>(TYPES.CreateOrUpdateTotalBalance)
