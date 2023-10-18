@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import ProcessBuyTransaction from './ProcessBuyTransaction';
 import ProcessSellTransaction from './ProcessSellTransaction';
-import FinancialReport from '@domain/financialReport/FinancialReport';
+import BalanceManagement from '@domain/portfolio/BalanceManagement';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
@@ -18,7 +18,7 @@ export default class ProcessTradeTransaction {
 
   async execute(
     transaction: TransactionDTO,
-    financialReport: FinancialReport,
+    balanceManagement: BalanceManagement,
   ): Promise<void> {
     const isBuyTransaction = transaction.type === TRANSACTION_TYPE.BUY;
 
@@ -26,6 +26,6 @@ export default class ProcessTradeTransaction {
       return this.processBuyTransaction.execute(transaction);
     }
 
-    return this.processSellTransaction.execute(transaction, financialReport);
+    return this.processSellTransaction.execute(transaction, balanceManagement);
   }
 }

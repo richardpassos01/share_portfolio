@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
-import FinancialReport from '@domain/financialReport/FinancialReport';
+import BalanceManagement from '@domain/portfolio/BalanceManagement';
 
 @injectable()
 export default class ProcessSellTransaction {
@@ -21,7 +21,7 @@ export default class ProcessSellTransaction {
 
   async execute(
     transaction: TransactionDTO,
-    financialReport: FinancialReport,
+    balanceManagement: BalanceManagement,
   ): Promise<void> {
     const share = await this.getShare.execute(transaction);
 
@@ -41,8 +41,8 @@ export default class ProcessSellTransaction {
       0,
     );
 
-    financialReport.setType(buyTransactions, sellTransactions);
-    financialReport.handleSellOperation(monthlySales, earningOrLoss);
+    balanceManagement.setType(buyTransactions, sellTransactions);
+    balanceManagement.handleSellOperation(monthlySales, earningOrLoss);
 
     return this.updateOrLiquidateShare.execute(share);
   }

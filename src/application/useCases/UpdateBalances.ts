@@ -2,14 +2,14 @@ import { TYPES } from '@constants/types';
 import { injectable, inject } from 'inversify';
 import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
 import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
-import FinancialReport from '@domain/financialReport/FinancialReport';
-import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
-import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
+import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
+import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
 import { dateToMonthYear } from '@helpers';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
-export default class UpdateBalancesFromFinancialReport {
+export default class UpdateBalances {
   constructor(
     @inject(TYPES.CreateOrUpdateTotalBalance)
     private readonly createOrUpdateTotalBalance: CreateOrUpdateTotalBalance,
@@ -19,22 +19,22 @@ export default class UpdateBalancesFromFinancialReport {
   ) {}
 
   async execute(
-    financialReport: FinancialReport,
+    balanceManagement: BalanceManagement,
     transaction: TransactionDTO,
   ): Promise<[void, void]> {
     const totalBalance = new TotalBalance(
       transaction.institutionId,
-      financialReport.totalLoss,
+      balanceManagement.totalLoss,
     );
     const monthlyBalance = new MonthlyBalance(
       transaction.institutionId,
       dateToMonthYear(transaction.date),
-      financialReport.monthlyTradeEarning,
-      financialReport.monthlyDividendEarning,
-      financialReport.monthlyTax,
-      financialReport.monthlyTaxWithholding,
-      financialReport.monthlyLoss,
-      financialReport.monthlyOperationType,
+      balanceManagement.monthlyTradeEarning,
+      balanceManagement.monthlyDividendEarning,
+      balanceManagement.monthlyTax,
+      balanceManagement.monthlyTaxWithholding,
+      balanceManagement.monthlyLoss,
+      balanceManagement.monthlyOperationType,
     );
 
     return Promise.all([

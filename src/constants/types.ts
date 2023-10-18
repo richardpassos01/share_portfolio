@@ -7,7 +7,7 @@ export const TYPES = {
   TransactionRepository: Symbol.for('TransactionRepositoryInterface'),
   InstitutionController: Symbol.for('InstitutionController'),
   TransactionController: Symbol.for('TransactionController'),
-  FinancialReportController: Symbol.for('FinancialReportController'),
+  BalanceManagementController: Symbol.for('BalanceManagementController'),
   CreateShare: Symbol.for('CreateShare'),
   CreateTransactions: Symbol.for('CreateTransactions'),
   DeleteTransactions: Symbol.for('DeleteTransactions'),
@@ -27,15 +27,11 @@ export const TYPES = {
   ProcessBuyTransaction: Symbol.for('ProcessBuyTransaction'),
   ProcessSellTransaction: Symbol.for('ProcessSellTransaction'),
   ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
-  FinancialReport: Symbol.for('FinancialReport'),
+  PortfolioController: Symbol.for('PortfolioController'),
   GetMonthlyBalance: Symbol.for('GetMonthlyBalance'),
   ListMonthlyBalance: Symbol.for('ListMonthlyBalance'),
-  CreateFinancialReportFromBalances: Symbol.for(
-    'CreateFinancialReportFromBalances',
-  ),
-  UpdateBalancesFromFinancialReport: Symbol.for(
-    'UpdateBalancesFromFinancialReport',
-  ),
-  CalculateTotalBalanceEarning: Symbol.for('CalculateTotalBalanceEarning'),
+  CreateBalanceManagement: Symbol.for('CreateBalanceManagement'),
+  UpdateBalances: Symbol.for('UpdateBalances'),
+  CreatePortfolio: Symbol.for('CreatePortfolio'),
   ReSyncPortfolio: Symbol.for('ReSyncPortfolio'),
 };

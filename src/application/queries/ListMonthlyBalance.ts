@@ -1,7 +1,7 @@
 import { TYPES } from '@constants/types';
-import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { injectable, inject } from 'inversify';
-import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
+import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
 
 @injectable()
 export default class ListMonthlyBalance {

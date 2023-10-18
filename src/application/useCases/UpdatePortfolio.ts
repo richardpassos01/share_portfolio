@@ -4,8 +4,8 @@ import { TYPES } from '@constants/types';
 import ProcessDividendTransaction from './ProcessDividendTransaction';
 import ProcessSpecialEventsOnShare from './ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from './ProcessTradeTransaction';
-import CreateFinancialReportFromBalances from './CreateFinancialReportFromBalances';
-import UpdateBalancesFromFinancialReport from './UpdateBalancesFromFinancialReport';
+import CreateBalanceManagement from './CreateBalanceManagement';
+import UpdateBalances from './UpdateBalances';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
@@ -20,16 +20,16 @@ export default class UpdatePortfolio {
     @inject(TYPES.ProcessTradeTransaction)
     private readonly processTradeTransaction: ProcessTradeTransaction,
 
-    @inject(TYPES.CreateFinancialReportFromBalances)
-    private readonly createFinancialReportFromBalances: CreateFinancialReportFromBalances,
+    @inject(TYPES.CreateBalanceManagement)
+    private readonly createBalanceManagement: CreateBalanceManagement,
 
-    @inject(TYPES.UpdateBalancesFromFinancialReport)
-    private readonly updateBalancesFromFinancialReport: UpdateBalancesFromFinancialReport,
+    @inject(TYPES.UpdateBalances)
+    private readonly updateBalances: UpdateBalances,
   ) {}
 
   async execute(transaction: TransactionDTO): Promise<any> {
-    const financialReport =
-      await this.createFinancialReportFromBalances.execute(transaction);
+    const balanceManagement =
+      await this.createBalanceManagement.execute(transaction);
 
     const isDividend = transaction.category === TRANSACTION_CATEGORY.DIVIDENDS;
 
@@ -42,7 +42,7 @@ export default class UpdatePortfolio {
     if (isDividend) {
       await this.processDividendTransaction.execute(
         transaction,
-        financialReport,
+        balanceManagement,
       );
     }
 
@@ -51,12 +51,12 @@ export default class UpdatePortfolio {
     }
 
     if (isTrade) {
-      await this.processTradeTransaction.execute(transaction, financialReport);
+      await this.processTradeTransaction.execute(
+        transaction,
+        balanceManagement,
+      );
     }
 
-    await this.updateBalancesFromFinancialReport.execute(
-      financialReport,
-      transaction,
-    );
+    await this.updateBalances.execute(balanceManagement, transaction);
   }
 }

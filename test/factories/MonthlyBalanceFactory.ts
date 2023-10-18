@@ -1,8 +1,8 @@
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
-import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
-import { MONTHLY_BALANCE_TYPE } from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
-import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
+import { MONTHLY_BALANCE_TYPE } from '@domain/portfolio/monthlyBalance/MonthlyBalanceEnums';
+import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { dateToMonthYear } from '@helpers';
 import institution from '@fixtures/institution';
 

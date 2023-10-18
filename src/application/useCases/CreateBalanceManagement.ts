@@ -2,11 +2,11 @@ import { TYPES } from '@constants/types';
 import { injectable, inject } from 'inversify';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
-import FinancialReport from '@domain/financialReport/FinancialReport';
+import BalanceManagement from '@domain/portfolio/BalanceManagement';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
-export default class CreateFinancialReportFromBalances {
+export default class CreateBalanceManagement {
   constructor(
     @inject(TYPES.GetMonthlyBalance)
     private readonly getMonthlyBalance: GetMonthlyBalance,
@@ -18,14 +18,14 @@ export default class CreateFinancialReportFromBalances {
   async execute({
     institutionId,
     date,
-  }: TransactionDTO): Promise<FinancialReport> {
+  }: TransactionDTO): Promise<BalanceManagement> {
     const totalBalance = await this.getTotalBalance.execute(institutionId);
     const monthlyBalance = await this.getMonthlyBalance.execute(
       institutionId,
       date,
     );
 
-    const financialReport = new FinancialReport(
+    const balanceManagement = new BalanceManagement(
       totalBalance?.loss,
       monthlyBalance?.tradeEarning,
       monthlyBalance?.dividendEarning,
@@ -35,6 +35,6 @@ export default class CreateFinancialReportFromBalances {
       monthlyBalance?.type,
     );
 
-    return financialReport;
+    return balanceManagement;
   }
 }

@@ -1,5 +1,5 @@
-import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
-import { MONTHLY_BALANCE_TYPE } from '@domain/financialReport/monthlyBalance/MonthlyBalanceEnums';
+import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
+import { MONTHLY_BALANCE_TYPE } from '@domain/portfolio/monthlyBalance/MonthlyBalanceEnums';
 
 type MapToEntityInput = {
   institution_id: string;

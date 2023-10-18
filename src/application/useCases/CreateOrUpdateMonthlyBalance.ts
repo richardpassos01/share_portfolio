@@ -1,6 +1,6 @@
 import { TYPES } from '@constants/types';
-import MonthlyBalance from '@domain/financialReport/monthlyBalance/MonthlyBalance';
-import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
+import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { injectable, inject } from 'inversify';
 
 @injectable()

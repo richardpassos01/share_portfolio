@@ -8,7 +8,7 @@ import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTota
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import { StatusCodes } from '@domain/shared/enums';
 
-describe('financialReportAPI', () => {
+describe('portfolioAPI', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
@@ -32,17 +32,14 @@ describe('financialReportAPI', () => {
     server.close();
   });
 
-  describe('GET /financial_report', () => {
-    it('should get institution balance', async () => {
+  describe('GET /portfolio', () => {
+    it('should get portfolio', async () => {
       const expectedResponse = {
-        institutionId: institution.id,
-        loss: 0,
-        earning: 0,
+        netEarning: 0,
+        totalLoss: 0,
       };
 
-      const response = await request.get(
-        `/financial_report/${institution.id}/total-balance`,
-      );
+      const response = await request.get(`/portfolio/${institution.id}`);
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body).toEqual(expectedResponse);

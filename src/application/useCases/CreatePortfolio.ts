@@ -1,11 +1,11 @@
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 import { TYPES } from '@constants/types';
-import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
+import Portfolio from '@domain/portfolio/Portfolio';
+import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import { injectable, inject } from 'inversify';
 
 @injectable()
-export default class CalculateTotalBalanceEarning {
+export default class CreatePortfolio {
   constructor(
     @inject(TYPES.MonthlyBalanceRepository)
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
@@ -14,7 +14,7 @@ export default class CalculateTotalBalanceEarning {
     private readonly getTotalBalance: GetTotalBalance,
   ) {}
 
-  async execute(institutionId: string): Promise<TotalBalance> {
+  async execute(institutionId: string): Promise<Portfolio> {
     const { sum: monthlyEarnings } =
       await this.monthlyBalanceRepository.sumEarnings(institutionId);
 
@@ -26,7 +26,6 @@ export default class CalculateTotalBalanceEarning {
 
     const netEarning = Math.max(0, monthlyEarnings - balance.loss);
 
-    balance.setEarning(netEarning);
-    return balance;
+    return new Portfolio(netEarning, balance.loss);
   }
 }

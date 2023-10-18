@@ -15,7 +15,7 @@ const TAX_WITHHOLDING_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {
   [MONTHLY_BALANCE_TYPE.DAY_TRADE]: 0.01,
 };
 
-export default class FinancialReport {
+export default class BalanceManagement {
   constructor(
     public totalLoss = 0,
     public monthlyTradeEarning = 0,

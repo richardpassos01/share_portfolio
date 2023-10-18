@@ -9,7 +9,7 @@ import ShareFactory from '@factories/ShareFactory';
 import ListShares from '@application/queries/ListShares';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
-import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
+import CreatePortfolio from '@application/useCases/CreatePortfolio';
 import institution from '@fixtures/institution';
 
 describe('CreateTransactions', () => {
@@ -18,7 +18,7 @@ describe('CreateTransactions', () => {
   let listShares: ListShares;
   let getMonthlyBalance: GetMonthlyBalance;
   let getTotalBalance: GetTotalBalance;
-  let calculateTotalBalanceEarning: CalculateTotalBalanceEarning;
+  let createPortfolio: CreatePortfolio;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -30,9 +30,7 @@ describe('CreateTransactions', () => {
       TYPES.GetMonthlyBalance,
     );
     getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
-    calculateTotalBalanceEarning = container.get<CalculateTotalBalanceEarning>(
-      TYPES.CalculateTotalBalanceEarning,
-    );
+    createPortfolio = container.get<CreatePortfolio>(TYPES.CreatePortfolio);
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });
@@ -78,13 +76,11 @@ describe('CreateTransactions', () => {
 
   describe('after call use case ', () => {
     it('should update total balance loss and leave it prepared to return total earning', async () => {
-      const expectedBalanceEarning = 1721816.1419294872;
+      const expectetNetEarning = 1721816.1419294872;
 
-      const balance = await calculateTotalBalanceEarning.execute(
-        institution.id,
-      );
+      const portfolio = await createPortfolio.execute(institution.id);
 
-      expect(balance.earning).toEqual(expectedBalanceEarning);
+      expect(portfolio.netEarning).toEqual(expectetNetEarning);
     });
   });
 });

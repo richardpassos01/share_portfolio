@@ -1,13 +1,13 @@
 import { injectable } from 'inversify';
-import FinancialReport from '@domain/financialReport/FinancialReport';
+import BalanceManagement from '@domain/portfolio/BalanceManagement';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class ProcessDividendTransaction {
   async execute(
     transaction: TransactionDTO,
-    financialReport: FinancialReport,
+    balanceManagement: BalanceManagement,
   ): Promise<void> {
-    financialReport.setDividendEarning(transaction.totalCost);
+    balanceManagement.setDividendEarning(transaction.totalCost);
   }
 }

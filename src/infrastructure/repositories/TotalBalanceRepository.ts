@@ -1,7 +1,7 @@
 import TotalBalanceMapper from '../mappers/TotalBalanceMapper';
 import { TYPES } from '@constants/types';
-import TotalBalance from '@domain/financialReport/totalBalance/TotalBalance';
-import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
+import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import Database, { TABLES } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 

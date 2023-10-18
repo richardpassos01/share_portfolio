@@ -19,8 +19,8 @@ import CreateTransactions from '@application/useCases/CreateTransactions';
 import CreateOrUpdateMonthlyBalance from '@application/useCases/CreateOrUpdateMonthlyBalance';
 import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
-import CreateFinancialReportFromBalances from '@application/useCases/CreateFinancialReportFromBalances';
-import UpdateBalancesFromFinancialReport from '@application/useCases/UpdateBalancesFromFinancialReport';
+import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
+import UpdateBalances from '@application/useCases/UpdateBalances';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
@@ -39,11 +39,11 @@ import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransacti
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import TotalBalanceRepositoryInterface from '@domain/financialReport/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/financialReport/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
-import FinancialReportController from '@api/financialReport/FinancialReportController';
-import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
+import PortfolioController from '@api/portfolio/PortfolioController';
+import CreatePortfolio from '@application/useCases/CreatePortfolio';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 
@@ -62,8 +62,8 @@ container
   .to(TransactionController)
   .inSingletonScope();
 container
-  .bind<FinancialReportController>(TYPES.FinancialReportController)
-  .to(FinancialReportController)
+  .bind<PortfolioController>(TYPES.PortfolioController)
+  .to(PortfolioController)
   .inSingletonScope();
 
 container
@@ -149,20 +149,16 @@ container
   .to(ListTradeTransactionsFromMonth)
   .inSingletonScope();
 container
-  .bind<CreateFinancialReportFromBalances>(
-    TYPES.CreateFinancialReportFromBalances,
-  )
-  .to(CreateFinancialReportFromBalances)
+  .bind<CreateBalanceManagement>(TYPES.CreateBalanceManagement)
+  .to(CreateBalanceManagement)
   .inSingletonScope();
 container
-  .bind<UpdateBalancesFromFinancialReport>(
-    TYPES.UpdateBalancesFromFinancialReport,
-  )
-  .to(UpdateBalancesFromFinancialReport)
+  .bind<UpdateBalances>(TYPES.UpdateBalances)
+  .to(UpdateBalances)
   .inSingletonScope();
 container
-  .bind<CalculateTotalBalanceEarning>(TYPES.CalculateTotalBalanceEarning)
-  .to(CalculateTotalBalanceEarning)
+  .bind<CreatePortfolio>(TYPES.CreatePortfolio)
+  .to(CreatePortfolio)
   .inSingletonScope();
 
 container
