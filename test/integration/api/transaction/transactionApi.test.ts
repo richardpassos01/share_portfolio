@@ -8,6 +8,7 @@ import TransactionFactory from '@factories/TransactionFactory';
 import ListTransactions from '@application/queries/ListTransactions';
 import ErrorCode from '@domain/shared/error/ErrorCode';
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
+import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 
 describe('transactionAPI', () => {
   const server = app.listen();
@@ -124,6 +125,17 @@ describe('transactionAPI', () => {
 
   describe('DELETE /transaction', () => {
     describe('When called the endpoint with valid schema', () => {
+      let reSyncPortfolio: ReSyncPortfolio;
+
+      beforeEach(() => {
+        reSyncPortfolio = container.get<ReSyncPortfolio>(TYPES.ReSyncPortfolio);
+        jest.spyOn(reSyncPortfolio, 'execute').mockImplementation();
+      });
+
+      afterEach(async () => {
+        jest.clearAllMocks();
+      });
+
       it('should delete transaction', async () => {
         const transaction = new TransactionFactory();
         const payload = transaction.getDeletePayload();
@@ -137,6 +149,16 @@ describe('transactionAPI', () => {
 
         expect(response.status).toBe(StatusCodes.NO_CONTENT);
         expect(paginatedTransactions.totalItems).toBe(0);
+      });
+
+      it('should call resync portfolio', async () => {
+        const transaction = new TransactionFactory();
+        const payload = transaction.getDeletePayload();
+        await transaction.save();
+
+        await request.delete('/transaction').send(payload);
+
+        expect(reSyncPortfolio.execute).toHaveBeenCalledTimes(1);
       });
 
       describe('When called the endpoint with invalid schema', () => {
