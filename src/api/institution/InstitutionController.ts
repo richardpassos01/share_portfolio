@@ -1,7 +1,7 @@
 import Koa from 'koa';
 
 import { TYPES } from '@constants/types';
-import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import { injectable, inject } from 'inversify';
 import GetInstitution from '@application/queries/GetInstitution';
 import CreateInstitution from '@application/useCases/CreateInstitution';

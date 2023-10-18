@@ -69,12 +69,19 @@ export default class TransactionFactory {
     };
   }
 
-  getPayloadObject() {
+  getCreatePayload() {
     const transaction = this.getObject();
     const date = dateToString(this.transaction.date);
     return {
       ...transaction,
       date,
+    };
+  }
+
+  getDeletePayload(ids?: string[]) {
+    return {
+      institutionId: this.transaction.institutionId,
+      transactionIds: [ids ?? this.transaction.id],
     };
   }
 

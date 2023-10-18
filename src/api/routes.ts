@@ -2,7 +2,6 @@ import Router from '@koa/router';
 
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
-import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 import TransactionController from './transaction/TransactionController';
 import InstitutionController from './institution/InstitutionController';
@@ -11,6 +10,7 @@ import schemaValidator from '@middleware/schemaValidator';
 import TransactionSchemas from './transaction/schemas/input/schema';
 import InstitutionSchemas from './institution/schemas/input/schema';
 import FinancialReportController from './financialReport/FinancialReportController';
+import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 
 const router = new Router();
 

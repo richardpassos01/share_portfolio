@@ -4,10 +4,6 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 import container from '@dependencyInjectionContainer';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import { transactionsParams, listTransactions } from '@fixtures/transactions';
-import TransactionFactory from '@factories/TransactionFactory';
-import { CreateTransactionParams } from '@domain/shared/types';
-import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
-import institution from '@fixtures/institution';
 
 jest.mock('uuid', () => ({
   v4: () => '123456',

@@ -1,6 +1,6 @@
+import { StatusCodes } from '@domain/shared/enums';
 import CustomError from '@domain/shared/error/CustomError';
 import ErrorCode from '@domain/shared/error/ErrorCode';
-import { StatusCodes } from 'http-status-codes';
 import { Schema } from 'joi';
 
 import Koa from 'koa';

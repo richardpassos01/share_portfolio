@@ -3,10 +3,10 @@ import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import { StatusCodes } from 'http-status-codes';
 import institution from '@fixtures/institution';
 import CreateOrUpdateTotalBalance from '@application/useCases/CreateOrUpdateTotalBalance';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
+import { StatusCodes } from '@domain/shared/enums';
 
 describe('financialReportAPI', () => {
   const server = app.listen();

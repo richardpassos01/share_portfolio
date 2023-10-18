@@ -1,4 +1,4 @@
-import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ErrorCode from './ErrorCode';
 
 export default class CustomError extends Error {
@@ -7,7 +7,7 @@ export default class CustomError extends Error {
   constructor(
     public message: string = ReasonPhrases.BAD_REQUEST,
     public customCode: string = ErrorCode.BAD_REQUEST,
-    public status: StatusCodes = StatusCodes.BAD_REQUEST,
+    public status: number = StatusCodes.BAD_REQUEST,
   ) {
     super();
   }

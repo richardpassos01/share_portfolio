@@ -34,7 +34,7 @@ export default class InstitutionFactory {
     };
   }
 
-  getPayloadObject() {
+  getCreatePayload() {
     const { id: _, ...payload } = this.getObject();
     return payload;
   }

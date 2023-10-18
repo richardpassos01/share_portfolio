@@ -1,9 +1,9 @@
 import Koa from 'koa';
 
 import { TYPES } from '@constants/types';
-import { StatusCodes } from 'http-status-codes';
 import { injectable, inject } from 'inversify';
 import CalculateTotalBalanceEarning from '@application/useCases/CalculateTotalBalanceEarning';
+import { StatusCodes } from '@domain/shared/enums';
 
 @injectable()
 export default class FinancialReportController {

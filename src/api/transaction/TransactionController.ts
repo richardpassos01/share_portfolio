@@ -1,12 +1,12 @@
 import Koa from 'koa';
 
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { TYPES } from '@constants/types';
 import { inject, injectable } from 'inversify';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import { CreateTransactionParams } from '@domain/shared/types';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 
 @injectable()
 export default class TransactionController {
@@ -37,6 +37,5 @@ export default class TransactionController {
     await this.reSyncPortfolio.execute(institutionId);
 
     ctx.response.status = StatusCodes.NO_CONTENT;
-    ctx.response.body = ReasonPhrases.NO_CONTENT;
   }
 }

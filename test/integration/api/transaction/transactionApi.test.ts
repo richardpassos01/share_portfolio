@@ -3,7 +3,7 @@ import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import TransactionFactory from '@factories/TransactionFactory';
 import ListTransactions from '@application/queries/ListTransactions';
 import ErrorCode from '@domain/shared/error/ErrorCode';
@@ -40,7 +40,7 @@ describe('transactionAPI', () => {
     describe('When called the endpoint with valid schema', () => {
       it('should create transaction', async () => {
         const transaction = new TransactionFactory();
-        const payload = transaction.getPayloadObject();
+        const payload = transaction.getCreatePayload();
         const expectedTransaction = transaction.getObject();
 
         const response = await request.post('/transaction').send([payload]);
@@ -118,6 +118,54 @@ describe('transactionAPI', () => {
         ]);
 
         expect(response.body.message).toEqual(expectedMessage);
+      });
+    });
+  });
+
+  describe('DELETE /transaction', () => {
+    describe('When called the endpoint with valid schema', () => {
+      it('should delete transaction', async () => {
+        const transaction = new TransactionFactory();
+        const payload = transaction.getDeletePayload();
+        await transaction.save();
+
+        const response = await request.delete('/transaction').send(payload);
+
+        const paginatedTransactions = await listTransactions.execute(
+          payload.institutionId,
+        );
+
+        expect(response.status).toBe(StatusCodes.NO_CONTENT);
+        expect(paginatedTransactions.totalItems).toBe(0);
+      });
+
+      describe('When called the endpoint with invalid schema', () => {
+        it('should throw bad request error when dont send item', async () => {
+          const expectedError = {
+            message: 'institutionId is required, transactionIds is required',
+            customCode: ErrorCode.SCHEMA_VALIDATOR,
+            status: StatusCodes.UNPROCESSABLE_ENTITY,
+          };
+
+          const response = await request.delete('/transaction').send();
+
+          expect(response.body).toEqual(expectedError);
+        });
+
+        it('should throw shema validation error when send wrong param', async () => {
+          const expectedError = {
+            message:
+              'institutionId must be a valid GUID, transactionIds must contain at least 1 items',
+            customCode: ErrorCode.SCHEMA_VALIDATOR,
+            status: StatusCodes.UNPROCESSABLE_ENTITY,
+          };
+          const response = await request.delete('/transaction').send({
+            institutionId: 'INVALID_UUID',
+            transactionIds: [],
+          });
+
+          expect(response.body).toEqual(expectedError);
+        });
       });
     });
   });

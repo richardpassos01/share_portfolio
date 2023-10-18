@@ -3,9 +3,9 @@ import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import { StatusCodes } from 'http-status-codes';
 import InstitutionFactory from '@factories/InstitutionFactory';
 import GetInstitution from '@application/queries/GetInstitution';
+import { StatusCodes } from '@domain/shared/enums';
 
 describe('institutionAPI', () => {
   const server = app.listen();
@@ -31,7 +31,7 @@ describe('institutionAPI', () => {
   describe('POST /institution', () => {
     describe('When called the endpoint with valid schema', () => {
       it('should create institution', async () => {
-        const payload = new InstitutionFactory().getPayloadObject();
+        const payload = new InstitutionFactory().getCreatePayload();
 
         const response = await request.post('/institution').send(payload);
 
