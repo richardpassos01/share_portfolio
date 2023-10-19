@@ -27,7 +27,7 @@ export enum ReasonPhrases {
   BAD_REQUEST = 'Bad Request',
   UNPROCESSABLE_ENTITY = 'Unprocessable Entity',
   SHARE_NOT_FOUND = 'Share Not Found',
-  TOTAL_BALANCE_NOT_FOUND = 'Share Not Found',
+  TOTAL_BALANCE_NOT_FOUND = 'Total Balance Not Found',
 }
 
 export enum CustomErrorCodes {
