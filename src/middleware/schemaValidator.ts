@@ -1,6 +1,5 @@
-import { StatusCodes } from '@domain/shared/enums';
+import { CustomErrorCodes, StatusCodes } from '@domain/shared/enums';
 import CustomError from '@domain/shared/error/CustomError';
-import ErrorCode from '@domain/shared/error/ErrorCode';
 import { Schema } from 'joi';
 
 import Koa from 'koa';
@@ -15,7 +14,7 @@ const schemaValidator = (schema: Schema) => {
         error.details
           .map((error: any) => error.message.replace(/"/g, ''))
           .join(', '),
-        ErrorCode.SCHEMA_VALIDATOR,
+        CustomErrorCodes.SCHEMA_VALIDATOR,
         StatusCodes.UNPROCESSABLE_ENTITY,
       );
     }

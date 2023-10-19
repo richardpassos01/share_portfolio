@@ -3,10 +3,13 @@ import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
-import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
+import {
+  CustomErrorCodes,
+  ReasonPhrases,
+  StatusCodes,
+} from '@domain/shared/enums';
 import TransactionFactory from '@factories/TransactionFactory';
 import ListTransactions from '@application/queries/ListTransactions';
-import ErrorCode from '@domain/shared/error/ErrorCode';
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 
@@ -62,7 +65,7 @@ describe('transactionAPI', () => {
       it('should throw bad request error when dont send item', async () => {
         const expectedError = {
           message: 'value must contain at least 1 items',
-          customCode: ErrorCode.SCHEMA_VALIDATOR,
+          customCode: CustomErrorCodes.SCHEMA_VALIDATOR,
           status: StatusCodes.UNPROCESSABLE_ENTITY,
         };
 
@@ -74,7 +77,7 @@ describe('transactionAPI', () => {
       it('should throw shema validation error when is empty payload', async () => {
         const expectedError = {
           message: 'value must be an array',
-          customCode: ErrorCode.SCHEMA_VALIDATOR,
+          customCode: CustomErrorCodes.SCHEMA_VALIDATOR,
           status: StatusCodes.UNPROCESSABLE_ENTITY,
         };
 
@@ -87,7 +90,7 @@ describe('transactionAPI', () => {
         const expectedError = {
           message:
             '[0].institutionId is required, [0].type is required, [0].date is required, [0].category is required, [0].ticketSymbol is required, [0].quantity is required, [0].unityPrice is required, [0].totalCost is required',
-          customCode: ErrorCode.SCHEMA_VALIDATOR,
+          customCode: CustomErrorCodes.SCHEMA_VALIDATOR,
           status: StatusCodes.UNPROCESSABLE_ENTITY,
         };
 
@@ -165,7 +168,7 @@ describe('transactionAPI', () => {
         it('should throw bad request error when dont send item', async () => {
           const expectedError = {
             message: 'institutionId is required, transactionIds is required',
-            customCode: ErrorCode.SCHEMA_VALIDATOR,
+            customCode: CustomErrorCodes.SCHEMA_VALIDATOR,
             status: StatusCodes.UNPROCESSABLE_ENTITY,
           };
 
@@ -178,7 +181,7 @@ describe('transactionAPI', () => {
           const expectedError = {
             message:
               'institutionId must be a valid GUID, transactionIds must contain at least 1 items',
-            customCode: ErrorCode.SCHEMA_VALIDATOR,
+            customCode: CustomErrorCodes.SCHEMA_VALIDATOR,
             status: StatusCodes.UNPROCESSABLE_ENTITY,
           };
           const response = await request.delete('/transaction').send({

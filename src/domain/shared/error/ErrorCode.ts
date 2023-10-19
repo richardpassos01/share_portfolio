@@ -1,7 +1,0 @@
-enum ErrorCode {
-  BAD_REQUEST = 'BAD_REQUEST',
-  UNEXPECTED_ERROR = 'UNEXPECTED_ERROR',
-  SCHEMA_VALIDATOR = 'SCHEMA_VALIDATOR_ERROR',
-}
-
-export default ErrorCode;

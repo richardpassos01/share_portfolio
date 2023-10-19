@@ -3,6 +3,8 @@ import { TransactionDTO } from '@domain/shared/types';
 import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
+import NotFoundError from '@domain/shared/error/NotFoundError';
+import { ReasonPhrases } from '@domain/shared/enums';
 
 @injectable()
 export default class ProcessSpecialEventsOnShare {
@@ -18,7 +20,7 @@ export default class ProcessSpecialEventsOnShare {
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
-      throw new Error();
+      throw new NotFoundError(ReasonPhrases.SHARE_NOT_FOUND);
     }
 
     share.updatePosition(transaction);

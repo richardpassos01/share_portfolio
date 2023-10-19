@@ -5,6 +5,8 @@ import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
 import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import NotFoundError from '@domain/shared/error/NotFoundError';
+import { ReasonPhrases } from '@domain/shared/enums';
 
 @injectable()
 export default class ProcessSellTransaction {
@@ -26,7 +28,7 @@ export default class ProcessSellTransaction {
     const share = await this.getShare.execute(transaction);
 
     if (!share) {
-      throw new Error();
+      throw new NotFoundError(ReasonPhrases.SHARE_NOT_FOUND);
     }
 
     const earningOrLoss = share.getEarningOrLoss(transaction);

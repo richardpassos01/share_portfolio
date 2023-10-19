@@ -17,6 +17,7 @@ export enum StatusCodes {
   CREATED = 201,
   BAD_REQUEST = 400,
   UNPROCESSABLE_ENTITY = 422,
+  NOT_FOUND = 404,
 }
 
 export enum ReasonPhrases {
@@ -25,4 +26,13 @@ export enum ReasonPhrases {
   CREATED = 'Created',
   BAD_REQUEST = 'Bad Request',
   UNPROCESSABLE_ENTITY = 'Unprocessable Entity',
+  SHARE_NOT_FOUND = 'Share Not Found',
+  TOTAL_BALANCE_NOT_FOUND = 'Share Not Found',
+}
+
+export enum CustomErrorCodes {
+  BAD_REQUEST = 'BAD_REQUEST',
+  UNEXPECTED_ERROR = 'UNEXPECTED_ERROR',
+  SCHEMA_VALIDATOR = 'SCHEMA_VALIDATOR_ERROR',
+  NOT_FOUND = 'RESOURCE_NOT_FOUND',
 }
