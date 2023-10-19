@@ -36,27 +36,30 @@ const createTransactions = container.get<CreateTransactions>(
 
 const command = async () => {
   try {
-    const formattedTransactions = [];
-    for (const fileName of fileList.filter((f) => f.includes('xlsx'))) {
-      const filePath = resolve(filesPath, fileName);
-      const [{ data }] = parse(filePath);
+    const formattedTransactions: CreateTransactionParams[] = [];
 
-      const transactions: CreateTransactionParams[] = data
-        .slice(1)
-        .map((transaction) => ({
-          institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
-          type: institutionEventTypeMapper[transaction[0]],
-          date: dateStringDDMMYYYYToYYYYMMDD(transaction[1]),
-          category: institutionEventTypeMapper[transaction[2]],
-          ticketSymbol: transaction[3].split(' - ')[0],
-          quantity: transaction[5],
-          unityPrice: transaction[6] !== '-' ? transaction[6] : 0,
-          totalCost: transaction[7] !== '-' ? transaction[7] : 0,
-        }));
+    fileList
+      .filter((f) => f.includes('xlsx'))
+      .forEach((fileName) => {
+        const filePath = resolve(filesPath, fileName);
+        const [{ data }] = parse(filePath);
 
-      formattedTransactions.push(...transactions);
-      console.log(`File ${fileName} processed`);
-    }
+        const transactions: CreateTransactionParams[] = data
+          .slice(1)
+          .map((transaction) => ({
+            institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+            type: institutionEventTypeMapper[transaction[0]],
+            date: dateStringDDMMYYYYToYYYYMMDD(transaction[1]),
+            category: institutionEventTypeMapper[transaction[2]],
+            ticketSymbol: transaction[3].split(' - ')[0],
+            quantity: transaction[5],
+            unityPrice: transaction[6] !== '-' ? transaction[6] : 0,
+            totalCost: transaction[7] !== '-' ? transaction[7] : 0,
+          }));
+
+        formattedTransactions.push(...transactions);
+        console.log(`File ${fileName} processed`);
+      });
 
     await createTransactions.execute(formattedTransactions);
     console.log('transactions created');

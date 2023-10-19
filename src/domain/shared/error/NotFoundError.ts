@@ -6,11 +6,10 @@ import {
 import CustomError from '@domain/shared/error/CustomError';
 
 export default class NotFoundError extends CustomError {
-  constructor(private readonly reasonPhrase: ReasonPhrases) {
+  customCode = CustomErrorCodes.NOT_FOUND;
+  status = StatusCodes.NOT_FOUND;
+
+  constructor(public message: ReasonPhrases) {
     super();
   }
-
-  customCode = CustomErrorCodes.NOT_FOUND;
-  message = this.reasonPhrase;
-  status = StatusCodes.NOT_FOUND;
 }
