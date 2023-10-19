@@ -1,7 +1,7 @@
 import { transactionsParams } from './transactions';
 import { shares } from './shares';
 import { monthlyBalances } from './monthlyBalances';
-import { totalBalances } from './totalBalances';
+import { portfolios } from './portfolios';
 import { CreateTransactionParams } from '@domain/shared/types';
 
 type Case = [
@@ -38,7 +38,7 @@ export const createTransactionCases: Case[] = transactionsParams.map(
     transaction,
     shares[i],
     monthlyBalances[i],
-    totalBalances[i],
+    portfolios[i],
     casesDescription[i],
   ],
 );
