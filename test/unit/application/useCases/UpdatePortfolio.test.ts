@@ -4,7 +4,6 @@ import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
 import TransactionFactory from '@factories/TransactionFactory';
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
-import BalanceManagementFactory from '@factories/BalanceManagementFactory';
 import UpdateBalances from '@application/useCases/UpdateBalances';
 import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
 import BalanceManagement from '@domain/portfolio/BalanceManagement';
@@ -39,7 +38,7 @@ describe('UpdatePortfolio', () => {
     createBalanceManagement = container.get<CreateBalanceManagement>(
       TYPES.CreateBalanceManagement,
     );
-    balanceManagement = new BalanceManagementFactory().get();
+    balanceManagement = new BalanceManagement();
   });
 
   beforeEach(() => {
