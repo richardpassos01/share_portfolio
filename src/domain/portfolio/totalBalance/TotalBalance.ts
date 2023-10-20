@@ -5,10 +5,6 @@ export default class TotalBalance {
     public netEarning = 0,
   ) {}
 
-  setLoss(loss: number) {
-    this.loss = loss;
-  }
-
   setNetEarning(monthlyEarnings: number) {
     const netEarning = Math.max(0, monthlyEarnings - this.loss);
     this.netEarning = netEarning;
