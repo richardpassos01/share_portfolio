@@ -34,6 +34,10 @@ export default class BalanceManagement {
     this.monthlyDividendEarning += earning;
   }
 
+  setMonthlyOperationType(type: MONTHLY_BALANCE_TYPE) {
+    this.monthlyOperationType = type;
+  }
+
   setType(
     buyTransactions: TransactionDTO[],
     sellTransactions: TransactionDTO[],
@@ -50,9 +54,11 @@ export default class BalanceManagement {
       sellTransactions,
     );
 
-    this.monthlyOperationType = didDayTrade
+    const type = didDayTrade
       ? MONTHLY_BALANCE_TYPE.DAY_TRADE
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
+
+    this.setMonthlyOperationType(type);
   }
 
   setTax(tax: number) {
@@ -71,22 +77,8 @@ export default class BalanceManagement {
     this.totalLoss += loss;
   }
 
-  updateTotalLoss(loss: number) {
+  setTotalLoss(loss: number) {
     this.totalLoss = loss;
-  }
-
-  checkIfDidDayTradeAtMonth(
-    sellTransactions: TransactionDTO[],
-    buyTransactions: TransactionDTO[],
-  ) {
-    return buyTransactions.find(({ ticketSymbol: buyTicket, date: BuyDate }) =>
-      sellTransactions.find(({ ticketSymbol: sellTicket, date: sellDate }) => {
-        const sameShare = buyTicket === sellTicket;
-        const tradeInSameDay = dateToString(BuyDate) === dateToString(sellDate);
-
-        return sameShare && tradeInSameDay;
-      }),
-    );
   }
 
   handleSellOperation(monthlySales: number, earningOrLoss: number) {
@@ -124,28 +116,42 @@ export default class BalanceManagement {
   calculateTax() {
     const tradetEarning = this.monthlyTradeEarning;
 
-    let tax =
+    const taxToBeCharged =
       tradetEarning * TAX_PERCENTAGE[this.monthlyOperationType] -
       this.monthlyTaxWithholding;
 
-    if (this.totalLoss > 0 && tax > 0) {
-      const taxDeductedFromLoss = tax - this.totalLoss;
+    this.monthlyTax += taxToBeCharged;
+
+    if (this.totalLoss > 0 && this.monthlyTax > 0) {
+      const taxDeductedFromLoss = this.monthlyTax - this.totalLoss;
 
       const isRemainingTotalLoss = taxDeductedFromLoss < 0;
 
       if (isRemainingTotalLoss) {
-        tax = 0;
-        this.updateTotalLoss(Math.abs(taxDeductedFromLoss));
-      } else {
-        tax = taxDeductedFromLoss;
-        this.updateTotalLoss(0);
+        this.monthlyTax = 0;
+        return this.setTotalLoss(Math.abs(taxDeductedFromLoss));
       }
-    }
 
-    this.setTax(tax);
+      this.monthlyTax = taxDeductedFromLoss;
+      this.setTotalLoss(0);
+    }
   }
 
-  checkIfShouldChargeTax(monthlySales: number): boolean {
+  checkIfDidDayTradeAtMonth(
+    sellTransactions: TransactionDTO[],
+    buyTransactions: TransactionDTO[],
+  ) {
+    return buyTransactions.find(({ ticketSymbol: buyTicket, date: BuyDate }) =>
+      sellTransactions.find(({ ticketSymbol: sellTicket, date: sellDate }) => {
+        const sameShare = buyTicket === sellTicket;
+        const tradeInSameDay = dateToString(BuyDate) === dateToString(sellDate);
+
+        return sameShare && tradeInSameDay;
+      }),
+    );
+  }
+
+  checkIfShouldChargeTax(monthlySales: number) {
     const sellMoreThanLimit =
       monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
 

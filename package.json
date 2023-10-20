@@ -12,7 +12,7 @@
     "compile": "tsc && tsc-alias",
     "fix": "gts fix",
     "prepare": "npm run compile",
-    "test": "npx jest --runInBand",
+    "test": "npx jest --runInBand --coverage",
     "test:unit": "jest test/unit",
     "test:integration": "jest jest test/integration --runInBand",
     "start": "node -r dotenv/config build/src/api/server.js",

@@ -24,7 +24,9 @@ app.use(routes.routes()).use(routes.allowedMethods()).use(routes.middleware());
     .then(() => {
       console.log('database connected!');
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      throw error;
+    });
 })();
 
 export default app;

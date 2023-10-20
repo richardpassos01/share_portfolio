@@ -48,7 +48,6 @@ router.post('/portfolio/:institutionId/re-sync', (ctx) => {
   const institutionController = container.get<InstitutionController>(
     TYPES.InstitutionController,
   );
-
   return institutionController.reSync(ctx);
 });
 
@@ -59,7 +58,6 @@ router.post(
     const transactionController = container.get<TransactionController>(
       TYPES.TransactionController,
     );
-
     return transactionController.create(ctx);
   },
 );
