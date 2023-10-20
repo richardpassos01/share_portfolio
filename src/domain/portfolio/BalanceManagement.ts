@@ -105,7 +105,16 @@ export default class BalanceManagement {
 
   handleLoss(totalLoss: number) {
     this.setFinancialLosses(totalLoss);
-    this.calculateTax();
+
+    const hastTaxToBeDeductFromLoss = this.monthlyTax > 0;
+
+    if (hastTaxToBeDeductFromLoss) {
+      this.deductTaxFromLoss(totalLoss);
+    }
+  }
+
+  deductTaxFromLoss(loss: number) {
+    this.setTax(Math.max(0, this.monthlyTax - loss));
   }
 
   calculateTax() {
@@ -115,7 +124,7 @@ export default class BalanceManagement {
       tradetEarning * TAX_PERCENTAGE[this.monthlyOperationType] -
       this.monthlyTaxWithholding;
 
-    this.setTax(Math.max(0, taxToBeCharged));
+    this.setTax(taxToBeCharged);
 
     if (this.totalLoss > 0 && this.monthlyTax > 0) {
       const taxDeductedFromLoss = this.monthlyTax - this.totalLoss;

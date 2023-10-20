@@ -135,8 +135,8 @@ describe('BalanceManagement', () => {
   });
 
   it('should handle sell operation with loss and deduct it from tax', () => {
-    balanceManagement.setTradeEarning(30000);
+    balanceManagement.setTax(300);
     balanceManagement.handleSellOperation(100, -30);
-    expect(balanceManagement.monthlyTax).toBe(4470);
+    expect(balanceManagement.monthlyTax).toBe(270);
   });
 });
