@@ -83,8 +83,8 @@ export default class BalanceManagement {
 
   handleSellOperation(monthlySales: number, earningOrLoss: number) {
     if (earningOrLoss < 0) {
-      const totalLoss = Math.abs(earningOrLoss);
-      this.handleLoss(totalLoss);
+      const loss = Math.abs(earningOrLoss);
+      this.handleLoss(loss);
     }
 
     if (earningOrLoss > 0) {
@@ -103,31 +103,38 @@ export default class BalanceManagement {
     }
   }
 
-  handleLoss(totalLoss: number) {
-    this.setFinancialLosses(totalLoss);
+  handleLoss(loss: number) {
+    this.setFinancialLosses(loss);
 
     const hastTaxToBeDeductFromLoss = this.monthlyTax > 0;
 
     if (hastTaxToBeDeductFromLoss) {
-      this.deductTaxFromLoss(totalLoss);
+      this.deductTaxFromLoss(loss);
     }
   }
 
   deductTaxFromLoss(loss: number) {
-    const taxDeductedFromLoss = this.monthlyTax - loss;
+    const taxRemaining = this.monthlyTax - loss;
 
-    const isRemainingTax = taxDeductedFromLoss > 0;
-
-    if (isRemainingTax) {
-      const removedValueUsedToDeductTax = this.totalLoss - loss;
-      this.setTotalLoss(removedValueUsedToDeductTax);
-      this.setTax(taxDeductedFromLoss);
-      return;
+    if (taxRemaining > 0) {
+      this.setTotalLoss(this.totalLoss - loss);
+      this.setTax(taxRemaining);
+    } else {
+      this.setTotalLoss(this.totalLoss - this.monthlyTax);
+      this.setTax(0);
     }
+  }
 
-    const totalLossAfterDeductTax = this.totalLoss - this.monthlyTax;
-    this.setTotalLoss(totalLossAfterDeductTax);
-    this.setTax(0);
+  deductTaxFromTotalLoss() {
+    const taxRemaining = this.monthlyTax - this.totalLoss;
+
+    if (taxRemaining > 0) {
+      this.setTotalLoss(0);
+      this.setTax(taxRemaining);
+    } else {
+      this.setTotalLoss(Math.abs(taxRemaining));
+      this.setTax(0);
+    }
   }
 
   calculateTax() {
@@ -140,17 +147,7 @@ export default class BalanceManagement {
     this.setTax(taxToBeCharged);
 
     if (this.totalLoss > 0 && this.monthlyTax > 0) {
-      const taxDeductedFromLoss = this.monthlyTax - this.totalLoss;
-
-      const isRemainingTotalLoss = taxDeductedFromLoss < 0;
-
-      if (isRemainingTotalLoss) {
-        this.setTax(0);
-        return this.setTotalLoss(Math.abs(taxDeductedFromLoss));
-      }
-
-      this.setTax(taxDeductedFromLoss);
-      this.setTotalLoss(0);
+      this.deductTaxFromTotalLoss();
     }
   }
 
