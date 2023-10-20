@@ -114,7 +114,20 @@ export default class BalanceManagement {
   }
 
   deductTaxFromLoss(loss: number) {
-    this.setTax(Math.max(0, this.monthlyTax - loss));
+    const taxDeductedFromLoss = this.monthlyTax - loss;
+
+    const isRemainingTax = taxDeductedFromLoss > 0;
+
+    if (isRemainingTax) {
+      const removedValueUsedToDeductTax = this.totalLoss - loss;
+      this.setTotalLoss(removedValueUsedToDeductTax);
+      this.setTax(taxDeductedFromLoss);
+      return;
+    }
+
+    const totalLossAfterDeductTax = this.totalLoss - this.monthlyTax;
+    this.setTotalLoss(totalLossAfterDeductTax);
+    this.setTax(0);
   }
 
   calculateTax() {
