@@ -51,7 +51,7 @@ describe('BalanceManagement', () => {
 
   it('should return if it is already DAY_TRADE', () => {
     balanceManagement.setMonthlyOperationType(MONTHLY_BALANCE_TYPE.DAY_TRADE);
-    balanceManagement.checkIfDidDayTradeAtMonth = jest.fn();
+    balanceManagement.setMonthlyOperationType = jest.fn();
     const buyTransactions = [
       new TransactionFactory({ type: TRANSACTION_TYPE.BUY }).get(),
     ];
@@ -62,7 +62,7 @@ describe('BalanceManagement', () => {
 
     balanceManagement.setType(buyTransactions, sellTransactions);
 
-    expect(balanceManagement.checkIfDidDayTradeAtMonth).toBeCalledTimes(0);
+    expect(balanceManagement.setMonthlyOperationType).toBeCalledTimes(0);
   });
 
   it('should set the operation type to SWING_TRADE', () => {

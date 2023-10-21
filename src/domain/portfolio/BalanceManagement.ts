@@ -92,7 +92,7 @@ export default class BalanceManagement {
     }
   }
 
-  handleEarning(monthlySales: number, earning: number) {
+  private handleEarning(monthlySales: number, earning: number) {
     this.setTradeEarning(earning);
 
     const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
@@ -103,7 +103,7 @@ export default class BalanceManagement {
     }
   }
 
-  handleLoss(loss: number) {
+  private handleLoss(loss: number) {
     this.setFinancialLosses(loss);
 
     const hastTaxToBeDeductFromLoss = this.monthlyTax > 0;
@@ -113,7 +113,7 @@ export default class BalanceManagement {
     }
   }
 
-  deductTaxFromLoss(loss: number) {
+  private deductTaxFromLoss(loss: number) {
     const taxRemaining = this.monthlyTax - loss;
 
     if (taxRemaining > 0) {
@@ -125,7 +125,7 @@ export default class BalanceManagement {
     }
   }
 
-  deductTaxFromTotalLoss() {
+  private deductTaxFromTotalLoss() {
     const taxRemaining = this.monthlyTax - this.totalLoss;
 
     if (taxRemaining > 0) {
@@ -137,7 +137,7 @@ export default class BalanceManagement {
     }
   }
 
-  calculateTax() {
+  private calculateTax() {
     const tradetEarning = this.monthlyTradeEarning;
 
     const taxToBeCharged =
@@ -151,7 +151,7 @@ export default class BalanceManagement {
     }
   }
 
-  checkIfDidDayTradeAtMonth(
+  private checkIfDidDayTradeAtMonth(
     sellTransactions: TransactionDTO[],
     buyTransactions: TransactionDTO[],
   ) {
@@ -165,7 +165,7 @@ export default class BalanceManagement {
     );
   }
 
-  checkIfShouldChargeTax(monthlySales: number) {
+  private checkIfShouldChargeTax(monthlySales: number) {
     const sellMoreThanLimit =
       monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
 
