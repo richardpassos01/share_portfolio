@@ -70,8 +70,9 @@ export default class TransactionFactory {
   }
 
   getCreatePayload() {
-    const transaction = this.getObject();
+    const { institutionId: _, ...transaction } = this.getObject();
     const date = dateToString(this.transaction.date);
+
     return {
       ...transaction,
       date,
@@ -79,10 +80,7 @@ export default class TransactionFactory {
   }
 
   getDeletePayload(ids?: string[]) {
-    return {
-      institutionId: this.transaction.institutionId,
-      transactionIds: [ids ?? this.transaction.id],
-    };
+    return [ids ?? this.transaction.id];
   }
 
   async save() {

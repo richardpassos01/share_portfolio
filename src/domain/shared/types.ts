@@ -10,7 +10,13 @@ type Transaction = {
   category: TRANSACTION_CATEGORY;
 };
 
-export type CreateTransactionParams = Transaction & {
+export type CreateTransactionParams = {
+  ticketSymbol: string;
+  quantity: number;
+  unityPrice: number;
+  totalCost: number;
+  type: TRANSACTION_TYPE;
+  category: TRANSACTION_CATEGORY;
   date: string;
 };
 

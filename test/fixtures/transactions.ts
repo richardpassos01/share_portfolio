@@ -6,7 +6,6 @@ import institution from '@fixtures/institution';
 
 export const transactionsParams: CreateTransactionParams[] = [
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-07-31',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -16,7 +15,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 2019.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-07-31',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -26,7 +24,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 1254.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2019-08-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -36,7 +33,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 1055.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-08-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -46,7 +42,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 1300.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-09-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -56,7 +51,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 18450.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-09-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -66,7 +60,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 18450.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-09-10',
     category: TRANSACTION_CATEGORY.DIVIDENDS,
@@ -76,7 +69,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 15000.0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-09-11',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -86,7 +78,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 123,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2019-09-11',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -96,7 +87,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 135,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2019-10-05',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -106,7 +96,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 15000,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2019-11-15',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -116,7 +105,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 21114,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-11-16',
     category: TRANSACTION_CATEGORY.BONUS_SHARE,
@@ -126,7 +114,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2019-12-01',
     category: TRANSACTION_CATEGORY.SPLIT,
@@ -136,7 +123,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 0,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2020-01-02',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -146,7 +132,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 3200,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2020-02-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -156,7 +141,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 1000,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2020-03-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -166,7 +150,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 1293,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2021-02-01',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -176,7 +159,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 10000,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.SELL,
     date: '2021-02-02',
     category: TRANSACTION_CATEGORY.TRADE,
@@ -186,7 +168,6 @@ export const transactionsParams: CreateTransactionParams[] = [
     totalCost: 1991990,
   },
   {
-    institutionId: institution.id,
     type: TRANSACTION_TYPE.BUY,
     date: '2022-05-20',
     category: TRANSACTION_CATEGORY.TRADE,

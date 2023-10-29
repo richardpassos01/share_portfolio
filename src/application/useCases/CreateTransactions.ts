@@ -17,12 +17,15 @@ export default class CreateTransactions {
     private readonly updatePortfolio: UpdatePortfolio,
   ) {}
 
-  async execute(params: CreateTransactionParams[]): Promise<void> {
+  async execute(
+    institutionId: string,
+    params: CreateTransactionParams[],
+  ): Promise<void> {
     const transactions = params
       .map(
         (param) =>
           new Transaction(
-            param.institutionId,
+            institutionId,
             TRANSACTION_TYPE[param.type],
             dateStringToDate(param.date),
             TRANSACTION_CATEGORY[param.category],

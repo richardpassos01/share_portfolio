@@ -47,7 +47,6 @@ const command = async () => {
         const transactions: CreateTransactionParams[] = data
           .slice(1)
           .map((transaction) => ({
-            institutionId: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
             type: institutionEventTypeMapper[transaction[0]],
             date: dateStringDDMMYYYYToYYYYMMDD(transaction[1]),
             category: institutionEventTypeMapper[transaction[2]],
@@ -61,7 +60,10 @@ const command = async () => {
         console.log(`File ${fileName} processed`);
       });
 
-    await createTransactions.execute(formattedTransactions);
+    await createTransactions.execute(
+      'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
+      formattedTransactions,
+    );
     console.log('transactions created');
   } catch (error) {
     console.error('Error to create transactions', error);

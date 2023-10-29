@@ -4,6 +4,7 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 import container from '@dependencyInjectionContainer';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import { transactionsParams, listTransactions } from '@fixtures/transactions';
+import institution from '@fixtures/institution';
 
 jest.mock('uuid', () => ({
   v4: () => '123456',
@@ -37,7 +38,7 @@ describe('CreateTransactions', () => {
 
     transactionsParams.sort(() => Math.random() - 0.5);
 
-    await createTransactions.execute(transactionsParams);
+    await createTransactions.execute(institution.id, transactionsParams);
 
     expect(transactionRepository.createMany).toHaveBeenCalledWith(
       expectedTransactions,
