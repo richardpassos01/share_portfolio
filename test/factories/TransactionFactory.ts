@@ -14,7 +14,7 @@ type Params = {
   category?: TRANSACTION_CATEGORY;
   ticketSymbol?: string;
   quantity?: number;
-  unityPrice?: number;
+  unitPrice?: number;
   totalCost?: number;
 };
 
@@ -30,7 +30,7 @@ export default class TransactionFactory {
       category = TRANSACTION_CATEGORY.TRADE,
       ticketSymbol = 'TSLA',
       quantity = 100,
-      unityPrice = 10,
+      unitPrice = 10,
       totalCost = 1000,
     } = {} as Params,
     transaction?: Transaction,
@@ -46,7 +46,7 @@ export default class TransactionFactory {
         category,
         ticketSymbol,
         quantity,
-        unityPrice,
+        unitPrice,
         totalCost,
         id,
       );
@@ -64,7 +64,7 @@ export default class TransactionFactory {
       category: this.transaction.category,
       ticketSymbol: this.transaction.ticketSymbol,
       quantity: this.transaction.quantity,
-      unityPrice: this.transaction.unityPrice,
+      unitPrice: this.transaction.unitPrice,
       totalCost: this.transaction.totalCost,
     };
   }

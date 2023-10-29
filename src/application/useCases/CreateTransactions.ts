@@ -31,7 +31,7 @@ export default class CreateTransactions {
             TRANSACTION_CATEGORY[param.category],
             param.ticketSymbol,
             param.quantity,
-            param.unityPrice,
+            param.unitPrice,
             param.totalCost,
           ),
       )

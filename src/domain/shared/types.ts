@@ -4,7 +4,7 @@ type Transaction = {
   institutionId: string;
   ticketSymbol: string;
   quantity: number;
-  unityPrice: number;
+  unitPrice: number;
   totalCost: number;
   type: TRANSACTION_TYPE;
   category: TRANSACTION_CATEGORY;
@@ -13,7 +13,7 @@ type Transaction = {
 export type CreateTransactionParams = {
   ticketSymbol: string;
   quantity: number;
-  unityPrice: number;
+  unitPrice: number;
   totalCost: number;
   type: TRANSACTION_TYPE;
   category: TRANSACTION_CATEGORY;

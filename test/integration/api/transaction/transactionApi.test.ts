@@ -96,7 +96,7 @@ describe('transactionAPI', () => {
       it('should throw shema validation error when payload has item with missing param', async () => {
         const expectedError = {
           message:
-            '[0].type is required, [0].date is required, [0].category is required, [0].ticketSymbol is required, [0].quantity is required, [0].unityPrice is required, [0].totalCost is required',
+            '[0].type is required, [0].date is required, [0].category is required, [0].ticketSymbol is required, [0].quantity is required, [0].unitPrice is required, [0].totalCost is required',
           customCode: CustomErrorCodes.SCHEMA_VALIDATOR,
           status: StatusCodes.UNPROCESSABLE_ENTITY,
         };
@@ -126,7 +126,7 @@ describe('transactionAPI', () => {
               category: 'INVALID_CATEGORY',
               ticketSymbol: 'TSLA',
               quantity: 'INVALID_NUMBER',
-              unityPrice: 0,
+              unitPrice: 0,
               totalCost: 0,
             },
           ]);

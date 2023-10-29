@@ -52,7 +52,7 @@ const command = async () => {
             category: institutionEventTypeMapper[transaction[2]],
             ticketSymbol: transaction[3].split(' - ')[0],
             quantity: transaction[5],
-            unityPrice: transaction[6] !== '-' ? transaction[6] : 0,
+            unitPrice: transaction[6] !== '-' ? transaction[6] : 0,
             totalCost: transaction[7] !== '-' ? transaction[7] : 0,
           }));
 

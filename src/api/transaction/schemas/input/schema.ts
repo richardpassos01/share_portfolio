@@ -14,7 +14,7 @@ const create = Joi.array()
         .required(),
       ticketSymbol: Joi.string().required(),
       quantity: Joi.number().required(),
-      unityPrice: Joi.number().required(),
+      unitPrice: Joi.number().required(),
       totalCost: Joi.number().required(),
     }),
   );

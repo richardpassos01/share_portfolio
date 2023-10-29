@@ -11,7 +11,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 100,
-    unityPrice: 20.19,
+    unitPrice: 20.19,
     totalCost: 2019.0,
   },
   {
@@ -20,7 +20,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 100,
-    unityPrice: 12.54,
+    unitPrice: 12.54,
     totalCost: 1254.0,
   },
   {
@@ -29,7 +29,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 50,
-    unityPrice: 21.1,
+    unitPrice: 21.1,
     totalCost: 1055.0,
   },
   {
@@ -38,7 +38,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 100,
-    unityPrice: 13.0,
+    unitPrice: 13.0,
     totalCost: 1300.0,
   },
   {
@@ -47,7 +47,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 1500,
-    unityPrice: 12.3,
+    unitPrice: 12.3,
     totalCost: 18450.0,
   },
   {
@@ -56,7 +56,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 1500,
-    unityPrice: 12.3,
+    unitPrice: 12.3,
     totalCost: 18450.0,
   },
   {
@@ -65,7 +65,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.DIVIDENDS,
     ticketSymbol: 'AAPL',
     quantity: 1500,
-    unityPrice: 10,
+    unitPrice: 10,
     totalCost: 15000.0,
   },
   {
@@ -74,7 +74,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 10,
-    unityPrice: 12.3,
+    unitPrice: 12.3,
     totalCost: 123,
   },
   {
@@ -83,7 +83,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 10,
-    unityPrice: 13.5,
+    unitPrice: 13.5,
     totalCost: 135,
   },
   {
@@ -92,7 +92,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 1500,
-    unityPrice: 10,
+    unitPrice: 10,
     totalCost: 15000,
   },
   {
@@ -101,7 +101,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'GOOG',
     quantity: 1700,
-    unityPrice: 12.42,
+    unitPrice: 12.42,
     totalCost: 21114,
   },
   {
@@ -110,7 +110,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.BONUS_SHARE,
     ticketSymbol: 'AAPL',
     quantity: 10,
-    unityPrice: 0,
+    unitPrice: 0,
     totalCost: 0,
   },
   {
@@ -119,7 +119,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.SPLIT,
     ticketSymbol: 'AAPL',
     quantity: 100,
-    unityPrice: 0,
+    unitPrice: 0,
     totalCost: 0,
   },
   {
@@ -128,7 +128,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AAPL',
     quantity: 160,
-    unityPrice: 20,
+    unitPrice: 20,
     totalCost: 3200,
   },
   {
@@ -137,7 +137,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 100,
-    unityPrice: 10,
+    unitPrice: 10,
     totalCost: 1000,
   },
   {
@@ -146,7 +146,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 100,
-    unityPrice: 12.93,
+    unitPrice: 12.93,
     totalCost: 1293,
   },
   {
@@ -155,7 +155,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 1,
-    unityPrice: 10000,
+    unitPrice: 10000,
     totalCost: 10000,
   },
   {
@@ -164,7 +164,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'TSLA',
     quantity: 199,
-    unityPrice: 10010,
+    unitPrice: 10010,
     totalCost: 1991990,
   },
   {
@@ -173,7 +173,7 @@ export const transactionsParams: CreateTransactionParams[] = [
     category: TRANSACTION_CATEGORY.TRADE,
     ticketSymbol: 'AMZN',
     quantity: 100,
-    unityPrice: 130,
+    unitPrice: 130,
     totalCost: 13000,
   },
 ];
@@ -187,7 +187,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 100,
-      unityPrice: 20.19,
+      unitPrice: 20.19,
       totalCost: 2019.0,
     }).get(),
     new TransactionFactory({
@@ -197,7 +197,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'GOOG',
       quantity: 100,
-      unityPrice: 12.54,
+      unitPrice: 12.54,
       totalCost: 1254.0,
     }).get(),
     new TransactionFactory({
@@ -207,7 +207,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'GOOG',
       quantity: 100,
-      unityPrice: 13.0,
+      unitPrice: 13.0,
       totalCost: 1300.0,
     }).get(),
     new TransactionFactory({
@@ -217,7 +217,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 50,
-      unityPrice: 21.1,
+      unitPrice: 21.1,
       totalCost: 1055.0,
     }).get(),
     new TransactionFactory({
@@ -227,7 +227,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 1500,
-      unityPrice: 12.3,
+      unitPrice: 12.3,
       totalCost: 18450.0,
     }).get(),
     new TransactionFactory({
@@ -237,7 +237,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'GOOG',
       quantity: 1500,
-      unityPrice: 12.3,
+      unitPrice: 12.3,
       totalCost: 18450.0,
     }).get(),
     new TransactionFactory({
@@ -247,7 +247,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.DIVIDENDS,
       ticketSymbol: 'AAPL',
       quantity: 1500,
-      unityPrice: 10,
+      unitPrice: 10,
       totalCost: 15000.0,
     }).get(),
     new TransactionFactory({
@@ -257,7 +257,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 10,
-      unityPrice: 12.3,
+      unitPrice: 12.3,
       totalCost: 123,
     }).get(),
     new TransactionFactory({
@@ -267,7 +267,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 10,
-      unityPrice: 13.5,
+      unitPrice: 13.5,
       totalCost: 135,
     }).get(),
     new TransactionFactory({
@@ -277,7 +277,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 1500,
-      unityPrice: 10,
+      unitPrice: 10,
       totalCost: 15000,
     }).get(),
     new TransactionFactory({
@@ -287,7 +287,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'GOOG',
       quantity: 1700,
-      unityPrice: 12.42,
+      unitPrice: 12.42,
       totalCost: 21114,
     }).get(),
     new TransactionFactory({
@@ -297,7 +297,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.BONUS_SHARE,
       ticketSymbol: 'AAPL',
       quantity: 10,
-      unityPrice: 0,
+      unitPrice: 0,
       totalCost: 0,
     }).get(),
     new TransactionFactory({
@@ -307,7 +307,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.SPLIT,
       ticketSymbol: 'AAPL',
       quantity: 100,
-      unityPrice: 0,
+      unitPrice: 0,
       totalCost: 0,
     }).get(),
     new TransactionFactory({
@@ -317,7 +317,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AAPL',
       quantity: 160,
-      unityPrice: 20,
+      unitPrice: 20,
       totalCost: 3200,
     }).get(),
     new TransactionFactory({
@@ -327,7 +327,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'TSLA',
       quantity: 100,
-      unityPrice: 10,
+      unitPrice: 10,
       totalCost: 1000,
     }).get(),
     new TransactionFactory({
@@ -337,7 +337,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'TSLA',
       quantity: 100,
-      unityPrice: 12.93,
+      unitPrice: 12.93,
       totalCost: 1293,
     }).get(),
     new TransactionFactory({
@@ -347,7 +347,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'TSLA',
       quantity: 1,
-      unityPrice: 10000,
+      unitPrice: 10000,
       totalCost: 10000,
     }).get(),
     new TransactionFactory({
@@ -357,7 +357,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'TSLA',
       quantity: 199,
-      unityPrice: 10010,
+      unitPrice: 10010,
       totalCost: 1991990,
     }).get(),
     new TransactionFactory({
@@ -367,7 +367,7 @@ export const listTransactions = (): Transaction[] => {
       category: TRANSACTION_CATEGORY.TRADE,
       ticketSymbol: 'AMZN',
       quantity: 100,
-      unityPrice: 130,
+      unitPrice: 130,
       totalCost: 13000,
     }).get(),
   ];

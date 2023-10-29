@@ -29,10 +29,14 @@ export default class TransactionController {
     const { institutionId } = ctx.params;
     const { page, limit } = ctx.query;
 
-    await this.listTransactions.execute(institutionId, page, limit);
+    const result = await this.listTransactions.execute(
+      institutionId,
+      Number(page),
+      Number(limit),
+    );
 
-    ctx.response.status = StatusCodes.CREATED;
-    ctx.response.body = ReasonPhrases.CREATED;
+    ctx.response.status = StatusCodes.OK;
+    ctx.response.body = result;
   }
 
   async create(ctx: Koa.DefaultContext): Promise<void> {
