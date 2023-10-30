@@ -24,3 +24,5 @@ export type TransactionDTO = Transaction & {
   id?: string;
   date: Date;
 };
+
+export type SortOrder = 'asc' | 'desc';

@@ -45,7 +45,7 @@ export default class ReSyncPortfolio {
         pageSize,
       );
 
-      await this.handleUpdatePortfolio(paginatedResponse.results);
+      await this.handleUpdatePortfolio(paginatedResponse.items);
       page++;
     }
   }

@@ -27,12 +27,13 @@ export default class TransactionController {
 
   async list(ctx: Koa.DefaultContext): Promise<void> {
     const { institutionId } = ctx.params;
-    const { page, limit } = ctx.query;
+    const { order, page, limit } = ctx.query;
 
     const result = await this.listTransactions.execute(
       institutionId,
       Number(page),
       Number(limit),
+      order,
     );
 
     ctx.response.status = StatusCodes.OK;
