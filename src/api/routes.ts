@@ -52,7 +52,7 @@ router.get('/portfolio/:institutionId', (ctx) => {
 
 router.post('/portfolio/:institutionId/re-sync', (ctx) => {
   const portfolioController = container.get<PortfolioController>(
-    TYPES.InstitutionController,
+    TYPES.PortfolioController,
   );
   return portfolioController.reSync(ctx);
 });

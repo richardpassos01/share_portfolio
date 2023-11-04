@@ -47,4 +47,15 @@ describe('portfolioAPI', () => {
       expect(response.body).toEqual(expectedResponse);
     });
   });
+
+  describe('POST /portfolio', () => {
+    it('should resync portfolio', async () => {
+      const response = await request.post(
+        `/portfolio/${institution.id}/re-sync`,
+      );
+
+      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+      expect(response.body).toEqual({});
+    });
+  });
 });
