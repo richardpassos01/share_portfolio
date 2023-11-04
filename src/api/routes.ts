@@ -44,17 +44,17 @@ router.get('/institution/:institutionId', (ctx) => {
 });
 
 router.get('/portfolio/:institutionId', (ctx) => {
-  const PortfolioController = container.get<PortfolioController>(
+  const portfolioController = container.get<PortfolioController>(
     TYPES.PortfolioController,
   );
-  return PortfolioController.get(ctx);
+  return portfolioController.get(ctx);
 });
 
 router.post('/portfolio/:institutionId/re-sync', (ctx) => {
-  const institutionController = container.get<InstitutionController>(
+  const portfolioController = container.get<PortfolioController>(
     TYPES.InstitutionController,
   );
-  return institutionController.reSync(ctx);
+  return portfolioController.reSync(ctx);
 });
 
 router.get('/transactions/:institutionId', (ctx) => {
