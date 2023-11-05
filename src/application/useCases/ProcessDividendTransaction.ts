@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import BalanceManagement from '@domain/balance/BalanceManagement';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()

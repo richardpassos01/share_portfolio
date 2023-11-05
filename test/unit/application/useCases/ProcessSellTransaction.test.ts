@@ -5,7 +5,7 @@ import { ReasonPhrases } from '@domain/shared/enums';
 import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
 import GetShare from '@application/queries/GetShare';
 import NotFoundError from '@domain/shared/error/NotFoundError';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import BalanceManagement from '@domain/balance/BalanceManagement';
 
 describe('ProcessSellTransaction', () => {
   let processSellTransaction: ProcessSellTransaction;

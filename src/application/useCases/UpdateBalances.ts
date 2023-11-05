@@ -1,12 +1,12 @@
 import { TYPES } from '@constants/types';
 import { injectable, inject } from 'inversify';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
-import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
-import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
+import BalanceManagement from '@domain/balance/BalanceManagement';
+import TotalBalance from '@domain/balance/totalBalance/TotalBalance';
+import MonthlyBalance from '@domain/balance/monthlyBalance/MonthlyBalance';
 import { dateToMonthYear } from '@helpers';
 import { TransactionDTO } from '@domain/shared/types';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
 @injectable()
 export default class UpdateBalances {

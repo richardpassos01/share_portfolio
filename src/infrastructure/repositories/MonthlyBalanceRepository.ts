@@ -2,8 +2,8 @@ import { TYPES } from '@constants/types';
 import MonthlyBalanceMapper from '@infrastructure/mappers/MonthlyBalanceMapper';
 import Database, { TABLES } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
-import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
-import MonthlyBalance from '@domain/portfolio/monthlyBalance/MonthlyBalance';
+import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import MonthlyBalance from '@domain/balance/monthlyBalance/MonthlyBalance';
 
 @injectable()
 export default class MonthlyBalanceRepository

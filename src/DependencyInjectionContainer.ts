@@ -5,7 +5,6 @@ import Database from '@infrastructure/database/Database';
 
 import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
-import PortfolioController from '@api/portfolio/PortfolioController';
 
 import GetInstitution from '@application/queries/GetInstitution';
 import ListShares from '@application/queries/ListShares';
@@ -29,7 +28,6 @@ import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTrans
 import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
 import UpdateBalances from '@application/useCases/UpdateBalances';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
-import CreatePortfolio from '@application/useCases/CreatePortfolio';
 import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
@@ -41,8 +39,10 @@ import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRep
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+
+import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -146,10 +146,6 @@ container
   .bind<UpdateBalances>(TYPES.UpdateBalances)
   .to(UpdateBalances)
   .inSingletonScope();
-container
-  .bind<CreatePortfolio>(TYPES.CreatePortfolio)
-  .to(CreatePortfolio)
-  .inSingletonScope();
 
 container
   .bind<InstitutionRepositoryInterface>(TYPES.InstitutionRepository)
@@ -171,5 +167,9 @@ container
   .bind<TotalBalanceRepositoryInterface>(TYPES.TotalBalanceRepository)
   .to(TotalBalanceRepository)
   .inSingletonScope();
+
+container
+  .bind<BalanceManagementFactory>(TYPES.BalanceManagementFactory)
+  .toSelf();
 
 export default container;

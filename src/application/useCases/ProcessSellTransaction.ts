@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import GetShare from '@application/queries/GetShare';
 import UpdateOrLiquidateShare from './UpdateOrLiquidateShare';
 import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import BalanceManagement from '@domain/balance/BalanceManagement';
 import NotFoundError from '@domain/shared/error/NotFoundError';
 import { ReasonPhrases } from '@domain/shared/enums';
 

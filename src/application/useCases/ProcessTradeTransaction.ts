@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import ProcessBuyTransaction from './ProcessBuyTransaction';
 import ProcessSellTransaction from './ProcessSellTransaction';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import BalanceManagement from '@domain/balance/BalanceManagement';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()

@@ -6,7 +6,7 @@ import TransactionFactory from '@factories/TransactionFactory';
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import UpdateBalances from '@application/useCases/UpdateBalances';
 import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
+import BalanceManagement from '@domain/balance/BalanceManagement';
 import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
 

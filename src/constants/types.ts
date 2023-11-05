@@ -30,6 +30,6 @@ export const TYPES = {
   ListMonthlyBalance: Symbol.for('ListMonthlyBalance'),
   CreateBalanceManagement: Symbol.for('CreateBalanceManagement'),
   UpdateBalances: Symbol.for('UpdateBalances'),
-  CreatePortfolio: Symbol.for('CreatePortfolio'),
   ReSyncPortfolio: Symbol.for('ReSyncPortfolio'),
+  BalanceManagementFactory: Symbol.for('BalanceManagementFactory'),
 };

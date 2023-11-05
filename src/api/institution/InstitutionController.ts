@@ -16,7 +16,7 @@ export default class InstitutionController {
     private readonly getInstitution: GetInstitution,
   ) {}
 
-  async create(ctx: Koa.DefaultContext): Promise<any> {
+  async create(ctx: Koa.DefaultContext): Promise<void> {
     const { name, userId } = ctx.request.body;
 
     const institutionId = await this.createInstitution.execute(name, userId);

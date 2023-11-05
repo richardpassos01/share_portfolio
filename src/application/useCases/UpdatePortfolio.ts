@@ -4,9 +4,9 @@ import { TYPES } from '@constants/types';
 import ProcessDividendTransaction from './ProcessDividendTransaction';
 import ProcessSpecialEventsOnShare from './ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from './ProcessTradeTransaction';
-import CreateBalanceManagement from './CreateBalanceManagement';
 import UpdateBalances from './UpdateBalances';
 import { TransactionDTO } from '@domain/shared/types';
+import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
 
 @injectable()
 export default class UpdatePortfolio {
@@ -20,16 +20,18 @@ export default class UpdatePortfolio {
     @inject(TYPES.ProcessTradeTransaction)
     private readonly processTradeTransaction: ProcessTradeTransaction,
 
-    @inject(TYPES.CreateBalanceManagement)
-    private readonly createBalanceManagement: CreateBalanceManagement,
-
     @inject(TYPES.UpdateBalances)
     private readonly updateBalances: UpdateBalances,
+
+    @inject(TYPES.BalanceManagementFactory)
+    private readonly balanceManagementFactory: BalanceManagementFactory,
   ) {}
 
-  async execute(transaction: TransactionDTO): Promise<any> {
-    const balanceManagement =
-      await this.createBalanceManagement.execute(transaction);
+  async execute(transaction: TransactionDTO): Promise<void> {
+    const balanceManagement = await this.balanceManagementFactory.build(
+      transaction.institutionId,
+      transaction.date,
+    );
 
     const isDividend = transaction.category === TRANSACTION_CATEGORY.DIVIDENDS;
 

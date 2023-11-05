@@ -7,7 +7,6 @@ import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
 import ListShares from '@application/queries/ListShares';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
-import CreatePortfolio from '@application/useCases/CreatePortfolio';
 import institution from '@fixtures/institution';
 
 describe('CreateTransactions', () => {
@@ -15,7 +14,6 @@ describe('CreateTransactions', () => {
   let createTransactions: CreateTransactions;
   let listShares: ListShares;
   let getMonthlyBalance: GetMonthlyBalance;
-  let createPortfolio: CreatePortfolio;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -26,7 +24,6 @@ describe('CreateTransactions', () => {
     getMonthlyBalance = container.get<GetMonthlyBalance>(
       TYPES.GetMonthlyBalance,
     );
-    createPortfolio = container.get<CreatePortfolio>(TYPES.CreatePortfolio);
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });

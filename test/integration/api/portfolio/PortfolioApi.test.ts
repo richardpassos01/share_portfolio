@@ -6,7 +6,7 @@ import Database from '@infrastructure/database/Database';
 import institution from '@fixtures/institution';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import { StatusCodes } from '@domain/shared/enums';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 
 describe('portfolioAPI', () => {
   const server = app.listen();

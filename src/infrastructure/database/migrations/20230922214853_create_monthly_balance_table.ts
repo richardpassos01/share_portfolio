@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import TABLES from '../Tables';
-import { MONTHLY_BALANCE_TYPE } from '../../../domain/portfolio/monthlyBalance/MonthlyBalanceEnums';
+import { MONTHLY_BALANCE_TYPE } from '../../../domain/balance/monthlyBalance/MonthlyBalanceEnums';
 
 export async function up(knex: Knex): Promise<void> {
   const hasTable = await knex.schema.hasTable(TABLES.MONTHLY_BALANCE);

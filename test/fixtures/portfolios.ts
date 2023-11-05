@@ -1,4 +1,4 @@
-import Portfolio from '@domain/portfolio/Portfolio';
+import Portfolio from '@domain/balance/Portfolio';
 
 export const portfolios = [
   new Portfolio(0, 0),
