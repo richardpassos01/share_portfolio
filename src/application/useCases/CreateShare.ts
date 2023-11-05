@@ -16,7 +16,7 @@ export default class CreateShare {
     ticketSymbol,
     quantity,
     totalCost,
-    unityPrice: mediumPrice,
+    unitPrice: mediumPrice,
   }: TransactionDTO): Promise<void> {
     const share = new Share(
       institutionId,

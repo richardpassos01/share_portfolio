@@ -2,12 +2,12 @@ type Data = {
   total_count: number;
 };
 export type MapperFunction = () => any;
-type Results = any[];
+type Items = any[];
 
 export default class Pagination {
   public totalPages = 0;
   public totalItems = 0;
-  public results: Results = [];
+  public items: Items = [];
 
   constructor(
     public readonly currentPage: number,
@@ -24,6 +24,6 @@ export default class Pagination {
     }
     this.totalItems = Number(data[0].total_count);
     this.totalPages = Math.ceil(this.totalItems / limit);
-    this.results = data.map(mapper);
+    this.items = data.map(mapper);
   }
 }

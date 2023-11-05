@@ -7,6 +7,7 @@ import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import { CreateTransactionParams } from '@domain/shared/types';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
+import ListTransactions from '@application/queries/ListTransactions';
 
 @injectable()
 export default class TransactionController {
@@ -19,19 +20,39 @@ export default class TransactionController {
 
     @inject(TYPES.ReSyncPortfolio)
     private readonly reSyncPortfolio: ReSyncPortfolio,
+
+    @inject(TYPES.ListTransactions)
+    private readonly listTransactions: ListTransactions,
   ) {}
+
+  async list(ctx: Koa.DefaultContext): Promise<void> {
+    const { institutionId } = ctx.params;
+    const { order, page, limit } = ctx.query;
+
+    const result = await this.listTransactions.execute(
+      institutionId,
+      Number(page),
+      Number(limit),
+      order,
+    );
+
+    ctx.response.status = StatusCodes.OK;
+    ctx.response.body = result;
+  }
 
   async create(ctx: Koa.DefaultContext): Promise<void> {
     const payload: CreateTransactionParams[] = ctx.request.body;
+    const { institutionId } = ctx.params;
 
-    await this.createTransactions.execute(payload);
+    await this.createTransactions.execute(institutionId, payload);
 
     ctx.response.status = StatusCodes.CREATED;
     ctx.response.body = ReasonPhrases.CREATED;
   }
 
   async delete(ctx: Koa.DefaultContext): Promise<void> {
-    const { transactionIds, institutionId } = ctx.request.body;
+    const transactionIds = ctx.request.body;
+    const { institutionId } = ctx.params;
 
     await this.deleteTransactions.execute(institutionId, transactionIds);
     await this.reSyncPortfolio.execute(institutionId);

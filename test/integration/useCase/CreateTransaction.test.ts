@@ -46,7 +46,7 @@ describe('CreateTransactions', () => {
       description,
     ) => {
       it(description, async () => {
-        await createTransactions.execute([transactionParams]);
+        await createTransactions.execute(institution.id, [transactionParams]);
 
         const shares = await listShares.execute(institution.id);
 

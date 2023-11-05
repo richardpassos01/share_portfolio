@@ -6,7 +6,7 @@ import { inject, injectable } from 'inversify';
 import Transaction from '@domain/transaction/Transaction';
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import Pagination, { MapperFunction } from '@domain/shared/Pagination';
-import { TransactionDTO } from '@domain/shared/types';
+import { SortOrder, TransactionDTO } from '@domain/shared/types';
 
 @injectable()
 export default class TransactionRepository
@@ -33,7 +33,12 @@ export default class TransactionRepository
       .into(TABLES.TRANSACTION);
   }
 
-  async list(institutionId: string, page = 1, limit = 100) {
+  async list(
+    institutionId: string,
+    page = 1,
+    limit = 100,
+    order: SortOrder = 'asc',
+  ) {
     return this.database
       .connection()
       .select(
@@ -43,7 +48,7 @@ export default class TransactionRepository
       .where('institution_id', institutionId)
       .into(TABLES.TRANSACTION)
       .distinct()
-      .orderBy(['date', 'type', 'ticket_symbol'])
+      .orderBy([{ column: 'date', order }, 'type', 'ticket_symbol'])
       .limit(limit)
       .offset((page - 1) * limit)
       .then(

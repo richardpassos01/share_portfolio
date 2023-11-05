@@ -6,7 +6,7 @@ import container from '@dependencyInjectionContainer';
 import TransactionController from './transaction/TransactionController';
 import InstitutionController from './institution/InstitutionController';
 
-import schemaValidator from '@middleware/schemaValidator';
+import { bodyValidator } from '@middleware/schemaValidator';
 import TransactionSchemas from './transaction/schemas/input/schema';
 import InstitutionSchemas from './institution/schemas/input/schema';
 import PortfolioController from './portfolio/PortfolioController';
@@ -19,16 +19,22 @@ router.get('/healthy-check', (ctx) => {
   ctx.body = ReasonPhrases.OK;
 });
 
-router.post(
-  '/institution',
-  schemaValidator(InstitutionSchemas.create),
-  (ctx) => {
-    const institutionController = container.get<InstitutionController>(
-      TYPES.InstitutionController,
-    );
-    return institutionController.create(ctx);
-  },
-);
+router.post('/auth', (ctx) => {
+  ctx.response.status = StatusCodes.OK;
+  ctx.body = ReasonPhrases.OK;
+});
+
+router.get('/auth', (ctx) => {
+  ctx.response.status = StatusCodes.OK;
+  ctx.body = ReasonPhrases.OK;
+});
+
+router.post('/institution', bodyValidator(InstitutionSchemas.create), (ctx) => {
+  const institutionController = container.get<InstitutionController>(
+    TYPES.InstitutionController,
+  );
+  return institutionController.create(ctx);
+});
 
 router.get('/institution/:institutionId', (ctx) => {
   const institutionController = container.get<InstitutionController>(
@@ -38,22 +44,29 @@ router.get('/institution/:institutionId', (ctx) => {
 });
 
 router.get('/portfolio/:institutionId', (ctx) => {
-  const PortfolioController = container.get<PortfolioController>(
+  const portfolioController = container.get<PortfolioController>(
     TYPES.PortfolioController,
   );
-  return PortfolioController.get(ctx);
+  return portfolioController.get(ctx);
 });
 
 router.post('/portfolio/:institutionId/re-sync', (ctx) => {
-  const institutionController = container.get<InstitutionController>(
-    TYPES.InstitutionController,
+  const portfolioController = container.get<PortfolioController>(
+    TYPES.PortfolioController,
   );
-  return institutionController.reSync(ctx);
+  return portfolioController.reSync(ctx);
+});
+
+router.get('/transactions/:institutionId', (ctx) => {
+  const transactionController = container.get<TransactionController>(
+    TYPES.TransactionController,
+  );
+  return transactionController.list(ctx);
 });
 
 router.post(
-  '/transaction',
-  schemaValidator(TransactionSchemas.create),
+  '/transactions/:institutionId',
+  bodyValidator(TransactionSchemas.create),
   (ctx) => {
     const transactionController = container.get<TransactionController>(
       TYPES.TransactionController,
@@ -63,8 +76,8 @@ router.post(
 );
 
 router.delete(
-  '/transaction',
-  schemaValidator(TransactionSchemas.del),
+  '/transactions/:institutionId',
+  bodyValidator(TransactionSchemas.del),
   (ctx) => {
     const transactionController = container.get<TransactionController>(
       TYPES.TransactionController,

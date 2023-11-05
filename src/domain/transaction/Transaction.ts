@@ -9,7 +9,7 @@ export default class Transaction {
     public readonly category: TRANSACTION_CATEGORY,
     public readonly ticketSymbol: string,
     public readonly quantity: number,
-    public readonly unityPrice: number,
+    public readonly unitPrice: number,
     public readonly totalCost: number,
     public readonly id: string = uuid(),
   ) {}

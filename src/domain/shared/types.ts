@@ -4,13 +4,19 @@ type Transaction = {
   institutionId: string;
   ticketSymbol: string;
   quantity: number;
-  unityPrice: number;
+  unitPrice: number;
   totalCost: number;
   type: TRANSACTION_TYPE;
   category: TRANSACTION_CATEGORY;
 };
 
-export type CreateTransactionParams = Transaction & {
+export type CreateTransactionParams = {
+  ticketSymbol: string;
+  quantity: number;
+  unitPrice: number;
+  totalCost: number;
+  type: TRANSACTION_TYPE;
+  category: TRANSACTION_CATEGORY;
   date: string;
 };
 
@@ -18,3 +24,5 @@ export type TransactionDTO = Transaction & {
   id?: string;
   date: Date;
 };
+
+export type SortOrder = 'asc' | 'desc';

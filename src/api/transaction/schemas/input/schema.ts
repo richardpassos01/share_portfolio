@@ -5,7 +5,6 @@ const create = Joi.array()
   .min(1)
   .items(
     Joi.object({
-      institutionId: Joi.string().uuid().required(),
       type: Joi.string()
         .valid(...Object.values(TRANSACTION_TYPE))
         .required(),
@@ -15,14 +14,11 @@ const create = Joi.array()
         .required(),
       ticketSymbol: Joi.string().required(),
       quantity: Joi.number().required(),
-      unityPrice: Joi.number().required(),
+      unitPrice: Joi.number().required(),
       totalCost: Joi.number().required(),
     }),
   );
 
-const del = Joi.object({
-  institutionId: Joi.string().uuid().required(),
-  transactionIds: Joi.array().items(Joi.string().uuid()).min(1).required(),
-});
+const del = Joi.array().items(Joi.string().uuid()).min(1).required();
 
 export default { create, del };
