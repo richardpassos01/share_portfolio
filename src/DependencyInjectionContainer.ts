@@ -25,7 +25,6 @@ import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransacti
 import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
 import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
 import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
-import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
 import UpdateBalances from '@application/useCases/UpdateBalances';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
 import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
@@ -43,6 +42,7 @@ import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interf
 import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
 import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
+import BalanceController from '@api/balance/BalanceController';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -59,8 +59,8 @@ container
   .to(TransactionController)
   .inSingletonScope();
 container
-  .bind<PortfolioController>(TYPES.PortfolioController)
-  .to(PortfolioController)
+  .bind<BalanceController>(TYPES.BalanceController)
+  .to(BalanceController)
   .inSingletonScope();
 
 container
@@ -139,10 +139,6 @@ container
   .to(ListTradeTransactionsFromMonth)
   .inSingletonScope();
 container
-  .bind<CreateBalanceManagement>(TYPES.CreateBalanceManagement)
-  .to(CreateBalanceManagement)
-  .inSingletonScope();
-container
   .bind<UpdateBalances>(TYPES.UpdateBalances)
   .to(UpdateBalances)
   .inSingletonScope();
@@ -170,6 +166,7 @@ container
 
 container
   .bind<BalanceManagementFactory>(TYPES.BalanceManagementFactory)
-  .toSelf();
+  .to(BalanceManagementFactory)
+  .inSingletonScope();
 
 export default container;

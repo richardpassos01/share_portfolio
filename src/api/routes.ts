@@ -9,7 +9,7 @@ import InstitutionController from './institution/InstitutionController';
 import { bodyValidator } from '@middleware/schemaValidator';
 import TransactionSchemas from './transaction/schemas/input/schema';
 import InstitutionSchemas from './institution/schemas/input/schema';
-import PortfolioController from './portfolio/PortfolioController';
+import BalanceController from './balance/BalanceController';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 
 const router = new Router();
@@ -43,18 +43,18 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
-router.get('/portfolio/:institutionId', (ctx) => {
-  const portfolioController = container.get<PortfolioController>(
-    TYPES.PortfolioController,
+router.get('/balance/:institutionId', (ctx) => {
+  const balanceController = container.get<BalanceController>(
+    TYPES.BalanceController,
   );
-  return portfolioController.get(ctx);
+  return balanceController.get(ctx);
 });
 
-router.post('/portfolio/:institutionId/re-sync', (ctx) => {
-  const portfolioController = container.get<PortfolioController>(
-    TYPES.PortfolioController,
+router.post('/balance/:institutionId/re-sync', (ctx) => {
+  const balanceController = container.get<BalanceController>(
+    TYPES.BalanceController,
   );
-  return portfolioController.reSync(ctx);
+  return balanceController.reSync(ctx);
 });
 
 router.get('/transactions/:institutionId', (ctx) => {

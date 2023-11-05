@@ -11,15 +11,15 @@ import { transactionsParams } from '@fixtures/transactions';
 import { listMonthlyBalances } from '@fixtures/monthlyBalances';
 import TransactionFactory from '@factories/TransactionFactory';
 import { shares } from '@fixtures/shares';
-import CreatePortfolio from '@application/useCases/CreatePortfolio';
-import { portfolios } from '@fixtures/portfolios';
+import { totalBalances } from '@fixtures/totalBalances';
+import GetTotalBalance from '@application/queries/GetTotalBalance';
 
 describe('ReSyncPortfolio', () => {
   let database: Database;
   let listShares: ListShares;
   let listMonthlyBalance: ListMonthlyBalance;
-  let createPortfolio: CreatePortfolio;
   let reSyncPortfolio: ReSyncPortfolio;
+  let getTotalBalance: GetTotalBalance;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -27,7 +27,7 @@ describe('ReSyncPortfolio', () => {
     listMonthlyBalance = container.get<ListMonthlyBalance>(
       TYPES.ListMonthlyBalance,
     );
-    createPortfolio = container.get<CreatePortfolio>(TYPES.CreatePortfolio);
+    getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
     reSyncPortfolio = container.get<ReSyncPortfolio>(TYPES.ReSyncPortfolio);
     await database.connection().migrate.latest();
     await database.connection().seed.run();
@@ -41,7 +41,7 @@ describe('ReSyncPortfolio', () => {
   describe('when call use case', () => {
     it('should reset the portfolio and recreate information based on transactions, no matter the order in which the transactions were created.', async () => {
       const expectedShare = shares[shares.length - 1];
-      const expectedPortfolio = portfolios[portfolios.length - 1];
+      const expectedTotalBalance = totalBalances[totalBalances.length - 1];
       const expectedMonthlyBalances = listMonthlyBalances();
 
       transactionsParams.sort(() => Math.random() - 0.5);
@@ -60,10 +60,10 @@ describe('ReSyncPortfolio', () => {
       ).map((monthlyBalance) =>
         new MonthlyBalanceFactory({}, monthlyBalance).getObject(),
       );
-      const portfolio = await createPortfolio.execute(institution.id);
+      const totalBalance = await getTotalBalance.execute(institution.id);
 
       expect(monthlyBalanceList).toEqual(expectedMonthlyBalances);
-      expect(portfolio).toEqual(expectedPortfolio);
+      expect(totalBalance).toEqual(expectedTotalBalance);
       expect(sharesList).toEqual(expectedShare);
     });
   });

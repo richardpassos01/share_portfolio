@@ -5,10 +5,10 @@ import ProcessDividendTransaction from '@application/useCases/ProcessDividendTra
 import TransactionFactory from '@factories/TransactionFactory';
 import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
 import UpdateBalances from '@application/useCases/UpdateBalances';
-import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
 import BalanceManagement from '@domain/balance/BalanceManagement';
 import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
 import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
+import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
 
 jest.mock('uuid', () => ({
   v4: () => '123456',
@@ -18,7 +18,7 @@ describe('UpdatePortfolio', () => {
   let updatePortfolio: UpdatePortfolio;
   let processDividendTransaction: ProcessDividendTransaction;
   let updateBalances: UpdateBalances;
-  let createBalanceManagement: CreateBalanceManagement;
+  let balanceManagementFactory: BalanceManagementFactory;
   let balanceManagement: BalanceManagement;
   let processSpecialEventsOnShare: ProcessSpecialEventsOnShare;
   let processTradeTransaction: ProcessTradeTransaction;
@@ -35,8 +35,8 @@ describe('UpdatePortfolio', () => {
     processTradeTransaction = container.get<ProcessTradeTransaction>(
       TYPES.ProcessTradeTransaction,
     );
-    createBalanceManagement = container.get<CreateBalanceManagement>(
-      TYPES.CreateBalanceManagement,
+    balanceManagementFactory = container.get<BalanceManagementFactory>(
+      TYPES.BalanceManagementFactory,
     );
     balanceManagement = new BalanceManagement();
   });
@@ -48,7 +48,7 @@ describe('UpdatePortfolio', () => {
     jest.spyOn(processTradeTransaction, 'execute').mockImplementation();
 
     jest
-      .spyOn(createBalanceManagement, 'execute')
+      .spyOn(balanceManagementFactory, 'build')
       .mockImplementation(() => Promise.resolve(balanceManagement));
   });
 
