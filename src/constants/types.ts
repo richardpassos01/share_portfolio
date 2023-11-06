@@ -21,9 +21,10 @@ export const TYPES = {
   UpdateShare: Symbol.for('UpdateShare'),
   ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
   BalanceController: Symbol.for('BalanceController'),
+  ResyncController: Symbol.for('ResyncController'),
   GetMonthlyBalance: Symbol.for('GetMonthlyBalance'),
   ListMonthlyBalance: Symbol.for('ListMonthlyBalance'),
   UpdateBalances: Symbol.for('UpdateBalances'),
-  ReSyncPortfolio: Symbol.for('ReSyncPortfolio'),
+  ResyncPortfolio: Symbol.for('ResyncPortfolio'),
   BalanceManagementFactory: Symbol.for('BalanceManagementFactory'),
 };

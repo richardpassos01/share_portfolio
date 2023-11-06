@@ -11,6 +11,7 @@ import TransactionSchemas from './transaction/schemas/input/schema';
 import InstitutionSchemas from './institution/schemas/input/schema';
 import BalanceController from './balance/BalanceController';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
+import ResyncController from './resync/ResyncController';
 
 const router = new Router();
 
@@ -50,11 +51,11 @@ router.get('/balance/:institutionId', (ctx) => {
   return balanceController.get(ctx);
 });
 
-router.post('/balance/:institutionId/re-sync', (ctx) => {
-  const balanceController = container.get<BalanceController>(
-    TYPES.BalanceController,
+router.post('/resync/:institutionId', (ctx) => {
+  const resyncController = container.get<ResyncController>(
+    TYPES.ResyncController,
   );
-  return balanceController.reSync(ctx);
+  return resyncController.reSync(ctx);
 });
 
 router.get('/transactions/:institutionId', (ctx) => {

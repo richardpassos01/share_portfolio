@@ -5,6 +5,8 @@ import Database from '@infrastructure/database/Database';
 
 import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
+import BalanceController from '@api/balance/BalanceController';
+import ResyncController from '@api/resync/ResyncController';
 
 import GetInstitution from '@application/queries/GetInstitution';
 import ListShares from '@application/queries/ListShares';
@@ -21,7 +23,7 @@ import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
 import UpdateBalances from '@application/useCases/UpdateBalances';
-import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import UpdateShare from '@application/useCases/UpdateShare';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
@@ -37,7 +39,6 @@ import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interf
 import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
 import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
-import BalanceController from '@api/balance/BalanceController';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -52,6 +53,10 @@ container
 container
   .bind<TransactionController>(TYPES.TransactionController)
   .to(TransactionController)
+  .inSingletonScope();
+container
+  .bind<ResyncController>(TYPES.ResyncController)
+  .to(ResyncController)
   .inSingletonScope();
 container
   .bind<BalanceController>(TYPES.BalanceController)
@@ -98,8 +103,8 @@ container
   .to(UpdatePortfolio)
   .inSingletonScope();
 container
-  .bind<ReSyncPortfolio>(TYPES.ReSyncPortfolio)
-  .to(ReSyncPortfolio)
+  .bind<ResyncPortfolio>(TYPES.ResyncPortfolio)
+  .to(ResyncPortfolio)
   .inSingletonScope();
 container
   .bind<CreateTransactions>(TYPES.CreateTransactions)

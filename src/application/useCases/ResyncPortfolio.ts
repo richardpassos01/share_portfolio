@@ -8,7 +8,7 @@ import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryIn
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
-export default class ReSyncPortfolio {
+export default class ResyncPortfolio {
   constructor(
     @inject(TYPES.TotalBalanceRepository)
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,

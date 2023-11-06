@@ -6,7 +6,7 @@ import ShareFactory from '@factories/ShareFactory';
 import ListShares from '@application/queries/ListShares';
 import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 import institution from '@fixtures/institution';
-import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import { transactionsParams } from '@fixtures/transactions';
 import { listMonthlyBalances } from '@fixtures/monthlyBalances';
 import TransactionFactory from '@factories/TransactionFactory';
@@ -14,11 +14,11 @@ import { shares } from '@fixtures/shares';
 import { totalBalances } from '@fixtures/totalBalances';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
 
-describe('ReSyncPortfolio', () => {
+describe('ResyncPortfolio', () => {
   let database: Database;
   let listShares: ListShares;
   let listMonthlyBalance: ListMonthlyBalance;
-  let reSyncPortfolio: ReSyncPortfolio;
+  let resyncPortfolio: ResyncPortfolio;
   let getTotalBalance: GetTotalBalance;
 
   beforeAll(async () => {
@@ -28,7 +28,7 @@ describe('ReSyncPortfolio', () => {
       TYPES.ListMonthlyBalance,
     );
     getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
-    reSyncPortfolio = container.get<ReSyncPortfolio>(TYPES.ReSyncPortfolio);
+    resyncPortfolio = container.get<ResyncPortfolio>(TYPES.ResyncPortfolio);
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });
@@ -50,7 +50,7 @@ describe('ReSyncPortfolio', () => {
         await new TransactionFactory(transaction).save();
       }
 
-      await reSyncPortfolio.execute(institution.id);
+      await resyncPortfolio.execute(institution.id);
 
       const sharesList = (await listShares.execute(institution.id)).map(
         (share) => new ShareFactory({}, share).getObject(),

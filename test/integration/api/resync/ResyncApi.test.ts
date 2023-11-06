@@ -8,7 +8,7 @@ import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import { StatusCodes } from '@domain/shared/enums';
 import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 
-describe('BalanceApiAPI', () => {
+describe('ResyncApi', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
@@ -34,18 +34,12 @@ describe('BalanceApiAPI', () => {
     server.close();
   });
 
-  describe('GET /balance', () => {
-    it('should get total balance', async () => {
-      const expectedResponse = {
-        institutionId: institution.id,
-        netEarning: 0,
-        loss: 0,
-      };
+  describe('POST /resync', () => {
+    it('should resync portfolio', async () => {
+      const response = await request.post(`/resync/${institution.id}`);
 
-      const response = await request.get(`/balance/${institution.id}`);
-
-      expect(response.status).toBe(StatusCodes.OK);
-      expect(response.body).toEqual(expectedResponse);
+      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+      expect(response.body).toEqual({});
     });
   });
 });
