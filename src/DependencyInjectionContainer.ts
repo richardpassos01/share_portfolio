@@ -5,7 +5,8 @@ import Database from '@infrastructure/database/Database';
 
 import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
-import BalanceController from '@api/balance/BalanceController';
+import MonthlyBalanceController from '@api/balance/monthlyBalance/MonthlyBalanceController';
+import TotalBalanceController from '@api/balance/totalBalance/TotalBalanceController';
 import ResyncController from '@api/resync/ResyncController';
 
 import GetInstitution from '@application/queries/GetInstitution';
@@ -59,8 +60,12 @@ container
   .to(ResyncController)
   .inSingletonScope();
 container
-  .bind<BalanceController>(TYPES.BalanceController)
-  .to(BalanceController)
+  .bind<MonthlyBalanceController>(TYPES.MonthlyBalanceController)
+  .to(MonthlyBalanceController)
+  .inSingletonScope();
+container
+  .bind<TotalBalanceController>(TYPES.TotalBalanceController)
+  .to(TotalBalanceController)
   .inSingletonScope();
 
 container

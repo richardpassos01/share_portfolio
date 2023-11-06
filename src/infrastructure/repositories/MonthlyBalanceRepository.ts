@@ -34,7 +34,7 @@ export default class MonthlyBalanceRepository
       .connection()
       .select()
       .where('institution_id', institutionId)
-      .orderBy('year_month', 'desc')
+      .orderBy('created_at', 'desc')
       .into(TABLES.MONTHLY_BALANCE);
 
     if (limit) {

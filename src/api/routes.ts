@@ -9,7 +9,8 @@ import InstitutionController from './institution/InstitutionController';
 import { bodyValidator } from '@middleware/schemaValidator';
 import TransactionSchemas from './transaction/schemas/input/schema';
 import InstitutionSchemas from './institution/schemas/input/schema';
-import BalanceController from './balance/BalanceController';
+import MonthlyBalanceController from './balance/monthlyBalance/MonthlyBalanceController';
+import TotalBalanceController from './balance/totalBalance/TotalBalanceController';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ResyncController from './resync/ResyncController';
 
@@ -44,11 +45,25 @@ router.get('/institution/:institutionId', (ctx) => {
   return institutionController.get(ctx);
 });
 
-router.get('/balance/:institutionId', (ctx) => {
-  const balanceController = container.get<BalanceController>(
-    TYPES.BalanceController,
+router.get('/total-balance/:institutionId', (ctx) => {
+  const totalBalanceController = container.get<TotalBalanceController>(
+    TYPES.TotalBalanceController,
   );
-  return balanceController.get(ctx);
+  return totalBalanceController.get(ctx);
+});
+
+router.get('/monthly-balance/:institutionId', (ctx) => {
+  const monthlyBalanceController = container.get<MonthlyBalanceController>(
+    TYPES.MonthlyBalanceController,
+  );
+  return monthlyBalanceController.get(ctx);
+});
+
+router.get('/monthly-balances/:institutionId', (ctx) => {
+  const monthlyBalanceController = container.get<MonthlyBalanceController>(
+    TYPES.MonthlyBalanceController,
+  );
+  return monthlyBalanceController.list(ctx);
 });
 
 router.post('/resync/:institutionId', (ctx) => {

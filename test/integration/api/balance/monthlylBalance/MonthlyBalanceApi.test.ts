@@ -7,8 +7,9 @@ import institution from '@fixtures/institution';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import { StatusCodes } from '@domain/shared/enums';
 import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 
-describe('BalanceApiAPI', () => {
+describe('MonthlyBalanceApi', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
@@ -34,15 +35,30 @@ describe('BalanceApiAPI', () => {
     server.close();
   });
 
-  describe('GET /balance', () => {
-    it('should get total balance', async () => {
-      const expectedResponse = {
-        institutionId: institution.id,
-        netEarning: 0,
-        loss: 0,
-      };
+  describe('GET /monthly-balance', () => {
+    it('should get monthly balance', async () => {
+      const monthlyBalance = new MonthlyBalanceFactory();
+      await monthlyBalance.save();
+      const expectedResponse = monthlyBalance.getObject();
 
-      const response = await request.get(`/balance/${institution.id}`);
+      const response = await request
+        .get(`/monthly-balance/${institution.id}`)
+        .send({ yearMonth: monthlyBalance.get().yearMonth });
+
+      expect(response.status).toBe(StatusCodes.OK);
+      expect(response.body).toEqual(expectedResponse);
+    });
+  });
+
+  describe('GET /monthly-balances', () => {
+    it('should list monthly balances', async () => {
+      const monthlyBalance = new MonthlyBalanceFactory();
+      await monthlyBalance.save();
+      const expectedResponse = [monthlyBalance.getObject()];
+
+      const response = await request
+        .get(`/monthly-balances/${institution.id}`)
+        .send({ yearMonth: monthlyBalance.get().yearMonth });
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body).toEqual(expectedResponse);

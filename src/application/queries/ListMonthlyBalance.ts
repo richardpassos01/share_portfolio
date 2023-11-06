@@ -10,7 +10,10 @@ export default class ListMonthlyBalance {
     private readonly monthlyBalanceRepository: MonthlyBalanceRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string): Promise<MonthlyBalance[]> {
-    return this.monthlyBalanceRepository.list(institutionId);
+  async execute(
+    institutionId: string,
+    limit?: number,
+  ): Promise<MonthlyBalance[]> {
+    return this.monthlyBalanceRepository.list(institutionId, limit);
   }
 }
