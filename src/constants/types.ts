@@ -19,7 +19,6 @@ export const TYPES = {
   GetTotalBalance: Symbol.for('GetTotalBalance'),
   UpdatePortfolio: Symbol.for('UpdatePortfolio'),
   UpdateShare: Symbol.for('UpdateShare'),
-  ProcessDividendTransaction: Symbol.for('ProcessDividendTransaction'),
   ListTradeTransactionsFromMonth: Symbol.for('ListTradeTransactionsFromMonth'),
   BalanceController: Symbol.for('BalanceController'),
   GetMonthlyBalance: Symbol.for('GetMonthlyBalance'),
