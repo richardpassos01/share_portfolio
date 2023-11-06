@@ -20,14 +20,10 @@ import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
-import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
-import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
-import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
-import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
 import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
 import UpdateBalances from '@application/useCases/UpdateBalances';
 import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
-import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
+import UpdateShare from '@application/useCases/UpdateShare';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
@@ -95,8 +91,8 @@ container
   .to(CreateShare)
   .inSingletonScope();
 container
-  .bind<UpdateOrLiquidateShare>(TYPES.UpdateOrLiquidateShare)
-  .to(UpdateOrLiquidateShare)
+  .bind<UpdateShare>(TYPES.UpdateShare)
+  .to(UpdateShare)
   .inSingletonScope();
 container
   .bind<UpdatePortfolio>(TYPES.UpdatePortfolio)
@@ -117,22 +113,6 @@ container
 container
   .bind<ProcessDividendTransaction>(TYPES.ProcessDividendTransaction)
   .to(ProcessDividendTransaction)
-  .inSingletonScope();
-container
-  .bind<ProcessSpecialEventsOnShare>(TYPES.ProcessSpecialEventsOnShare)
-  .to(ProcessSpecialEventsOnShare)
-  .inSingletonScope();
-container
-  .bind<ProcessTradeTransaction>(TYPES.ProcessTradeTransaction)
-  .to(ProcessTradeTransaction)
-  .inSingletonScope();
-container
-  .bind<ProcessBuyTransaction>(TYPES.ProcessBuyTransaction)
-  .to(ProcessBuyTransaction)
-  .inSingletonScope();
-container
-  .bind<ProcessSellTransaction>(TYPES.ProcessSellTransaction)
-  .to(ProcessSellTransaction)
   .inSingletonScope();
 container
   .bind<ListTradeTransactionsFromMonth>(TYPES.ListTradeTransactionsFromMonth)
