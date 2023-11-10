@@ -1,14 +1,17 @@
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
-import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
 import TransactionFactory from '@factories/TransactionFactory';
-import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import UpdateBalances from '@application/useCases/UpdateBalances';
-import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
-import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
-import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
+import BalanceManagement from '@domain/balance/BalanceManagement';
+import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
+import UpdateShare from '@application/useCases/UpdateShare';
+import GetShare from '@application/queries/GetShare';
+import Share from '@domain/share/Share';
+import ShareFactory from '@factories/ShareFactory';
+import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
+import { MONTHLY_BALANCE_TYPE } from '@domain/balance/monthlyBalance/MonthlyBalanceEnums';
 
 jest.mock('uuid', () => ({
   v4: () => '123456',
@@ -16,39 +19,38 @@ jest.mock('uuid', () => ({
 
 describe('UpdatePortfolio', () => {
   let updatePortfolio: UpdatePortfolio;
-  let processDividendTransaction: ProcessDividendTransaction;
+  let updateShare: UpdateShare;
   let updateBalances: UpdateBalances;
-  let createBalanceManagement: CreateBalanceManagement;
+  let getShare: GetShare;
+  let balanceManagementFactory: BalanceManagementFactory;
   let balanceManagement: BalanceManagement;
-  let processSpecialEventsOnShare: ProcessSpecialEventsOnShare;
-  let processTradeTransaction: ProcessTradeTransaction;
+  let listTradeTransactionsFromMonth: ListTradeTransactionsFromMonth;
+  let share: Share;
 
   beforeAll(async () => {
     updatePortfolio = container.get<UpdatePortfolio>(TYPES.UpdatePortfolio);
     updateBalances = container.get<UpdateBalances>(TYPES.UpdateBalances);
-    processDividendTransaction = container.get<ProcessDividendTransaction>(
-      TYPES.ProcessDividendTransaction,
+    updateShare = container.get<UpdateShare>(TYPES.UpdateShare);
+    getShare = container.get<GetShare>(TYPES.GetShare);
+    listTradeTransactionsFromMonth =
+      container.get<ListTradeTransactionsFromMonth>(
+        TYPES.ListTradeTransactionsFromMonth,
+      );
+    share = new ShareFactory().get();
+    balanceManagementFactory = container.get<BalanceManagementFactory>(
+      TYPES.BalanceManagementFactory,
     );
-    processSpecialEventsOnShare = container.get<ProcessSpecialEventsOnShare>(
-      TYPES.ProcessSpecialEventsOnShare,
-    );
-    processTradeTransaction = container.get<ProcessTradeTransaction>(
-      TYPES.ProcessTradeTransaction,
-    );
-    createBalanceManagement = container.get<CreateBalanceManagement>(
-      TYPES.CreateBalanceManagement,
-    );
-    balanceManagement = new BalanceManagement();
   });
 
   beforeEach(() => {
+    balanceManagement = new BalanceManagement();
     jest.spyOn(updateBalances, 'execute').mockImplementation();
-    jest.spyOn(processDividendTransaction, 'execute').mockImplementation();
-    jest.spyOn(processSpecialEventsOnShare, 'execute').mockImplementation();
-    jest.spyOn(processTradeTransaction, 'execute').mockImplementation();
-
+    jest.spyOn(updateShare, 'execute').mockImplementation();
     jest
-      .spyOn(createBalanceManagement, 'execute')
+      .spyOn(getShare, 'execute')
+      .mockImplementation(() => Promise.resolve(share));
+    jest
+      .spyOn(balanceManagementFactory, 'build')
       .mockImplementation(() => Promise.resolve(balanceManagement));
   });
 
@@ -56,54 +58,89 @@ describe('UpdatePortfolio', () => {
     jest.clearAllMocks();
   });
 
-  it('should call updateBalances', async () => {
+  it('should call updateBalances with valid values for BUY transaction', async () => {
+    const expectedMonthlyBalanceManagement = new BalanceManagement();
     const transaction = new TransactionFactory().get();
 
     await updatePortfolio.execute(transaction);
 
     expect(updateBalances.execute).toHaveBeenCalledWith(
-      balanceManagement,
+      expectedMonthlyBalanceManagement,
       transaction,
     );
   });
 
-  it('should call processDividendTransaction for DIVIDEND transaction.', async () => {
+  it('should call updateBalances with valid values for DIVIDEND transaction.', async () => {
+    const expectedMonthlyBalanceManagement = new BalanceManagement();
     const transaction = new TransactionFactory({
       category: TRANSACTION_CATEGORY.DIVIDENDS,
     }).get();
 
+    expectedMonthlyBalanceManagement.setDividendEarning(transaction.totalCost);
+
     await updatePortfolio.execute(transaction);
 
-    expect(processDividendTransaction.execute).toBeCalledTimes(1);
+    expect(updateBalances.execute).toHaveBeenCalledWith(
+      expectedMonthlyBalanceManagement,
+      transaction,
+    );
   });
 
-  it('Should call processSpecialEventsOnShare for SPLIT transaction.', async () => {
+  it('Should call updateBalances with valid values for SPLIT transaction.', async () => {
+    const expectedMonthlyBalanceManagement = new BalanceManagement();
     const transaction = new TransactionFactory({
       category: TRANSACTION_CATEGORY.SPLIT,
     }).get();
 
     await updatePortfolio.execute(transaction);
 
-    expect(processSpecialEventsOnShare.execute).toBeCalledTimes(1);
+    expect(updateBalances.execute).toHaveBeenCalledWith(
+      expectedMonthlyBalanceManagement,
+      transaction,
+    );
   });
 
-  it('Should call processSpecialEventsOnShare for BONUS_SHARE transaction.', async () => {
+  it('Should call updateBalances with valid values for BONUS_SHARE transaction.', async () => {
+    const expectedMonthlyBalanceManagement = new BalanceManagement();
     const transaction = new TransactionFactory({
       category: TRANSACTION_CATEGORY.BONUS_SHARE,
     }).get();
 
     await updatePortfolio.execute(transaction);
 
-    expect(processSpecialEventsOnShare.execute).toBeCalledTimes(1);
+    expect(updateBalances.execute).toHaveBeenCalledWith(
+      expectedMonthlyBalanceManagement,
+      transaction,
+    );
   });
 
-  it('Should call processTradeTransaction for TRADE transaction.', async () => {
-    const transaction = new TransactionFactory({
-      category: TRANSACTION_CATEGORY.TRADE,
+  it('Should call updateBalances with valid values for SELL transaction.', async () => {
+    const expectedMonthlyBalanceManagement = new BalanceManagement();
+    const buyTransaction = new TransactionFactory().get();
+    const sellTransaction = new TransactionFactory({
+      type: TRANSACTION_TYPE.SELL,
+      unitPrice: 20,
+      totalCost: 2000,
     }).get();
 
-    await updatePortfolio.execute(transaction);
+    jest
+      .spyOn(listTradeTransactionsFromMonth, 'execute')
+      .mockImplementation(() =>
+        Promise.resolve([[buyTransaction], [sellTransaction]]),
+      );
 
-    expect(processTradeTransaction.execute).toBeCalledTimes(1);
+    await updatePortfolio.execute(sellTransaction);
+
+    expectedMonthlyBalanceManagement.setMonthlyOperationType(
+      MONTHLY_BALANCE_TYPE.DAY_TRADE,
+    );
+    expectedMonthlyBalanceManagement.setTax(180);
+    expectedMonthlyBalanceManagement.setTaxWithholding(2000);
+    expectedMonthlyBalanceManagement.setTradeEarning(1000);
+
+    expect(updateBalances.execute).toHaveBeenCalledWith(
+      expectedMonthlyBalanceManagement,
+      sellTransaction,
+    );
   });
 });

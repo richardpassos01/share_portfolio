@@ -7,15 +7,15 @@ import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 import ShareFactory from '@factories/ShareFactory';
 import ListShares from '@application/queries/ListShares';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
-import CreatePortfolio from '@application/useCases/CreatePortfolio';
 import institution from '@fixtures/institution';
+import GetTotalBalance from '@application/queries/GetTotalBalance';
 
 describe('CreateTransactions', () => {
   let database: Database;
   let createTransactions: CreateTransactions;
   let listShares: ListShares;
   let getMonthlyBalance: GetMonthlyBalance;
-  let createPortfolio: CreatePortfolio;
+  let getTotalBalance: GetTotalBalance;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
@@ -26,7 +26,7 @@ describe('CreateTransactions', () => {
     getMonthlyBalance = container.get<GetMonthlyBalance>(
       TYPES.GetMonthlyBalance,
     );
-    createPortfolio = container.get<CreatePortfolio>(TYPES.CreatePortfolio);
+    getTotalBalance = container.get<GetTotalBalance>(TYPES.GetTotalBalance);
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });
@@ -42,7 +42,7 @@ describe('CreateTransactions', () => {
       transactionParams,
       expectedShare,
       expectedMonthlyBalance,
-      expectedPortfolio,
+      expectedTotalBalance,
       description,
     ) => {
       it(description, async () => {
@@ -55,7 +55,7 @@ describe('CreateTransactions', () => {
           new Date(`${transactionParams.date}T00:00:00`),
         );
 
-        const portfolio = await createPortfolio.execute(institution.id);
+        const totalBalance = await getTotalBalance.execute(institution.id);
 
         expect(
           shares.map((share) => new ShareFactory({}, share).getObject()),
@@ -63,7 +63,7 @@ describe('CreateTransactions', () => {
         expect(
           new MonthlyBalanceFactory({}, monthlyBalance).getObject(),
         ).toEqual(expectedMonthlyBalance);
-        expect(portfolio).toEqual(expectedPortfolio);
+        expect(totalBalance).toEqual(expectedTotalBalance);
       });
     },
   );

@@ -5,7 +5,9 @@ import Database from '@infrastructure/database/Database';
 
 import InstitutionController from '@api/institution/InstitutionController';
 import TransactionController from '@api/transaction/TransactionController';
-import PortfolioController from '@api/portfolio/PortfolioController';
+import MonthlyBalanceController from '@api/balance/monthlyBalance/MonthlyBalanceController';
+import TotalBalanceController from '@api/balance/totalBalance/TotalBalanceController';
+import ResyncController from '@api/resync/ResyncController';
 
 import GetInstitution from '@application/queries/GetInstitution';
 import ListShares from '@application/queries/ListShares';
@@ -20,17 +22,10 @@ import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
-import ProcessDividendTransaction from '@application/useCases/ProcessDividendTransaction';
-import ProcessSpecialEventsOnShare from '@application/useCases/ProcessSpecialEventsOnShare';
-import ProcessTradeTransaction from '@application/useCases/ProcessTradeTransaction';
-import ProcessBuyTransaction from '@application/useCases/ProcessBuyTransaction';
-import ProcessSellTransaction from '@application/useCases/ProcessSellTransaction';
 import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
-import CreateBalanceManagement from '@application/useCases/CreateBalanceManagement';
 import UpdateBalances from '@application/useCases/UpdateBalances';
-import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
-import CreatePortfolio from '@application/useCases/CreatePortfolio';
-import UpdateOrLiquidateShare from '@application/useCases/UpdateOrLiquidateShare';
+import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
+import UpdateShare from '@application/useCases/UpdateShare';
 
 import InstitutionRepository from '@infrastructure/repositories/InstitutionRepository';
 import ShareRepository from '@infrastructure/repositories/ShareRepository';
@@ -41,8 +36,10 @@ import TotalBalanceRepository from '@infrastructure/repositories/TotalBalanceRep
 import InstitutionRepositoryInterface from '@domain/institution/interfaces/InstitutionRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+
+import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
 
 const container = new Container({
   skipBaseClassChecks: true,
@@ -59,8 +56,16 @@ container
   .to(TransactionController)
   .inSingletonScope();
 container
-  .bind<PortfolioController>(TYPES.PortfolioController)
-  .to(PortfolioController)
+  .bind<ResyncController>(TYPES.ResyncController)
+  .to(ResyncController)
+  .inSingletonScope();
+container
+  .bind<MonthlyBalanceController>(TYPES.MonthlyBalanceController)
+  .to(MonthlyBalanceController)
+  .inSingletonScope();
+container
+  .bind<TotalBalanceController>(TYPES.TotalBalanceController)
+  .to(TotalBalanceController)
   .inSingletonScope();
 
 container
@@ -95,16 +100,16 @@ container
   .to(CreateShare)
   .inSingletonScope();
 container
-  .bind<UpdateOrLiquidateShare>(TYPES.UpdateOrLiquidateShare)
-  .to(UpdateOrLiquidateShare)
+  .bind<UpdateShare>(TYPES.UpdateShare)
+  .to(UpdateShare)
   .inSingletonScope();
 container
   .bind<UpdatePortfolio>(TYPES.UpdatePortfolio)
   .to(UpdatePortfolio)
   .inSingletonScope();
 container
-  .bind<ReSyncPortfolio>(TYPES.ReSyncPortfolio)
-  .to(ReSyncPortfolio)
+  .bind<ResyncPortfolio>(TYPES.ResyncPortfolio)
+  .to(ResyncPortfolio)
   .inSingletonScope();
 container
   .bind<CreateTransactions>(TYPES.CreateTransactions)
@@ -115,40 +120,12 @@ container
   .to(DeleteTransactions)
   .inSingletonScope();
 container
-  .bind<ProcessDividendTransaction>(TYPES.ProcessDividendTransaction)
-  .to(ProcessDividendTransaction)
-  .inSingletonScope();
-container
-  .bind<ProcessSpecialEventsOnShare>(TYPES.ProcessSpecialEventsOnShare)
-  .to(ProcessSpecialEventsOnShare)
-  .inSingletonScope();
-container
-  .bind<ProcessTradeTransaction>(TYPES.ProcessTradeTransaction)
-  .to(ProcessTradeTransaction)
-  .inSingletonScope();
-container
-  .bind<ProcessBuyTransaction>(TYPES.ProcessBuyTransaction)
-  .to(ProcessBuyTransaction)
-  .inSingletonScope();
-container
-  .bind<ProcessSellTransaction>(TYPES.ProcessSellTransaction)
-  .to(ProcessSellTransaction)
-  .inSingletonScope();
-container
   .bind<ListTradeTransactionsFromMonth>(TYPES.ListTradeTransactionsFromMonth)
   .to(ListTradeTransactionsFromMonth)
   .inSingletonScope();
 container
-  .bind<CreateBalanceManagement>(TYPES.CreateBalanceManagement)
-  .to(CreateBalanceManagement)
-  .inSingletonScope();
-container
   .bind<UpdateBalances>(TYPES.UpdateBalances)
   .to(UpdateBalances)
-  .inSingletonScope();
-container
-  .bind<CreatePortfolio>(TYPES.CreatePortfolio)
-  .to(CreatePortfolio)
   .inSingletonScope();
 
 container
@@ -170,6 +147,11 @@ container
 container
   .bind<TotalBalanceRepositoryInterface>(TYPES.TotalBalanceRepository)
   .to(TotalBalanceRepository)
+  .inSingletonScope();
+
+container
+  .bind<BalanceManagementFactory>(TYPES.BalanceManagementFactory)
+  .to(BalanceManagementFactory)
   .inSingletonScope();
 
 export default container;

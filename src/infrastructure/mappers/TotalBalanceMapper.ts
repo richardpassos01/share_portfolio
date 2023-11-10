@@ -1,4 +1,4 @@
-import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
+import TotalBalance from '@domain/balance/totalBalance/TotalBalance';
 
 type MapToEntityInput = {
   institution_id: string;

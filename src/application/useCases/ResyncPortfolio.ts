@@ -2,13 +2,13 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 import UpdatePortfolio from './UpdatePortfolio';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
-import MonthlyBalanceRepositoryInterface from '@domain/portfolio/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
 import { TransactionDTO } from '@domain/shared/types';
 
 @injectable()
-export default class ReSyncPortfolio {
+export default class ResyncPortfolio {
   constructor(
     @inject(TYPES.TotalBalanceRepository)
     private readonly totalBalanceRepository: TotalBalanceRepositoryInterface,

@@ -1,6 +1,6 @@
 import { TYPES } from '@constants/types';
-import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalance from '@domain/balance/totalBalance/TotalBalance';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import { injectable, inject } from 'inversify';
 
 @injectable()

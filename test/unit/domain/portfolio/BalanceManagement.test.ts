@@ -1,5 +1,5 @@
-import BalanceManagement from '@domain/portfolio/BalanceManagement';
-import { MONTHLY_BALANCE_TYPE } from '@domain/portfolio/monthlyBalance/MonthlyBalanceEnums';
+import BalanceManagement from '@domain/balance/BalanceManagement';
+import { MONTHLY_BALANCE_TYPE } from '@domain/balance/monthlyBalance/MonthlyBalanceEnums';
 import { TRANSACTION_TYPE } from '@domain/shared/enums';
 import TransactionFactory from '@factories/TransactionFactory';
 

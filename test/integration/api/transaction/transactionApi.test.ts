@@ -11,7 +11,7 @@ import {
 import TransactionFactory from '@factories/TransactionFactory';
 import ListTransactions from '@application/queries/ListTransactions';
 import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
-import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import institution from '@fixtures/institution';
 
 describe('transactionAPI', () => {
@@ -138,11 +138,11 @@ describe('transactionAPI', () => {
 
   describe('DELETE /transaction', () => {
     describe('When called the endpoint with valid schema', () => {
-      let reSyncPortfolio: ReSyncPortfolio;
+      let resyncPortfolio: ResyncPortfolio;
 
       beforeEach(() => {
-        reSyncPortfolio = container.get<ReSyncPortfolio>(TYPES.ReSyncPortfolio);
-        jest.spyOn(reSyncPortfolio, 'execute').mockImplementation();
+        resyncPortfolio = container.get<ResyncPortfolio>(TYPES.ResyncPortfolio);
+        jest.spyOn(resyncPortfolio, 'execute').mockImplementation();
       });
 
       afterEach(async () => {
@@ -173,7 +173,7 @@ describe('transactionAPI', () => {
 
         await request.delete(`/transactions/${institution.id}`).send(payload);
 
-        expect(reSyncPortfolio.execute).toHaveBeenCalledTimes(1);
+        expect(resyncPortfolio.execute).toHaveBeenCalledTimes(1);
       });
 
       describe('When called the endpoint with invalid schema', () => {

@@ -5,7 +5,7 @@ import { inject, injectable } from 'inversify';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
 import { CreateTransactionParams } from '@domain/shared/types';
-import ReSyncPortfolio from '@application/useCases/ReSyncPortfolio';
+import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ListTransactions from '@application/queries/ListTransactions';
 
@@ -18,8 +18,8 @@ export default class TransactionController {
     @inject(TYPES.DeleteTransactions)
     private readonly deleteTransactions: DeleteTransactions,
 
-    @inject(TYPES.ReSyncPortfolio)
-    private readonly reSyncPortfolio: ReSyncPortfolio,
+    @inject(TYPES.ResyncPortfolio)
+    private readonly resyncPortfolio: ResyncPortfolio,
 
     @inject(TYPES.ListTransactions)
     private readonly listTransactions: ListTransactions,
@@ -55,7 +55,7 @@ export default class TransactionController {
     const { institutionId } = ctx.params;
 
     await this.deleteTransactions.execute(institutionId, transactionIds);
-    await this.reSyncPortfolio.execute(institutionId);
+    await this.resyncPortfolio.execute(institutionId);
 
     ctx.response.status = StatusCodes.NO_CONTENT;
   }

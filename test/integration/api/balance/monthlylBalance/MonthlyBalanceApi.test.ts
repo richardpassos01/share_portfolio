@@ -6,9 +6,10 @@ import Database from '@infrastructure/database/Database';
 import institution from '@fixtures/institution';
 import TotalBalanceFactory from '@factories/TotalBalanceFactory';
 import { StatusCodes } from '@domain/shared/enums';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import MonthlyBalanceFactory from '@factories/MonthlyBalanceFactory';
 
-describe('portfolioAPI', () => {
+describe('MonthlyBalanceApi', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
@@ -34,28 +35,33 @@ describe('portfolioAPI', () => {
     server.close();
   });
 
-  describe('GET /portfolio', () => {
-    it('should get portfolio', async () => {
-      const expectedResponse = {
-        netEarning: 0,
-        totalLoss: 0,
-      };
+  describe('GET /monthly-balance', () => {
+    it('should get monthly balance', async () => {
+      const monthlyBalance = new MonthlyBalanceFactory();
+      await monthlyBalance.save();
+      const expectedResponse = monthlyBalance.getObject();
 
-      const response = await request.get(`/portfolio/${institution.id}`);
+      const response = await request
+        .get(`/monthly-balance/${institution.id}`)
+        .send({ yearMonth: monthlyBalance.get().yearMonth });
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body).toEqual(expectedResponse);
     });
   });
 
-  describe('POST /portfolio', () => {
-    it('should resync portfolio', async () => {
-      const response = await request.post(
-        `/portfolio/${institution.id}/re-sync`,
-      );
+  describe('GET /monthly-balances', () => {
+    it('should list monthly balances', async () => {
+      const monthlyBalance = new MonthlyBalanceFactory();
+      await monthlyBalance.save();
+      const expectedResponse = [monthlyBalance.getObject()];
 
-      expect(response.status).toBe(StatusCodes.NO_CONTENT);
-      expect(response.body).toEqual({});
+      const response = await request
+        .get(`/monthly-balances/${institution.id}`)
+        .send({ yearMonth: monthlyBalance.get().yearMonth });
+
+      expect(response.status).toBe(StatusCodes.OK);
+      expect(response.body).toEqual(expectedResponse);
     });
   });
 });

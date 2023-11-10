@@ -1,7 +1,7 @@
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
-import TotalBalance from '@domain/portfolio/totalBalance/TotalBalance';
-import TotalBalanceRepositoryInterface from '@domain/portfolio/totalBalance/interfaces/TotalBalanceRepositoryInterface';
+import TotalBalance from '@domain/balance/totalBalance/TotalBalance';
+import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import institution from '@fixtures/institution';
 
 type Params = {
