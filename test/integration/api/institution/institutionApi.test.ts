@@ -1,22 +1,26 @@
+import { v4 as uuid } from 'uuid';
 import supertest from 'supertest';
 import app from '@api/app';
 import { TYPES } from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database/Database';
 import InstitutionFactory from '@factories/InstitutionFactory';
-import GetInstitution from '@application/queries/GetInstitution';
+import ListInstitutions from '@application/queries/ListInstitutions';
 import { StatusCodes } from '@domain/shared/enums';
 
 describe('institutionAPI', () => {
   const server = app.listen();
   const request = supertest(server);
   let database: Database;
-  let getInstitution: GetInstitution;
+  let listInstitutions: ListInstitutions;
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
-    getInstitution = container.get<GetInstitution>(TYPES.GetInstitution);
+    listInstitutions = container.get<ListInstitutions>(TYPES.ListInstitutions);
+  });
 
+  beforeEach(async () => {
+    await database.connection().migrate.rollback();
     await database.connection().migrate.latest();
     await database.connection().seed.run();
   });
@@ -35,7 +39,7 @@ describe('institutionAPI', () => {
 
         const response = await request.post('/institution').send(payload);
 
-        const institution = await getInstitution.execute(response.body.id);
+        const [institution] = await listInstitutions.execute(payload.userId);
 
         expect(response.status).toBe(StatusCodes.CREATED);
         expect(institution).toBeTruthy();
@@ -52,14 +56,14 @@ describe('institutionAPI', () => {
     });
   });
 
-  describe('GET /institution/:institutionId', () => {
-    it('should get institution', async () => {
-      const institution = new InstitutionFactory().getObject();
+  describe('GET /institutions/:userId', () => {
+    it('should list institutions', async () => {
+      const institution = new InstitutionFactory({ id: uuid() }).get();
 
-      const response = await request.get(`/institution/${institution.id}`);
+      const response = await request.get(`/institutions/${institution.userId}`);
 
       expect(response.status).toBe(StatusCodes.OK);
-      expect(response.body).toEqual(institution);
+      expect(response.body.length).toBe(1);
     });
   });
 });

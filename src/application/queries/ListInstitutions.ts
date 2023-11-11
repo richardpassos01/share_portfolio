@@ -4,13 +4,13 @@ import InstitutionRepositoryInterface from '@domain/institution/interfaces/Insti
 import { injectable, inject } from 'inversify';
 
 @injectable()
-export default class GetInstitution {
+export default class ListInstitutions {
   constructor(
     @inject(TYPES.InstitutionRepository)
     private readonly institutionRepository: InstitutionRepositoryInterface,
   ) {}
 
-  async execute(institutionId: string): Promise<Institution> {
-    return this.institutionRepository.get(institutionId);
+  async execute(userId: string): Promise<Institution[]> {
+    return this.institutionRepository.list(userId);
   }
 }

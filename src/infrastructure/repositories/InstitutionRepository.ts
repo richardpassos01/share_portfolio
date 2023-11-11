@@ -14,14 +14,18 @@ export default class InstitutionRepository
     private readonly database: Database,
   ) {}
 
-  async get(institutionId: string) {
+  async list(userId: string) {
     return this.database
       .connection()
       .select()
-      .where('id', institutionId)
+      .where('user_id', userId)
       .into(TABLES.INSTITUTION)
-      .first()
-      .then((data) => InstitutionMapper.mapToEntity(data));
+      .then(
+        (data) =>
+          data?.map((institution) =>
+            InstitutionMapper.mapToEntity(institution),
+          ),
+      );
   }
 
   async create(institution: Institution) {

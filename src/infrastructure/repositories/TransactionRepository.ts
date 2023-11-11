@@ -97,12 +97,11 @@ export default class TransactionRepository
       .select('*')
       .from('row_number_query')
       .where('row_number_alias', '<=', selectRowNumberQuery)
-      .then((data) =>
-        data
-          ? data.map((transaction) =>
-              TransactionMapper.mapToEntity(transaction),
-            )
-          : [],
+      .then(
+        (data) =>
+          data?.map((transaction) =>
+            TransactionMapper.mapToEntity(transaction),
+          ),
       );
   }
 }

@@ -3,7 +3,7 @@ import Koa from 'koa';
 import { TYPES } from '@constants/types';
 import { StatusCodes } from '@domain/shared/enums';
 import { injectable, inject } from 'inversify';
-import GetInstitution from '@application/queries/GetInstitution';
+import ListInstitutions from '@application/queries/ListInstitutions';
 import CreateInstitution from '@application/useCases/CreateInstitution';
 
 @injectable()
@@ -12,8 +12,8 @@ export default class InstitutionController {
     @inject(TYPES.CreateInstitution)
     private readonly createInstitution: CreateInstitution,
 
-    @inject(TYPES.GetInstitution)
-    private readonly getInstitution: GetInstitution,
+    @inject(TYPES.ListInstitutions)
+    private readonly listInstitutions: ListInstitutions,
   ) {}
 
   async create(ctx: Koa.DefaultContext): Promise<void> {
@@ -25,10 +25,10 @@ export default class InstitutionController {
     ctx.response.body = institutionId;
   }
 
-  async get(ctx: Koa.DefaultContext): Promise<void> {
-    const { institutionId } = ctx.params;
+  async list(ctx: Koa.DefaultContext): Promise<void> {
+    const { userId } = ctx.params;
 
-    const institution = await this.getInstitution.execute(institutionId);
+    const institution = await this.listInstitutions.execute(userId);
 
     ctx.response.status = StatusCodes.OK;
     ctx.body = institution;

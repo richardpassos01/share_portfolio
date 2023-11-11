@@ -38,11 +38,11 @@ router.post('/institution', bodyValidator(InstitutionSchemas.create), (ctx) => {
   return institutionController.create(ctx);
 });
 
-router.get('/institution/:institutionId', (ctx) => {
+router.get('/institutions/:userId', (ctx) => {
   const institutionController = container.get<InstitutionController>(
     TYPES.InstitutionController,
   );
-  return institutionController.get(ctx);
+  return institutionController.list(ctx);
 });
 
 router.get('/total-balance/:institutionId', (ctx) => {

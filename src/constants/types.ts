@@ -12,7 +12,7 @@ export const TYPES = {
   CreateTransactions: Symbol.for('CreateTransactions'),
   DeleteTransactions: Symbol.for('DeleteTransactions'),
   ListTransactions: Symbol.for('ListTransactions'),
-  GetInstitution: Symbol.for('GetInstitution'),
+  ListInstitutions: Symbol.for('ListInstitutions'),
   CreateInstitution: Symbol.for('CreateInstitution'),
   GetShare: Symbol.for('GetShare'),
   ListShares: Symbol.for('ListShares'),
