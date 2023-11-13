@@ -35,7 +35,10 @@ describe('institutionAPI', () => {
   describe('POST /institution', () => {
     describe('When called the endpoint with valid schema', () => {
       it('should create institution', async () => {
-        const payload = new InstitutionFactory().getCreatePayload();
+        const payload = new InstitutionFactory({
+          id: uuid(),
+          userId: uuid(),
+        }).getCreatePayload();
 
         const response = await request.post('/institution').send(payload);
 
@@ -58,9 +61,16 @@ describe('institutionAPI', () => {
 
   describe('GET /institutions/:userId', () => {
     it('should list institutions', async () => {
-      const institution = new InstitutionFactory({ id: uuid() }).get();
+      const institution = new InstitutionFactory({
+        id: uuid(),
+        userId: uuid(),
+      });
 
-      const response = await request.get(`/institutions/${institution.userId}`);
+      await institution.save();
+
+      const response = await request.get(
+        `/institutions/${institution.get().userId}`,
+      );
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body.length).toBe(1);

@@ -11,11 +11,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('name', 250).notNullable();
       table.timestamps(true, true);
 
-      table
-        .foreign('user_id')
-        .references('id')
-        .inTable(TABLES.USER)
-        .onDelete('CASCADE');
+      table.unique(['user_id', 'name']);
     });
   }
 }
