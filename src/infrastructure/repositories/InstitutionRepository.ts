@@ -20,6 +20,7 @@ export default class InstitutionRepository
       .select()
       .where('user_id', userId)
       .into(TABLES.INSTITUTION)
+      .orderBy('created_at', 'desc')
       .then(
         (data) =>
           data?.map((institution) =>

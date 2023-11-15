@@ -9,11 +9,13 @@ import cors from '@koa/cors';
 import errorHandler from '@middleware/errorHandler';
 import bodyParser from 'koa-bodyparser';
 import routes from './routes';
+import authenticateApiKey from '@middleware/authenticateApiKey';
 
 const app = new Koa();
 
 app.use(bodyParser());
 app.use(errorHandler);
+app.use(authenticateApiKey);
 app.use(cors());
 app.use(routes.routes()).use(routes.allowedMethods()).use(routes.middleware());
 
