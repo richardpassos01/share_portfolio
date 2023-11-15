@@ -9,7 +9,7 @@ import MonthlyBalanceController from '@api/balance/monthlyBalance/MonthlyBalance
 import TotalBalanceController from '@api/balance/totalBalance/TotalBalanceController';
 import ResyncController from '@api/resync/ResyncController';
 
-import GetInstitution from '@application/queries/GetInstitution';
+import ListInstitutions from '@application/queries/ListInstitutions';
 import ListShares from '@application/queries/ListShares';
 import GetShare from '@application/queries/GetShare';
 import GetTotalBalance from '@application/queries/GetTotalBalance';
@@ -69,8 +69,8 @@ container
   .inSingletonScope();
 
 container
-  .bind<GetInstitution>(TYPES.GetInstitution)
-  .to(GetInstitution)
+  .bind<ListInstitutions>(TYPES.ListInstitutions)
+  .to(ListInstitutions)
   .inSingletonScope();
 container.bind<GetShare>(TYPES.GetShare).to(GetShare).inSingletonScope();
 container.bind<ListShares>(TYPES.ListShares).to(ListShares).inSingletonScope();
