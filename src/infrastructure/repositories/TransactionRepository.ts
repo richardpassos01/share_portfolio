@@ -104,4 +104,19 @@ export default class TransactionRepository
           ),
       );
   }
+
+  async listMonthYears(institutionId: string) {
+    return this.database
+      .connection()
+      .select(
+        this.database
+          .connection()
+          .raw(
+            "DISTINCT TO_CHAR(DATE_TRUNC('month', date), 'YYYY-MM') AS monthyear",
+          ),
+      )
+      .where('institution_id', institutionId)
+      .into(TABLES.TRANSACTION)
+      .then((data) => data.map((item) => item.monthyear));
+  }
 }

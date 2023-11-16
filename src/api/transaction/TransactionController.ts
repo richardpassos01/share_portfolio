@@ -8,6 +8,7 @@ import { CreateTransactionParams } from '@domain/shared/types';
 import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ListTransactions from '@application/queries/ListTransactions';
+import ListMonthYears from '@application/queries/ListMonthYears';
 
 @injectable()
 export default class TransactionController {
@@ -23,6 +24,9 @@ export default class TransactionController {
 
     @inject(TYPES.ListTransactions)
     private readonly listTransactions: ListTransactions,
+
+    @inject(TYPES.ListMonthYears)
+    private readonly listMonthYearsQuery: ListMonthYears,
   ) {}
 
   async list(ctx: Koa.DefaultContext): Promise<void> {
@@ -58,5 +62,14 @@ export default class TransactionController {
     await this.resyncPortfolio.execute(institutionId);
 
     ctx.response.status = StatusCodes.NO_CONTENT;
+  }
+
+  async listMonthYears(ctx: Koa.DefaultContext): Promise<void> {
+    const { institutionId } = ctx.params;
+
+    const result = await this.listMonthYearsQuery.execute(institutionId);
+
+    ctx.response.status = StatusCodes.OK;
+    ctx.response.body = result;
   }
 }

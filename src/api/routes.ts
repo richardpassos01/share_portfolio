@@ -13,6 +13,7 @@ import MonthlyBalanceController from './balance/monthlyBalance/MonthlyBalanceCon
 import TotalBalanceController from './balance/totalBalance/TotalBalanceController';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ResyncController from './resync/ResyncController';
+import ShareController from './share/ShareController';
 
 const router = new Router();
 
@@ -43,6 +44,11 @@ router.get('/institutions/:userId', (ctx) => {
     TYPES.InstitutionController,
   );
   return institutionController.list(ctx);
+});
+
+router.get('/shares/:institutionId', (ctx) => {
+  const shareController = container.get<ShareController>(TYPES.ShareController);
+  return shareController.list(ctx);
 });
 
 router.get('/total-balance/:institutionId', (ctx) => {
@@ -78,6 +84,13 @@ router.get('/transactions/:institutionId', (ctx) => {
     TYPES.TransactionController,
   );
   return transactionController.list(ctx);
+});
+
+router.get('/transactions/:institutionId/list-month-years', (ctx) => {
+  const transactionController = container.get<TransactionController>(
+    TYPES.TransactionController,
+  );
+  return transactionController.listMonthYears(ctx);
 });
 
 router.post(
