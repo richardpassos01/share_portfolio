@@ -142,6 +142,7 @@ export default class TransactionRepository
           ),
       )
       .where('institution_id', institutionId)
+      .orderBy('monthyear', 'desc')
       .into(TABLES.TRANSACTION)
       .then((data) => data.map((item) => item.monthyear));
   }
