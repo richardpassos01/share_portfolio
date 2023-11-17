@@ -93,6 +93,13 @@ router.get('/transactions/:institutionId/list-month-years', (ctx) => {
   return transactionController.listMonthYears(ctx);
 });
 
+router.get('/transactions/:institutionId/list-ticket-symbols', (ctx) => {
+  const transactionController = container.get<TransactionController>(
+    TYPES.TransactionController,
+  );
+  return transactionController.listTicketSymbols(ctx);
+});
+
 router.post(
   '/transactions/:institutionId',
   bodyValidator(TransactionSchemas.create),

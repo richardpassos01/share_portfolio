@@ -146,4 +146,15 @@ export default class TransactionRepository
       .into(TABLES.TRANSACTION)
       .then((data) => data.map((item) => item.monthyear));
   }
+
+  async listTicketSymbols(institutionId: string) {
+    return this.database
+      .connection()
+      .select('ticket_symbol as ticketsymbol')
+      .distinct()
+      .where('institution_id', institutionId)
+      .orderBy('ticketsymbol', 'asc')
+      .into(TABLES.TRANSACTION)
+      .then((data) => data.map((item) => item.ticketsymbol));
+  }
 }

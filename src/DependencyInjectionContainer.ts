@@ -18,6 +18,7 @@ import ListTransactions from '@application/queries/ListTransactions';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
 import ListMonthYears from '@application/queries/ListMonthYears';
+import ListTicketSymbols from '@application/queries/ListTicketSymbols';
 
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
@@ -93,12 +94,16 @@ container
   .to(ListMonthlyBalance)
   .inSingletonScope();
 container
+  .bind<ListTransactions>(TYPES.ListTransactions)
+  .to(ListTransactions)
+  .inSingletonScope();
+container
   .bind<ListMonthYears>(TYPES.ListMonthYears)
   .to(ListMonthYears)
   .inSingletonScope();
 container
-  .bind<ListTransactions>(TYPES.ListTransactions)
-  .to(ListTransactions)
+  .bind<ListTicketSymbols>(TYPES.ListTicketSymbols)
+  .to(ListTicketSymbols)
   .inSingletonScope();
 
 container

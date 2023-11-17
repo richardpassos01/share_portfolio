@@ -10,6 +10,7 @@ import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ListTransactions from '@application/queries/ListTransactions';
 import ListMonthYears from '@application/queries/ListMonthYears';
 import { convertToUniqueArray } from '@helpers';
+import ListTicketSymbols from '@application/queries/ListTicketSymbols';
 
 @injectable()
 export default class TransactionController {
@@ -28,6 +29,9 @@ export default class TransactionController {
 
     @inject(TYPES.ListMonthYears)
     private readonly listMonthYearsQuery: ListMonthYears,
+
+    @inject(TYPES.ListTicketSymbols)
+    private readonly listTicketSymbolsQuery: ListTicketSymbols,
   ) {}
 
   async list(ctx: Koa.DefaultContext): Promise<void> {
@@ -76,6 +80,15 @@ export default class TransactionController {
     const { institutionId } = ctx.params;
 
     const result = await this.listMonthYearsQuery.execute(institutionId);
+
+    ctx.response.status = StatusCodes.OK;
+    ctx.response.body = result;
+  }
+
+  async listTicketSymbols(ctx: Koa.DefaultContext): Promise<void> {
+    const { institutionId } = ctx.params;
+
+    const result = await this.listTicketSymbolsQuery.execute(institutionId);
 
     ctx.response.status = StatusCodes.OK;
     ctx.response.body = result;
