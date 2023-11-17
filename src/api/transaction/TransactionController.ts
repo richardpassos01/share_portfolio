@@ -9,6 +9,7 @@ import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import { ReasonPhrases, StatusCodes } from '@domain/shared/enums';
 import ListTransactions from '@application/queries/ListTransactions';
 import ListMonthYears from '@application/queries/ListMonthYears';
+import { convertToUniqueArray } from '@helpers';
 
 @injectable()
 export default class TransactionController {
@@ -31,13 +32,20 @@ export default class TransactionController {
 
   async list(ctx: Koa.DefaultContext): Promise<void> {
     const { institutionId } = ctx.params;
-    const { order, page, limit } = ctx.query;
+    const { order, page, limit, ticker, monthYear } = ctx.query;
+
+    const pageNumber = page ? Number(page) : 1;
+    const pageLimit = limit ? Number(limit) : 100;
+    const tickers = convertToUniqueArray(ticker);
+    const monthYears = convertToUniqueArray(monthYear);
 
     const result = await this.listTransactions.execute(
       institutionId,
-      Number(page),
-      Number(limit),
+      pageNumber,
+      pageLimit,
       order,
+      tickers,
+      monthYears,
     );
 
     ctx.response.status = StatusCodes.OK;
