@@ -8,6 +8,7 @@ import TransactionController from '@api/transaction/TransactionController';
 import MonthlyBalanceController from '@api/balance/monthlyBalance/MonthlyBalanceController';
 import TotalBalanceController from '@api/balance/totalBalance/TotalBalanceController';
 import ResyncController from '@api/resync/ResyncController';
+import ShareController from '@api/share/ShareController';
 
 import ListInstitutions from '@application/queries/ListInstitutions';
 import ListShares from '@application/queries/ListShares';
@@ -16,6 +17,8 @@ import GetTotalBalance from '@application/queries/GetTotalBalance';
 import ListTransactions from '@application/queries/ListTransactions';
 import GetMonthlyBalance from '@application/queries/GetMonthlyBalance';
 import ListMonthlyBalance from '@application/queries/ListMonthlyBalance';
+import ListMonthYears from '@application/queries/ListMonthYears';
+import ListTicketSymbols from '@application/queries/ListTicketSymbols';
 
 import CreateInstitution from '@application/useCases/CreateInstitution';
 import CreateShare from '@application/useCases/CreateShare';
@@ -60,6 +63,10 @@ container
   .to(ResyncController)
   .inSingletonScope();
 container
+  .bind<ShareController>(TYPES.ShareController)
+  .to(ShareController)
+  .inSingletonScope();
+container
   .bind<MonthlyBalanceController>(TYPES.MonthlyBalanceController)
   .to(MonthlyBalanceController)
   .inSingletonScope();
@@ -89,6 +96,14 @@ container
 container
   .bind<ListTransactions>(TYPES.ListTransactions)
   .to(ListTransactions)
+  .inSingletonScope();
+container
+  .bind<ListMonthYears>(TYPES.ListMonthYears)
+  .to(ListMonthYears)
+  .inSingletonScope();
+container
+  .bind<ListTicketSymbols>(TYPES.ListTicketSymbols)
+  .to(ListTicketSymbols)
   .inSingletonScope();
 
 container

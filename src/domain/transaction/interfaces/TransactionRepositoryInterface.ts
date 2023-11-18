@@ -10,6 +10,10 @@ export default interface TransactionRepositoryInterface {
     page?: number,
     limit?: number,
     order?: SortOrder,
+    ticketSymbols?: string[],
+    monthYears?: string[],
   ): Promise<Pagination>;
   listFromMonth(transaction: TransactionDTO): Promise<Transaction[]>;
+  listMonthYears(institutionId: string): Promise<string[]>;
+  listTicketSymbols(institutionId: string): Promise<string[]>;
 }

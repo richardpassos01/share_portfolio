@@ -38,8 +38,10 @@ export default class TransactionRepository
     page = 1,
     limit = 100,
     order: SortOrder = 'asc',
+    ticketSymbols?: string[],
+    monthYears?: string[],
   ) {
-    return this.database
+    const query = this.database
       .connection()
       .select(
         this.database.connection().raw('COUNT(*) OVER() as total_count'),
@@ -50,16 +52,40 @@ export default class TransactionRepository
       .distinct()
       .orderBy([{ column: 'date', order }, 'type', 'ticket_symbol'])
       .limit(limit)
-      .offset((page - 1) * limit)
-      .then(
-        (data) =>
-          new Pagination(
-            page,
-            limit,
-            data,
-            TransactionMapper.mapToEntity as MapperFunction,
-          ),
-      );
+      .offset((page - 1) * limit);
+
+    if (ticketSymbols?.length) {
+      void query.whereIn('ticket_symbol', ticketSymbols);
+    }
+
+    if (monthYears?.length) {
+      const dateConditions = monthYears.map((monthYear) => {
+        const [year, month] = monthYear.split('-');
+        return {
+          year: parseInt(year),
+          month: parseInt(month),
+        };
+      });
+
+      void query.where((builder) => {
+        for (const condition of dateConditions) {
+          void builder.orWhereRaw(
+            'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
+            [condition.year, condition.month],
+          );
+        }
+      });
+    }
+
+    return query.then(
+      (data) =>
+        new Pagination(
+          page,
+          limit,
+          data,
+          TransactionMapper.mapToEntity as MapperFunction,
+        ),
+    );
   }
 
   async listFromMonth({ institutionId, date, id }: TransactionDTO) {
@@ -103,5 +129,32 @@ export default class TransactionRepository
             TransactionMapper.mapToEntity(transaction),
           ),
       );
+  }
+
+  async listMonthYears(institutionId: string) {
+    return this.database
+      .connection()
+      .select(
+        this.database
+          .connection()
+          .raw(
+            "DISTINCT TO_CHAR(DATE_TRUNC('month', date), 'YYYY-MM') AS monthyear",
+          ),
+      )
+      .where('institution_id', institutionId)
+      .orderBy('monthyear', 'desc')
+      .into(TABLES.TRANSACTION)
+      .then((data) => data.map((item) => item.monthyear));
+  }
+
+  async listTicketSymbols(institutionId: string) {
+    return this.database
+      .connection()
+      .select('ticket_symbol as ticketsymbol')
+      .distinct()
+      .where('institution_id', institutionId)
+      .orderBy('ticketsymbol', 'asc')
+      .into(TABLES.TRANSACTION)
+      .then((data) => data.map((item) => item.ticketsymbol));
   }
 }

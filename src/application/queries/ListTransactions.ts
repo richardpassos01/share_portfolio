@@ -16,7 +16,16 @@ export default class ListTransactions {
     page = 1,
     limit = 100,
     order?: SortOrder,
+    ticketSymbols?: string[],
+    monthYears?: string[],
   ): Promise<Pagination> {
-    return this.transactionRepository.list(institutionId, page, limit, order);
+    return this.transactionRepository.list(
+      institutionId,
+      page,
+      limit,
+      order,
+      ticketSymbols,
+      monthYears,
+    );
   }
 }

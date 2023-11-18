@@ -19,3 +19,11 @@ export const formatterMoney = (
 export const isSameMonthYear = (date1: Date, date2: Date): boolean => {
   return dateToMonthYear(date1) === dateToMonthYear(date2);
 };
+export const convertToUniqueArray = (
+  value: string | string[] | null | undefined,
+) => {
+  if (!value) return [];
+
+  const set = new Set(Array.isArray(value) ? value : [value]);
+  return [...set];
+};
