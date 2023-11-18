@@ -84,12 +84,10 @@ export default class BalanceManagement {
   handleSellOperation(monthlySales: number, earningOrLoss: number) {
     if (earningOrLoss < 0) {
       const loss = Math.abs(earningOrLoss);
-      this.handleLoss(loss);
+      return this.handleLoss(loss);
     }
 
-    if (earningOrLoss > 0) {
-      this.handleEarning(monthlySales, earningOrLoss);
-    }
+    this.handleEarning(monthlySales, earningOrLoss);
   }
 
   private handleEarning(monthlySales: number, earning: number) {

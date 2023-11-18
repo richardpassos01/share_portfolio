@@ -25,7 +25,6 @@ import CreateShare from '@application/useCases/CreateShare';
 import UpdatePortfolio from '@application/useCases/UpdatePortfolio';
 import CreateTransactions from '@application/useCases/CreateTransactions';
 import DeleteTransactions from '@application/useCases/DeleteTransactions';
-import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
 import UpdateBalances from '@application/useCases/UpdateBalances';
 import ResyncPortfolio from '@application/useCases/ResyncPortfolio';
 import UpdateShare from '@application/useCases/UpdateShare';
@@ -133,10 +132,6 @@ container
 container
   .bind<DeleteTransactions>(TYPES.DeleteTransactions)
   .to(DeleteTransactions)
-  .inSingletonScope();
-container
-  .bind<ListTradeTransactionsFromMonth>(TYPES.ListTradeTransactionsFromMonth)
-  .to(ListTradeTransactionsFromMonth)
   .inSingletonScope();
 container
   .bind<UpdateBalances>(TYPES.UpdateBalances)
