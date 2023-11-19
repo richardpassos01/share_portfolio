@@ -7,9 +7,9 @@ import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
 import GetShare from '@application/queries/GetShare';
 import CreateShare from './CreateShare';
 import BalanceManagement from '@domain/balance/BalanceManagement';
-import ListTradeTransactionsFromMonth from './ListTradeTransactionsFromMonth';
 import Share from '@domain/share/Share';
 import UpdateShare from './UpdateShare';
+import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 
 @injectable()
 export default class UpdatePortfolio {
@@ -23,38 +23,48 @@ export default class UpdatePortfolio {
     @inject(TYPES.GetShare)
     private readonly getShare: GetShare,
 
-    @inject(TYPES.ListTradeTransactionsFromMonth)
-    private readonly listTradeTransactionsFromMonth: ListTradeTransactionsFromMonth,
-
     @inject(TYPES.CreateShare)
     private readonly createShare: CreateShare,
 
     @inject(TYPES.UpdateShare)
     private readonly updateShare: UpdateShare,
+
+    @inject(TYPES.TransactionRepository)
+    private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
   async execute(transaction: TransactionDTO): Promise<void> {
+    if (transaction.category === TRANSACTION_CATEGORY.OTHER) return;
+
     const balanceManagement = await this.balanceManagementFactory.build(
       transaction.institutionId,
       transaction.date,
     );
+
+    if (transaction.category === TRANSACTION_CATEGORY.DIVIDENDS) {
+      balanceManagement.setDividendEarning(transaction.totalCost);
+      return this.updateBalances.execute(balanceManagement, transaction);
+    }
+
     const share = await this.getShare.execute(transaction);
 
-    if (!share) {
+    if (!share && transaction.category === TRANSACTION_CATEGORY.TRADE) {
       await this.createShare.execute(transaction);
       return this.updateBalances.execute(balanceManagement, transaction);
     }
 
-    if (transaction.category === TRANSACTION_CATEGORY.DIVIDENDS) {
-      balanceManagement.setDividendEarning(transaction.totalCost);
-    }
-
     if (transaction.type === TRANSACTION_TYPE.SELL) {
-      await this.processSellOperation(transaction, balanceManagement, share);
+      await this.processSellOperation(
+        transaction,
+        balanceManagement,
+        share as Share,
+      );
     }
 
-    await this.updateShare.execute(share, transaction);
-    await this.updateBalances.execute(balanceManagement, transaction);
+    await Promise.all([
+      this.updateShare.execute(share as Share, transaction),
+      this.updateBalances.execute(balanceManagement, transaction),
+    ]);
   }
 
   async processSellOperation(
@@ -64,8 +74,17 @@ export default class UpdatePortfolio {
   ) {
     const earningOrLoss = share.getEarningOrLoss(transaction);
 
-    const [buyTransactions, sellTransactions] =
-      await this.listTradeTransactionsFromMonth.execute(transaction);
+    const tradeTransactions =
+      await this.transactionRepository.listTradesFromSameMonth(transaction);
+
+    const buyTransactions = this.filterTransactionByType(
+      tradeTransactions,
+      TRANSACTION_TYPE.BUY,
+    );
+    const sellTransactions = this.filterTransactionByType(
+      tradeTransactions,
+      TRANSACTION_TYPE.SELL,
+    );
 
     const monthlySales = sellTransactions.reduce(
       (acc, sellTransaction) => acc + sellTransaction.totalCost,
@@ -74,5 +93,12 @@ export default class UpdatePortfolio {
 
     balanceManagement.setType(buyTransactions, sellTransactions);
     balanceManagement.handleSellOperation(monthlySales, earningOrLoss);
+  }
+
+  filterTransactionByType(
+    transactions: TransactionDTO[],
+    type: TRANSACTION_TYPE,
+  ) {
+    return transactions.filter((transaction) => transaction.type === type);
   }
 }

@@ -4,7 +4,7 @@ import TransactionRepositoryInterface from '@domain/transaction/interfaces/Trans
 import Database, { TABLES } from '@infrastructure/database';
 import { inject, injectable } from 'inversify';
 import Transaction from '@domain/transaction/Transaction';
-import { TRANSACTION_CATEGORY } from '@domain/shared/enums';
+import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import Pagination, { MapperFunction } from '@domain/shared/Pagination';
 import { SortOrder, TransactionDTO } from '@domain/shared/types';
 
@@ -88,8 +88,8 @@ export default class TransactionRepository
     );
   }
 
-  async listFromMonth({ institutionId, date, id }: TransactionDTO) {
-    const filteredDataQuery = this.database
+  async listTradesFromSameMonth({ institutionId, date }: TransactionDTO) {
+    return this.database
       .connection()
       .select('*')
       .distinct()
@@ -97,32 +97,17 @@ export default class TransactionRepository
         category: TRANSACTION_CATEGORY.TRADE,
         institution_id: institutionId,
       })
+      .andWhere((builder) => {
+        void builder
+          .where('type', TRANSACTION_TYPE.BUY)
+          .orWhere('type', TRANSACTION_TYPE.SELL);
+      })
       .whereRaw(
         'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
         [date.getFullYear(), date.getMonth() + 1],
       )
       .orderBy(['date', 'type', 'ticket_symbol'])
-      .from(TABLES.TRANSACTION);
-
-    const rowNumberQuery = this.database
-      .connection()
-      .select('*')
-      .rowNumber('row_number_alias', ['date', 'type', 'ticket_symbol'])
-      .from('filtered_data_query');
-
-    const selectRowNumberQuery = this.database
-      .connection()
-      .select('row_number_alias')
-      .from('row_number_query')
-      .where('id', id);
-
-    return await this.database
-      .connection()
-      .with('filtered_data_query', filteredDataQuery)
-      .with('row_number_query', rowNumberQuery)
-      .select('*')
-      .from('row_number_query')
-      .where('row_number_alias', '<=', selectRowNumberQuery)
+      .from(TABLES.TRANSACTION)
       .then(
         (data) =>
           data?.map((transaction) =>

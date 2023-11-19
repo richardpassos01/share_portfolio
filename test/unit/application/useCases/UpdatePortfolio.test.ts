@@ -10,8 +10,8 @@ import UpdateShare from '@application/useCases/UpdateShare';
 import GetShare from '@application/queries/GetShare';
 import Share from '@domain/share/Share';
 import ShareFactory from '@factories/ShareFactory';
-import ListTradeTransactionsFromMonth from '@application/useCases/ListTradeTransactionsFromMonth';
 import { MONTHLY_BALANCE_TYPE } from '@domain/balance/monthlyBalance/MonthlyBalanceEnums';
+import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 
 jest.mock('uuid', () => ({
   v4: () => '123456',
@@ -24,7 +24,7 @@ describe('UpdatePortfolio', () => {
   let getShare: GetShare;
   let balanceManagementFactory: BalanceManagementFactory;
   let balanceManagement: BalanceManagement;
-  let listTradeTransactionsFromMonth: ListTradeTransactionsFromMonth;
+  let transactionRepository: TransactionRepositoryInterface;
   let share: Share;
 
   beforeAll(async () => {
@@ -32,10 +32,9 @@ describe('UpdatePortfolio', () => {
     updateBalances = container.get<UpdateBalances>(TYPES.UpdateBalances);
     updateShare = container.get<UpdateShare>(TYPES.UpdateShare);
     getShare = container.get<GetShare>(TYPES.GetShare);
-    listTradeTransactionsFromMonth =
-      container.get<ListTradeTransactionsFromMonth>(
-        TYPES.ListTradeTransactionsFromMonth,
-      );
+    transactionRepository = container.get<TransactionRepositoryInterface>(
+      TYPES.TransactionRepository,
+    );
     share = new ShareFactory().get();
     balanceManagementFactory = container.get<BalanceManagementFactory>(
       TYPES.BalanceManagementFactory,
@@ -124,9 +123,9 @@ describe('UpdatePortfolio', () => {
     }).get();
 
     jest
-      .spyOn(listTradeTransactionsFromMonth, 'execute')
+      .spyOn(transactionRepository, 'listTradesFromSameMonth')
       .mockImplementation(() =>
-        Promise.resolve([[buyTransaction], [sellTransaction]]),
+        Promise.resolve([buyTransaction, sellTransaction]),
       );
 
     await updatePortfolio.execute(sellTransaction);
