@@ -29,7 +29,11 @@ export default class UpdateBalances {
       balanceManagement.monthlyDividendEarning,
       balanceManagement.monthlyTax,
       balanceManagement.monthlyTaxWithholding,
+      balanceManagement.monthlyTaxGross,
       balanceManagement.monthlyLoss,
+      balanceManagement.monthlyTotalSold,
+      balanceManagement.monthlyRestitution,
+      balanceManagement.monthlyCurrentTotalLoss,
       balanceManagement.monthlyOperationType,
     );
     await this.monthlyBalanceRepository.createOrUpdate(monthlyBalance);

@@ -12,7 +12,11 @@ export async function up(knex: Knex): Promise<void> {
       table.decimal('dividend_earning', null);
       table.decimal('tax', null);
       table.decimal('tax_withholding', null);
+      table.decimal('tax_gross', null);
       table.decimal('loss', null);
+      table.decimal('total_sold', null);
+      table.decimal('restitution', null);
+      table.decimal('current_total_loss', null);
       table.enu('type', Object.values(MONTHLY_BALANCE_TYPE)).notNullable();
       table.timestamps(true, true);
 

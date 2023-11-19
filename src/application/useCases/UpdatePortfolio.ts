@@ -91,6 +91,8 @@ export default class UpdatePortfolio {
       0,
     );
 
+    balanceManagement.setTotalSold(monthlySales);
+    balanceManagement.setCurrentMonthlyTotslLoss(balanceManagement.totalLoss);
     balanceManagement.setType(buyTransactions, sellTransactions);
     balanceManagement.handleSellOperation(monthlySales, earningOrLoss);
   }

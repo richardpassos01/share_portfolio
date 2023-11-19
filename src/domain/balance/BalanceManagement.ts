@@ -22,7 +22,11 @@ export default class BalanceManagement {
     public monthlyDividendEarning = 0,
     public monthlyTax = 0,
     public monthlyTaxWithholding = 0,
+    public monthlyTaxGross = 0,
     public monthlyLoss = 0,
+    public monthlyTotalSold = 0,
+    public monthlyCurrentTotalLoss = 0,
+    public monthlyRestitution = 0,
     public monthlyOperationType = MONTHLY_BALANCE_TYPE.SWING_TRADE,
   ) {}
 
@@ -61,8 +65,8 @@ export default class BalanceManagement {
     this.setMonthlyOperationType(type);
   }
 
-  setTax(tax: number) {
-    this.monthlyTax = tax;
+  setTax(amout: number) {
+    this.monthlyTax = amout;
   }
 
   setTaxWithholding(amount: number) {
@@ -72,6 +76,10 @@ export default class BalanceManagement {
     this.monthlyTaxWithholding = taxWithholding; // IF IT CHARGE FROM EARNINGS, IT SHOULD BE UPDATED TO += tax...
   }
 
+  setTaxGross(amout: number) {
+    this.monthlyTaxGross = amout;
+  }
+
   setFinancialLosses(loss: number) {
     this.monthlyLoss += loss;
     this.totalLoss += loss;
@@ -79,6 +87,18 @@ export default class BalanceManagement {
 
   setTotalLoss(loss: number) {
     this.totalLoss = loss;
+  }
+
+  setTotalSold(totalSold: number) {
+    this.monthlyTotalSold = totalSold;
+  }
+
+  setRestitution(restitution: number) {
+    this.monthlyRestitution = restitution;
+  }
+
+  setCurrentMonthlyTotslLoss(totalLoss: number) {
+    this.monthlyCurrentTotalLoss = totalLoss;
   }
 
   handleSellOperation(monthlySales: number, earningOrLoss: number) {
@@ -138,11 +158,16 @@ export default class BalanceManagement {
   private calculateTax() {
     const tradetEarning = this.monthlyTradeEarning;
 
-    const taxToBeCharged =
-      tradetEarning * TAX_PERCENTAGE[this.monthlyOperationType] -
-      this.monthlyTaxWithholding;
+    const taxGross = tradetEarning * TAX_PERCENTAGE[this.monthlyOperationType];
+    const netTax = taxGross - this.monthlyTaxWithholding;
 
-    this.setTax(taxToBeCharged);
+    this.setTax(netTax);
+    this.setTaxGross(taxGross);
+
+    if (netTax < 0) {
+      this.setTax(0);
+      return this.setRestitution(Math.abs(netTax));
+    }
 
     if (this.totalLoss > 0 && this.monthlyTax > 0) {
       this.deductTaxFromTotalLoss();

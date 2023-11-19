@@ -8,7 +8,11 @@ type MapToEntityInput = {
   dividend_earning: number;
   tax: number;
   tax_withholding: number;
+  tax_gross: number;
   loss: number;
+  total_sold: number;
+  restitution: number;
+  current_total_loss: number;
   type: MONTHLY_BALANCE_TYPE;
 };
 
@@ -21,7 +25,11 @@ export default class MonthlyBalanceMapper {
       dividend_earning: entity.dividendEarning,
       tax: entity.tax,
       tax_withholding: entity.taxWithholding,
+      tax_gross: entity.taxGross,
       loss: entity.loss,
+      total_sold: entity.totalSold,
+      restitution: entity.restitution,
+      current_total_loss: entity.currentTotalLoss,
       type: entity.type,
     };
   }
@@ -34,7 +42,11 @@ export default class MonthlyBalanceMapper {
       object.dividend_earning,
       object.tax,
       object.tax_withholding,
+      object.tax_gross,
       object.loss,
+      object.total_sold,
+      object.restitution,
+      object.current_total_loss,
       object.type,
     );
   }

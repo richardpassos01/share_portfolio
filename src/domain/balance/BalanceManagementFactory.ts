@@ -27,7 +27,11 @@ export default class BalanceManagementFactory {
       monthlyBalance?.dividendEarning,
       monthlyBalance?.tax,
       monthlyBalance?.taxWithholding,
+      monthlyBalance?.taxGross,
       monthlyBalance?.loss,
+      monthlyBalance?.totalSold,
+      monthlyBalance?.restitution,
+      monthlyBalance?.currentTotalLoss,
       monthlyBalance?.type,
     );
   }
