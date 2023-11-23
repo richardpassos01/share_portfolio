@@ -10,7 +10,7 @@ import UpdateShare from '@application/useCases/UpdateShare';
 import GetShare from '@application/queries/GetShare';
 import Share from '@domain/share/Share';
 import ShareFactory from '@factories/ShareFactory';
-import { MONTHLY_BALANCE_TYPE } from '@domain/balance/monthlyBalance/MonthlyBalanceEnums';
+import { dateToMonthYear } from '@helpers';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
 
 jest.mock('uuid', () => ({
@@ -61,11 +61,12 @@ describe('UpdatePortfolio', () => {
     const expectedMonthlyBalanceManagement = new BalanceManagement();
     const transaction = new TransactionFactory().get();
 
-    await updatePortfolio.execute(transaction);
+    await updatePortfolio.execute([transaction]);
 
     expect(updateBalances.execute).toHaveBeenCalledWith(
       expectedMonthlyBalanceManagement,
-      transaction,
+      dateToMonthYear(transaction.date),
+      transaction.institutionId,
     );
   });
 
@@ -77,11 +78,12 @@ describe('UpdatePortfolio', () => {
 
     expectedMonthlyBalanceManagement.setDividendEarning(transaction.totalCost);
 
-    await updatePortfolio.execute(transaction);
+    await updatePortfolio.execute([transaction]);
 
     expect(updateBalances.execute).toHaveBeenCalledWith(
       expectedMonthlyBalanceManagement,
-      transaction,
+      dateToMonthYear(transaction.date),
+      transaction.institutionId
     );
   });
 
@@ -91,11 +93,12 @@ describe('UpdatePortfolio', () => {
       category: TRANSACTION_CATEGORY.SPLIT,
     }).get();
 
-    await updatePortfolio.execute(transaction);
+    await updatePortfolio.execute([transaction]);
 
     expect(updateBalances.execute).toHaveBeenCalledWith(
       expectedMonthlyBalanceManagement,
-      transaction,
+      dateToMonthYear(transaction.date),
+      transaction.institutionId
     );
   });
 
@@ -105,41 +108,50 @@ describe('UpdatePortfolio', () => {
       category: TRANSACTION_CATEGORY.BONUS_SHARE,
     }).get();
 
-    await updatePortfolio.execute(transaction);
+    await updatePortfolio.execute([transaction]);
 
     expect(updateBalances.execute).toHaveBeenCalledWith(
       expectedMonthlyBalanceManagement,
-      transaction,
+      dateToMonthYear(transaction.date),
+      transaction.institutionId
     );
   });
 
   it('Should call updateBalances with valid values for SELL transaction.', async () => {
     const expectedMonthlyBalanceManagement = new BalanceManagement();
-    const buyTransaction = new TransactionFactory().get();
-    const sellTransaction = new TransactionFactory({
+    const transaction = new TransactionFactory({
       type: TRANSACTION_TYPE.SELL,
       unitPrice: 20,
       totalCost: 2000,
     }).get();
 
     jest
-      .spyOn(transactionRepository, 'listTradesFromSameMonth')
+      .spyOn(transactionRepository, 'checkIfHasDayTradeOnSameMonth')
       .mockImplementation(() =>
-        Promise.resolve([buyTransaction, sellTransaction]),
+        Promise.resolve(true),
       );
 
-    await updatePortfolio.execute(sellTransaction);
+    jest
+      .spyOn(getShare, 'execute')
+      .mockImplementation(() =>
+        Promise.resolve(new ShareFactory().get()),
+      );
+
+    await updatePortfolio.execute([transaction]);
 
     expectedMonthlyBalanceManagement.setMonthlyOperationType(
-      MONTHLY_BALANCE_TYPE.DAY_TRADE,
+      true,
     );
+    expectedMonthlyBalanceManagement.setMonthlyTotalSold(2000);
+    expectedMonthlyBalanceManagement.setTaxGross(200);
     expectedMonthlyBalanceManagement.setTax(180);
-    expectedMonthlyBalanceManagement.setTaxWithholding(2000);
+    expectedMonthlyBalanceManagement.setTaxWithholding();
     expectedMonthlyBalanceManagement.setTradeEarning(1000);
 
     expect(updateBalances.execute).toHaveBeenCalledWith(
       expectedMonthlyBalanceManagement,
-      sellTransaction,
+      dateToMonthYear(transaction.date),
+      transaction.institutionId
     );
   });
 });

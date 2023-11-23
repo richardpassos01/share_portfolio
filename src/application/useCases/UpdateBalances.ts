@@ -3,8 +3,6 @@ import { injectable, inject } from 'inversify';
 import BalanceManagement from '@domain/balance/BalanceManagement';
 import TotalBalance from '@domain/balance/totalBalance/TotalBalance';
 import MonthlyBalance from '@domain/balance/monthlyBalance/MonthlyBalance';
-import { dateToMonthYear } from '@helpers';
-import { TransactionDTO } from '@domain/shared/types';
 import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 
@@ -20,11 +18,12 @@ export default class UpdateBalances {
 
   async execute(
     balanceManagement: BalanceManagement,
-    transaction: TransactionDTO,
+    monthYear: string,
+    institutionId: string,
   ): Promise<void> {
     const monthlyBalance = new MonthlyBalance(
-      transaction.institutionId,
-      dateToMonthYear(transaction.date),
+      institutionId,
+      monthYear,
       balanceManagement.monthlyTradeEarning,
       balanceManagement.monthlyDividendEarning,
       balanceManagement.monthlyTax,
@@ -39,12 +38,10 @@ export default class UpdateBalances {
     await this.monthlyBalanceRepository.createOrUpdate(monthlyBalance);
 
     const { sum: monthlyEarnings } =
-      await this.monthlyBalanceRepository.sumEarnings(
-        transaction.institutionId,
-      );
+      await this.monthlyBalanceRepository.sumEarnings(institutionId);
 
     const totalBalance = new TotalBalance(
-      transaction.institutionId,
+      institutionId,
       balanceManagement.totalLoss,
     );
 

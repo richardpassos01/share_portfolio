@@ -15,6 +15,10 @@ type Params = {
   taxWithholding?: number;
   loss?: number;
   type?: MONTHLY_BALANCE_TYPE;
+  taxGross?: number;
+  totalSold?: number;
+  restitution?: number;
+  currentTotalLoss?: number;
 };
 
 export default class MonthlyBalanceFactory {
@@ -30,6 +34,10 @@ export default class MonthlyBalanceFactory {
       taxWithholding,
       loss,
       type,
+      taxGross,
+      totalSold,
+      restitution,
+      currentTotalLoss,
     } = {} as Params,
     monthlyBalance?: MonthlyBalance,
   ) {
@@ -42,7 +50,11 @@ export default class MonthlyBalanceFactory {
         dividendEarning,
         tax,
         taxWithholding,
+        taxGross,
         loss,
+        totalSold,
+        restitution,
+        currentTotalLoss,
         type,
       );
   }
@@ -59,7 +71,11 @@ export default class MonthlyBalanceFactory {
       dividendEarning: this.monthlyBalance.dividendEarning,
       tax: this.monthlyBalance.tax,
       taxWithholding: this.monthlyBalance.taxWithholding,
+      taxGross: this.monthlyBalance.taxGross,
       loss: this.monthlyBalance.loss,
+      totalSold: this.monthlyBalance.totalSold,
+      restitution: this.monthlyBalance.restitution,
+      currentTotalLoss: this.monthlyBalance.currentTotalLoss,
       type: this.monthlyBalance.type,
     };
   }

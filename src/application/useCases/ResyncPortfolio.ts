@@ -5,7 +5,7 @@ import UpdatePortfolio from './UpdatePortfolio';
 import TotalBalanceRepositoryInterface from '@domain/balance/totalBalance/interfaces/TotalBalanceRepositoryInterface';
 import MonthlyBalanceRepositoryInterface from '@domain/balance/monthlyBalance/interfaces/MonthlyBalanceRepositoryInterface';
 import ShareRepositoryInterface from '@domain/share/interfaces/ShareRepositoryInterface';
-import { TransactionDTO } from '@domain/shared/types';
+import Transaction from '@domain/transaction/Transaction';
 
 @injectable()
 export default class ResyncPortfolio {
@@ -56,9 +56,7 @@ export default class ResyncPortfolio {
     await this.shareRepository.deleteAll(institutionId);
   }
 
-  async handleUpdatePortfolio(transactions: TransactionDTO[]) {
-    for (const transaction of transactions) {
-      await this.updatePortfolio.execute(transaction);
-    }
+  async handleUpdatePortfolio(transactions: Transaction[]) {
+    await this.updatePortfolio.execute(transactions);
   }
 }

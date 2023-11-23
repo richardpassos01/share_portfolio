@@ -38,10 +38,7 @@ export default class CreateTransactions {
       .sort(this.sortTransactions);
 
     await this.transactionRepository.createMany(transactions);
-
-    for (const transaction of transactions) {
-      await this.updatePortfolio.execute(transaction);
-    }
+    await this.updatePortfolio.execute(transactions);
   }
 
   sortTransactions(a: TransactionDTO, b: TransactionDTO): number {

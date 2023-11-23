@@ -2,7 +2,6 @@ import { TRANSACTION_CATEGORY, TRANSACTION_TYPE } from '@domain/shared/enums';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '@constants/types';
 import UpdateBalances from './UpdateBalances';
-import { TransactionDTO } from '@domain/shared/types';
 import BalanceManagementFactory from '@domain/balance/BalanceManagementFactory';
 import GetShare from '@application/queries/GetShare';
 import CreateShare from './CreateShare';
@@ -10,6 +9,22 @@ import BalanceManagement from '@domain/balance/BalanceManagement';
 import Share from '@domain/share/Share';
 import UpdateShare from './UpdateShare';
 import TransactionRepositoryInterface from '@domain/transaction/interfaces/TransactionRepositoryInterface';
+import Transaction from '@domain/transaction/Transaction';
+import { dateToMonthYear } from '@helpers';
+
+const groupedByDate = (transactions: Transaction[]) =>
+  transactions.reduce((acc: Record<string, Transaction[]>, transaction) => {
+    const dateKey = transaction.date.toISOString().split('T')[0];
+
+    if (transaction.category !== TRANSACTION_CATEGORY.OTHER) {
+      if (!acc[dateKey]) {
+        acc[dateKey] = [];
+      }
+
+      acc[dateKey].push(transaction);
+    }
+    return acc;
+  }, {});
 
 @injectable()
 export default class UpdatePortfolio {
@@ -33,74 +48,151 @@ export default class UpdatePortfolio {
     private readonly transactionRepository: TransactionRepositoryInterface,
   ) {}
 
-  async execute(transaction: TransactionDTO): Promise<void> {
-    if (transaction.category === TRANSACTION_CATEGORY.OTHER) return;
+  async execute(transactions: Transaction[]): Promise<void> {
+    const orders = groupedByDate(transactions);
+    const institutionId = transactions[0].institutionId;
 
-    const balanceManagement = await this.balanceManagementFactory.build(
-      transaction.institutionId,
-      transaction.date,
-    );
+    for (const key of Object.keys(orders)) {
+      const order = orders[key];
+      const targetDate = order[0].date;
+      const targetMonthYear = dateToMonthYear(targetDate);
 
-    if (transaction.category === TRANSACTION_CATEGORY.DIVIDENDS) {
-      balanceManagement.setDividendEarning(transaction.totalCost);
-      return this.updateBalances.execute(balanceManagement, transaction);
-    }
-
-    const share = await this.getShare.execute(transaction);
-
-    if (!share && transaction.category === TRANSACTION_CATEGORY.TRADE) {
-      await this.createShare.execute(transaction);
-      return this.updateBalances.execute(balanceManagement, transaction);
-    }
-
-    if (transaction.type === TRANSACTION_TYPE.SELL) {
-      await this.processSellOperation(
-        transaction,
-        balanceManagement,
-        share as Share,
+      const balanceManagement = await this.balanceManagementFactory.build(
+        institutionId,
+        targetDate,
       );
-    }
 
-    await Promise.all([
-      this.updateShare.execute(share as Share, transaction),
-      this.updateBalances.execute(balanceManagement, transaction),
-    ]);
+      const dividendsTransactions = this.filterTransactionByType(
+        order,
+        TRANSACTION_TYPE.BUY,
+        TRANSACTION_CATEGORY.DIVIDENDS,
+      );
+
+      const buyTransactions = this.filterTransactionByType(
+        order,
+        TRANSACTION_TYPE.BUY,
+        TRANSACTION_CATEGORY.TRADE,
+      );
+
+      const sellTransactions = this.filterTransactionByType(
+        order,
+        TRANSACTION_TYPE.SELL,
+        TRANSACTION_CATEGORY.TRADE,
+      );
+
+      const bonusShareTransactions = this.filterTransactionByType(
+        order,
+        TRANSACTION_TYPE.BUY,
+        TRANSACTION_CATEGORY.BONUS_SHARE,
+      );
+
+      const splitTransactions = this.filterTransactionByType(
+        order,
+        TRANSACTION_TYPE.BUY,
+        TRANSACTION_CATEGORY.SPLIT,
+      );
+
+      const specialEventsTransactions = [
+        ...bonusShareTransactions,
+        ...splitTransactions,
+      ];
+
+      if (dividendsTransactions.length > 0) {
+        const dividendsAmount = this.calculateTotalCostOfTransactions(
+          dividendsTransactions,
+        );
+        balanceManagement.setDividendEarning(dividendsAmount);
+      }
+
+      if (specialEventsTransactions.length > 0) {
+        for (const transaction of specialEventsTransactions) {
+          const share = await this.getShare.execute(transaction);
+          await this.updateShare.execute(share as Share, transaction);
+        }
+      }
+
+      if (buyTransactions.length > 0) {
+        for (const transaction of buyTransactions) {
+          const share = await this.getShare.execute(transaction);
+
+          if (!share) {
+            await this.createShare.execute(transaction);
+          } else {
+            await this.updateShare.execute(share as Share, transaction);
+          }
+        }
+      }
+
+      if (sellTransactions.length > 0) {
+        await this.processSellOperation(
+          order,
+          balanceManagement,
+          sellTransactions,
+        );
+      }
+
+      await Promise.all([
+        this.updateBalances.execute(
+          balanceManagement,
+          targetMonthYear,
+          institutionId,
+        ),
+      ]);
+    }
   }
 
   async processSellOperation(
-    transaction: TransactionDTO,
+    order: Transaction[],
     balanceManagement: BalanceManagement,
-    share: Share,
+    sellTransactions: Transaction[],
   ) {
-    const earningOrLoss = share.getEarningOrLoss(transaction);
+    const hasDayTrade =
+      await this.transactionRepository.checkIfHasDayTradeOnSameMonth(
+        order[0].date,
+      );
 
-    const tradeTransactions =
-      await this.transactionRepository.listTradesFromSameMonth(transaction);
+    const orderTotalSales = this.calculateTotalCostOfOrder(order);
+    balanceManagement.setMonthlyTotalSold(orderTotalSales);
 
-    const buyTransactions = this.filterTransactionByType(
-      tradeTransactions,
-      TRANSACTION_TYPE.BUY,
-    );
-    const sellTransactions = this.filterTransactionByType(
-      tradeTransactions,
-      TRANSACTION_TYPE.SELL,
-    );
+    let earningOrLossOnOrder = 0;
 
-    const monthlySales = sellTransactions.reduce(
-      (acc, sellTransaction) => acc + sellTransaction.totalCost,
-      0,
-    );
+    for (const transaction of sellTransactions) {
+      const share = (await this.getShare.execute(transaction)) as Share;
 
-    balanceManagement.setTotalSold(monthlySales);
-    balanceManagement.setCurrentMonthlyTotslLoss(balanceManagement.totalLoss);
-    balanceManagement.setType(buyTransactions, sellTransactions);
-    balanceManagement.handleSellOperation(monthlySales, earningOrLoss);
+      earningOrLossOnOrder += share.getEarningOrLoss(transaction);
+
+      await this.updateShare.execute(share, transaction);
+    }
+
+    balanceManagement.handleSellOperation(earningOrLossOnOrder, hasDayTrade);
   }
 
   filterTransactionByType(
-    transactions: TransactionDTO[],
+    transactions: Transaction[],
     type: TRANSACTION_TYPE,
+    category: TRANSACTION_CATEGORY,
   ) {
-    return transactions.filter((transaction) => transaction.type === type);
+    return transactions.filter(
+      (transaction) =>
+        transaction.type === type && transaction.category === category,
+    );
+  }
+
+  calculateTotalCostOfOrder(transactions: any) {
+    const result = transactions.reduce((acc: any, transaction: any) => {
+      if (transaction.type === 'BUY') {
+        return acc + transaction.totalCost;
+      }
+      return acc - transaction.totalCost;
+    }, 0);
+
+    const totalDeductionFromOrderSales = result > 0 ? 0 : Math.abs(result);
+    return totalDeductionFromOrderSales;
+  }
+
+  calculateTotalCostOfTransactions(transactions: Transaction[]) {
+    return transactions.reduce((acc, transaction) => {
+      return acc + transaction.totalCost;
+    }, 0);
   }
 }

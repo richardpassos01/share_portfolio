@@ -103,8 +103,8 @@ export default class TransactionRepository
           .orWhere('type', TRANSACTION_TYPE.SELL);
       })
       .whereRaw(
-        'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ?',
-        [date.getFullYear(), date.getMonth() + 1],
+        'EXTRACT(YEAR FROM date) = ? AND EXTRACT(MONTH FROM date) = ? AND EXTRACT(DAY FROM date) < ?',
+        [date.getFullYear(), date.getMonth() + 1, date.getDate()],
       )
       .orderBy(['date', 'type', 'ticket_symbol'])
       .from(TABLES.TRANSACTION)
@@ -141,5 +141,27 @@ export default class TransactionRepository
       .orderBy('ticketsymbol', 'asc')
       .into(TABLES.TRANSACTION)
       .then((data) => data.map((item) => item.ticketsymbol));
+  }
+
+  async checkIfHasDayTradeOnSameMonth(date: Date) {
+    const connection = this.database.connection();
+    return connection
+      .select(1)
+      .from(`${TABLES.TRANSACTION} as t1`)
+      .join(`${TABLES.TRANSACTION} as t2`, function () {
+        this.on('t1.date', '=', 't2.date');
+        this.andOn(
+          connection.raw(`
+            EXTRACT(MONTH FROM t1.date) = ${date.getMonth() + 1}
+            AND EXTRACT(YEAR FROM t1.date) = ${date.getFullYear()} 
+            AND t1.type = 'BUY'
+            AND t2.type = 'SELL'
+            AND t1.category = 'TRADE' AND t2.category = 'TRADE'
+            AND t1.ticket_symbol = t2.ticket_symbol
+          `),
+        );
+      })
+      .first()
+      .then((result) => Boolean(result));
   }
 }

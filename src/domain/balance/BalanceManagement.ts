@@ -3,7 +3,6 @@ import {
   MONTHLY_BALANCE_SALES_LIMIT,
   MONTHLY_BALANCE_TYPE,
 } from './monthlyBalance/MonthlyBalanceEnums';
-import { dateToString } from '@helpers';
 
 const TAX_PERCENTAGE: Record<MONTHLY_BALANCE_TYPE, number> = {
   [MONTHLY_BALANCE_TYPE.SWING_TRADE]: 0.15,
@@ -38,42 +37,24 @@ export default class BalanceManagement {
     this.monthlyDividendEarning += earning;
   }
 
-  setMonthlyOperationType(type: MONTHLY_BALANCE_TYPE) {
-    this.monthlyOperationType = type;
-  }
-
-  setType(
-    buyTransactions: TransactionDTO[],
-    sellTransactions: TransactionDTO[],
-  ) {
-    const alreadyDidDayTradeAtMonth =
-      this.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;
-
-    if (alreadyDidDayTradeAtMonth) {
-      return;
-    }
-
-    const didDayTrade = this.checkIfDidDayTradeAtMonth(
-      buyTransactions,
-      sellTransactions,
-    );
-
+  setMonthlyOperationType(didDayTrade: boolean) {
     const type = didDayTrade
       ? MONTHLY_BALANCE_TYPE.DAY_TRADE
       : MONTHLY_BALANCE_TYPE.SWING_TRADE;
 
-    this.setMonthlyOperationType(type);
+    this.monthlyOperationType = type;
   }
 
   setTax(amout: number) {
     this.monthlyTax = amout;
   }
 
-  setTaxWithholding(amount: number) {
+  setTaxWithholding() {
     const taxWithholding =
-      amount * TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
+      this.monthlyTotalSold *
+      TAX_WITHHOLDING_PERCENTAGE[this.monthlyOperationType];
 
-    this.monthlyTaxWithholding = taxWithholding; // IF IT CHARGE FROM EARNINGS, IT SHOULD BE UPDATED TO += tax...
+    this.monthlyTaxWithholding = taxWithholding;
   }
 
   setTaxGross(amout: number) {
@@ -89,34 +70,37 @@ export default class BalanceManagement {
     this.totalLoss = loss;
   }
 
-  setTotalSold(totalSold: number) {
-    this.monthlyTotalSold = totalSold;
+  setMonthlyTotalSold(orderTotalSold: number) {
+    this.monthlyTotalSold += orderTotalSold;
   }
 
   setRestitution(restitution: number) {
     this.monthlyRestitution = restitution;
   }
 
-  setCurrentMonthlyTotslLoss(totalLoss: number) {
-    this.monthlyCurrentTotalLoss = totalLoss;
+  setMonthlyCurrentTotallLoss() {
+    this.monthlyCurrentTotalLoss = this.totalLoss;
   }
 
-  handleSellOperation(monthlySales: number, earningOrLoss: number) {
+  handleSellOperation(earningOrLoss: number, hasDayTrade: boolean) {
+    this.setMonthlyOperationType(hasDayTrade);
+
     if (earningOrLoss < 0) {
       const loss = Math.abs(earningOrLoss);
       return this.handleLoss(loss);
     }
 
-    this.handleEarning(monthlySales, earningOrLoss);
+    this.handleEarning(earningOrLoss);
+    this.setMonthlyCurrentTotallLoss();
   }
 
-  private handleEarning(monthlySales: number, earning: number) {
+  private handleEarning(earning: number) {
     this.setTradeEarning(earning);
 
-    const shouldChargeTax = this.checkIfShouldChargeTax(monthlySales);
+    const shouldChargeTax = this.checkIfShouldChargeTax();
 
     if (shouldChargeTax) {
-      this.setTaxWithholding(monthlySales); // SHOULD CHARGE IT FROM EARNING, BUT INTER IS HANDLE IT WRONG
+      this.setTaxWithholding();
       this.calculateTax();
     }
   }
@@ -174,23 +158,9 @@ export default class BalanceManagement {
     }
   }
 
-  private checkIfDidDayTradeAtMonth(
-    sellTransactions: TransactionDTO[],
-    buyTransactions: TransactionDTO[],
-  ) {
-    return buyTransactions.find(({ ticketSymbol: buyTicket, date: BuyDate }) =>
-      sellTransactions.find(({ ticketSymbol: sellTicket, date: sellDate }) => {
-        const sameShare = buyTicket === sellTicket;
-        const tradeInSameDay = dateToString(BuyDate) === dateToString(sellDate);
-
-        return sameShare && tradeInSameDay;
-      }),
-    );
-  }
-
-  private checkIfShouldChargeTax(monthlySales: number) {
+  private checkIfShouldChargeTax() {
     const sellMoreThanLimit =
-      monthlySales > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
+      this.monthlyTotalSold > MONTHLY_BALANCE_SALES_LIMIT.TO_CHARGE_TAX;
 
     const didDayTrade =
       this.monthlyOperationType === MONTHLY_BALANCE_TYPE.DAY_TRADE;

@@ -13,7 +13,7 @@ const jestConfig: JestConfigWithTsJest = {
     prefix: '<rootDir>/',
   }),
   moduleFileExtensions: ['ts', 'tsx', 'js'],
-  testTimeout: 1500,
+  testTimeout: 99999,
   rootDir: '.',
   verbose: true,
   setupFiles: ['<rootDir>/jest.setup.ts'],

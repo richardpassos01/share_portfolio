@@ -34,55 +34,7 @@ describe('BalanceManagement', () => {
   });
 
   it('should set the operation type to DAY_TRADE', () => {
-    const buyTransactions = [
-      new TransactionFactory({ type: TRANSACTION_TYPE.BUY }).get(),
-    ];
-
-    const sellTransactions = [
-      new TransactionFactory({ type: TRANSACTION_TYPE.SELL }).get(),
-    ];
-
-    balanceManagement.setType(buyTransactions, sellTransactions);
-
-    expect(balanceManagement.monthlyOperationType).toBe(
-      MONTHLY_BALANCE_TYPE.DAY_TRADE,
-    );
-  });
-
-  it('should return if it is already DAY_TRADE', () => {
-    balanceManagement.setMonthlyOperationType(MONTHLY_BALANCE_TYPE.DAY_TRADE);
-    balanceManagement.setMonthlyOperationType = jest.fn();
-    const buyTransactions = [
-      new TransactionFactory({ type: TRANSACTION_TYPE.BUY }).get(),
-    ];
-
-    const sellTransactions = [
-      new TransactionFactory({ type: TRANSACTION_TYPE.SELL }).get(),
-    ];
-
-    balanceManagement.setType(buyTransactions, sellTransactions);
-
-    expect(balanceManagement.setMonthlyOperationType).toBeCalledTimes(0);
-  });
-
-  it('should set the operation type to SWING_TRADE', () => {
-    const date = new Date();
-    date.setDate(1);
-
-    const buyTransactions = [
-      new TransactionFactory({
-        date,
-        type: TRANSACTION_TYPE.BUY,
-      }).get(),
-    ];
-
-    date.setDate(2);
-
-    const sellTransactions = [
-      new TransactionFactory({ date, type: TRANSACTION_TYPE.SELL }).get(),
-    ];
-
-    balanceManagement.setType(buyTransactions, sellTransactions);
+    balanceManagement.setMonthlyOperationType(true);
 
     expect(balanceManagement.monthlyOperationType).toBe(
       MONTHLY_BALANCE_TYPE.DAY_TRADE,
@@ -95,7 +47,8 @@ describe('BalanceManagement', () => {
   });
 
   it('should set tax withholding', () => {
-    balanceManagement.setTaxWithholding(10);
+    balanceManagement.setMonthlyTotalSold(10);
+    balanceManagement.setTaxWithholding();
     expect(balanceManagement.monthlyTaxWithholding).toBe(0.0005);
   });
 
@@ -111,32 +64,39 @@ describe('BalanceManagement', () => {
   });
 
   it('should handle sell operation with earning', () => {
-    balanceManagement.handleSellOperation(100, 50);
+    balanceManagement.setMonthlyTotalSold(100);
+    balanceManagement.handleSellOperation(50, false);
     expect(balanceManagement.monthlyTradeEarning).toBe(50);
   });
 
   it('should handle sell operation with tax when sell more than 20k', () => {
-    balanceManagement.handleSellOperation(20001, 50);
+    balanceManagement.setMonthlyTotalSold(20001);
+    balanceManagement.handleSellOperation(50, false);
     expect(balanceManagement.monthlyTaxWithholding).toBe(1.00005);
     expect(balanceManagement.monthlyTax).toBe(6.49995);
   });
 
   it('should handle sell operation with tax when did day trade', () => {
-    balanceManagement.setMonthlyOperationType(MONTHLY_BALANCE_TYPE.DAY_TRADE);
+    balanceManagement.setMonthlyTotalSold(150);
 
-    balanceManagement.handleSellOperation(150, 50);
+    balanceManagement.handleSellOperation(50, true);
+
     expect(balanceManagement.monthlyTaxWithholding).toBe(1.5);
     expect(balanceManagement.monthlyTax).toBe(8.5);
   });
 
   it('should handle sell operation with loss', () => {
-    balanceManagement.handleSellOperation(100, -30);
+    balanceManagement.setMonthlyTotalSold(100);
+
+    balanceManagement.handleSellOperation(-30, false);
+
     expect(balanceManagement.monthlyLoss).toBe(30);
   });
 
   it('should handle sell operation with loss and deduct it from tax', () => {
+    balanceManagement.setMonthlyTotalSold(100);
     balanceManagement.setTax(300);
-    balanceManagement.handleSellOperation(100, -30);
+    balanceManagement.handleSellOperation(-30, false);
     expect(balanceManagement.monthlyTax).toBe(270);
   });
 });

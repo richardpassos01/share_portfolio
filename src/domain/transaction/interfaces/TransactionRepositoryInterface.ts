@@ -16,4 +16,5 @@ export default interface TransactionRepositoryInterface {
   listTradesFromSameMonth(transaction: TransactionDTO): Promise<Transaction[]>;
   listMonthYears(institutionId: string): Promise<string[]>;
   listTicketSymbols(institutionId: string): Promise<string[]>;
+  checkIfHasDayTradeOnSameMonth(date: Date): Promise<boolean>;
 }
