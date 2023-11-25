@@ -1,5 +1,23 @@
 version: '3.8'
+
 services:
+  web:
+    build:
+      context: .
+    command: "web-local"
+    volumes:
+      - ${PWD}/data:/var/lib/app
+    ports:
+      - 4000:4000
+    restart: always
+    env_file: .env
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+    networks:
+      - web
+
   postgres:
     image: postgres
     container_name: postgres_db
@@ -8,9 +26,12 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: 123456
     ports:
-      - "5432:5432"
+      - "5436:5432"
     volumes:
       - ${PWD}/data:/var/lib/postgresql/data
+    networks:
+      - web
+
 
   test_db:
     image: postgres
@@ -22,3 +43,9 @@ services:
     ports:
       - "5433:5432"
     volumes: []
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
