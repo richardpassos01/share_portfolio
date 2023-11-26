@@ -1,8 +1,7 @@
-.gitignore
-.env
 .vscode
 node_modules
 data
 coverage
 Dockerfile
 test
+build/

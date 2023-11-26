@@ -1,17 +1,21 @@
 version: '3.8'
 
 services:
-  web:
+  share_portfolio_backend:
     build:
       context: .
-    command: "web-local"
+      target: development
     volumes:
-      - ./src:/share-portfolio-backend:delegated
-      - ./app_data/web:/share-portfolio-backend/app_data:delegated
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - 4000:4000
     env_file:
       - ./.env
     environment:
-      - DATABASE_HOST=db
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+    command: npm run dev
     depends_on:
       - postgres
     stdin_open: true
@@ -26,13 +30,21 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: 123456
     ports:
-      - "5436:5436"
+      - "5436:5432"
     volumes:
-      - ${PWD}/app_data:/var/lib/postgresql/data
+      - ${PWD}/app:/var/lib/postgresql/data
 
-volumes:
-    app_data:
+  test_db:
+    image: postgres
+    container_name: test_postgres_db
+    environment:
+      POSTGRES_DB: sharesdb-test
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5433:5432"
+    volumes: []
 
 networks:
     default:
-      name: web
+      name: share_portfolio_backend
