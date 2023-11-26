@@ -13,6 +13,8 @@ import authenticateApiKey from '@middleware/authenticateApiKey';
 
 const app = new Koa();
 
+app.proxy = true;
+
 app.use(bodyParser());
 app.use(errorHandler);
 app.use(authenticateApiKey);
