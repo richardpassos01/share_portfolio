@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",
-    "compile": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias",
     "fix": "gts fix",
     "test": "npx jest --runInBand --coverage",
     "test:unit": "jest test/unit",

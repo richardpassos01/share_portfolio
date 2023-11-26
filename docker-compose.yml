@@ -56,4 +56,4 @@ services:
 
 networks:
     default:
-      name: share_portfolio_backend
+      name: share_portfolio

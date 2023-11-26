@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run compile
+RUN npm run build
 
 FROM node:20-alpine as production
 
@@ -20,6 +20,7 @@ WORKDIR /app
 COPY package*.json .
 
 RUN npm ci --only=production
+RUN npm i -g pm2
 
 COPY --from=development /app/build .
 
