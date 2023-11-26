@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
+    "strict": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -21,5 +22,9 @@
       "@factories/*": ["./test/factories/*"],
       "@fixtures/*": ["./test/fixtures/*"]
     }
-  }
+  },
+  "exclude": [
+    "./build/**/*",
+    "./test/**/*"
+]
 }

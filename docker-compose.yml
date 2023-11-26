@@ -1,5 +1,36 @@
 version: '3.8'
+
 services:
+  nginx:
+    build:
+        dockerfile: Dockerfile
+        context: nginx/
+    ports:
+        - 4000:80
+    depends_on:
+        - share_portfolio_backend
+    volumes:
+        - ./app:/var/www:delegated
+
+  share_portfolio_backend:
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    env_file:
+      - ./.env
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+    command: npm run dev
+    depends_on:
+      - postgres
+    stdin_open: true
+    tty: true
+    restart: always
+
   postgres:
     image: postgres
     container_name: postgres_db
@@ -8,9 +39,9 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: 123456
     ports:
-      - "5432:5432"
+      - "5436:5432"
     volumes:
-      - ${PWD}/data:/var/lib/postgresql/data
+      - /app:/var/lib/postgresql/data
 
   test_db:
     image: postgres
@@ -22,3 +53,7 @@ services:
     ports:
       - "5433:5432"
     volumes: []
+
+networks:
+    default:
+      name: share_portfolio_backend
