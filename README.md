@@ -74,5 +74,3 @@ For any questions or issues, please contact the developers.
 ---
 
 *Note: The Node.js version mentioned as "20.6" appears to be unconventional, and it's essential to provide a standard Node.js version, such as "14.x" or whichever version you are using.*
-
-<!-- docker-compose run --rm web sh -c "startup_app=nome_da_sua_variavel ./seu_script.sh" -->
