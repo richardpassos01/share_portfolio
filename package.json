@@ -15,6 +15,7 @@
     "test:unit": "jest test/unit",
     "test:integration": "jest jest test/integration --runInBand",
     "start": "node -r dotenv/config build/src/api/server.js",
+    "prepm2": "npm run migration:up",
     "pm2": "pm2 -i 2 start npm --name web -- start",
     "tsnode": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config",
     "predev": "npm run migration:up",
