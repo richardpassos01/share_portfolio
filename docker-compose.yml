@@ -6,17 +6,17 @@ services:
       context: .
     command: "web-local"
     volumes:
-      - ${PWD}/data:/var/lib/app
-    ports:
-      - 4000:4000
-    restart: always
-    env_file: .env
-    stdin_open: true
-    tty: true
+      - ./src:/share-portfolio-backend:delegated
+      - ./app_data/web:/share-portfolio-backend/app_data:delegated
+    env_file:
+      - ./.env
+    environment:
+      - DATABASE_HOST=db
     depends_on:
       - postgres
-    networks:
-      - web
+    stdin_open: true
+    tty: true
+    restart: always
 
   postgres:
     image: postgres
@@ -26,26 +26,13 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: 123456
     ports:
-      - "5436:5432"
+      - "5436:5436"
     volumes:
-      - ${PWD}/data:/var/lib/postgresql/data
-    networks:
-      - web
+      - ${PWD}/app_data:/var/lib/postgresql/data
 
-
-  test_db:
-    image: postgres
-    container_name: test_postgres_db
-    environment:
-      POSTGRES_DB: sharesdb-test
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: 123456
-    ports:
-      - "5433:5432"
-    volumes: []
-    networks:
-      - web
+volumes:
+    app_data:
 
 networks:
-  web:
-    driver: bridge
+    default:
+      name: web

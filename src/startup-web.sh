@@ -1,3 +1,4 @@
 #!/bin/sh
 
-pm2-runtime -i 2 /api/server.js
+npm run migration:up
+npm run pm2

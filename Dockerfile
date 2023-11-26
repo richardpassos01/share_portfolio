@@ -1,36 +1,37 @@
-# build
-FROM node:20-alpine as build
-WORKDIR /app
-ADD . /app
-RUN chown -R node:node /app
+# Stage 1: Build
+FROM node:20-slim as build
+
+ENV SRC_PATH /share-portfolio-backend
+
+WORKDIR ${SRC_PATH}
+
+COPY . .
+
 RUN npm install
-RUN npm run compile
-USER node
-
-# run
-FROM node:20-alpine
-WORKDIR /app
-
-COPY --from=build /app/build /app
-COPY --from=build /app/node_modules /app/node_modules
 RUN npm install -g pm2
+RUN npm run compile
 
-WORKDIR /app
+# Stage 2: Run
+FROM node:20-slim
 
-COPY --from=build /app/src/docker-entrypoint.sh /app/
-COPY --from=build /app/src/startup-web.sh /app/
-COPY --from=build /app/src/startup-web-local.sh /app/
-COPY --from=build /app/src/wait-for-db.sh /app/
-COPY --from=build /app/src/wait-for-it.sh /app/
+ENV SRC_PATH /share-portfolio-backend
 
-RUN chmod +x /app/docker-entrypoint.sh
-RUN chmod +x /app/startup-web.sh
-RUN chmod +x /app/startup-web-local.sh
-RUN chmod +x /app/wait-for-db.sh
-RUN chmod +x /app/wait-for-it.sh
+WORKDIR ${SRC_PATH}
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+COPY --from=build /share-portfolio-backend/node_modules /share-portfolio-backend/node_modules
+COPY --from=build /share-portfolio-backend/src/docker-entrypoint.sh /share-portfolio-backend/docker-entrypoint.sh
+COPY --from=build /share-portfolio-backend/src/startup-web-local.sh /share-portfolio-backend/startup-web-local.sh
+COPY --from=build /share-portfolio-backend/src/wait-for-db.sh /share-portfolio-backend/wait-for-db.sh
+COPY --from=build /share-portfolio-backend/src/wait-for-it.sh /share-portfolio-backend/wait-for-it.sh
+COPY --from=build /share-portfolio-backend/dist /share-portfolio-backend
 
-CMD ["web-local"]
+RUN chmod +x /share-portfolio-backend/docker-entrypoint.sh
+RUN chmod +x /share-portfolio-backend/startup-web-local.sh
+RUN chmod +x /share-portfolio-backend/wait-for-db.sh
+RUN chmod +x /share-portfolio-backend/wait-for-it.sh
+
+ENTRYPOINT ["/share-portfolio-backend/docker-entrypoint.sh"]
+
+CMD ["web"]
 
 EXPOSE 4000
