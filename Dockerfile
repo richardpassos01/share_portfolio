@@ -24,4 +24,6 @@ RUN npm i -g pm2
 
 COPY --from=development /app/build .
 
+EXPOSE 4000
+
 CMD ["npm", "run", "pm2"]
